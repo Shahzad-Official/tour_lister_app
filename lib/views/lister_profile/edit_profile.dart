@@ -71,7 +71,7 @@ class EditProfile extends StatelessWidget {
                               ),
                             );
                           } else {
-                            return AppCachedImage(
+                            return AppCircularCachedImage(
                               picRadius: 60,
                               picUrl: DummyData.profilePic,
                             );

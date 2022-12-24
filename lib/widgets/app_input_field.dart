@@ -13,6 +13,7 @@ class AppInputField extends StatelessWidget {
   void Function()? onTap;
   EdgeInsetsGeometry contentPadding;
   bool? enabled;
+  double? width;
   AppInputField({
     Key? key,
     required this.hintText,
@@ -23,6 +24,7 @@ class AppInputField extends StatelessWidget {
     this.contentPadding = const EdgeInsets.only(top: 15, left: 15),
     this.onTap,
     this.enabled,
+    this.width,
   }) : super(key: key);
 
   @override
@@ -30,6 +32,7 @@ class AppInputField extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
+        width: width,
         height: 60,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -43,6 +46,7 @@ class AppInputField extends StatelessWidget {
           ],
         ),
         child: TextFormField(
+          textInputAction: TextInputAction.next,
           enabled: enabled,
           obscureText: obscureText,
           keyboardType: keyboardtype,

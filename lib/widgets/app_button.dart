@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/widgets/app_text.dart';
 
 class AppButton extends StatelessWidget {
@@ -38,6 +39,46 @@ class AppButton extends StatelessWidget {
             textcolor: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class RoundButton extends StatelessWidget {
+  double? width;
+  String text;
+  void Function()? onTap;
+  RoundButton({
+    Key? key,
+    this.width,
+    required this.text,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: AppColors.primarycolor,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 15,
+            right: 15,
+            top: 3,
+            bottom: 5,
+          ),
+          child: AppText(
+            text: text,
+            fontWeight: FontWeight.w700,
+            fontSize: 12,
+            textcolor: Colors.white,
           ),
         ),
       ),
