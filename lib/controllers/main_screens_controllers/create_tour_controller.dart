@@ -13,13 +13,20 @@ class CreateTourController extends GetxController {
   TextEditingController coverImageController = TextEditingController();
   String? otherImageUploadStatus;
   String? coverImageUploadStatus;
-
+  int dangerRating = 0;
   String? startDate;
   String? endDate;
+  int initialAge = 3;
+  String selectedCat = "Catagory 1";
+  List<String> catagories = [
+    "Catagory 1",
+    "Catagory 2",
+    "Catagory 3",
+  ];
 
   currentDate() {
     var date = DateTime.now();
-    var formatedDate = DateFormat("dd-MM-yyyy").format(date);
+    var formatedDate = DateFormat("dd MMM").format(date);
     return formatedDate;
   }
 
@@ -37,7 +44,7 @@ class CreateTourController extends GetxController {
       lastDate: DateTime(2023),
     );
     if (selectedDate != null) {
-      startDate = DateFormat("dd-MM-yyyy").format(selectedDate);
+      startDate = DateFormat("dd MMM").format(selectedDate);
     }
     update();
   }
@@ -50,7 +57,7 @@ class CreateTourController extends GetxController {
       lastDate: DateTime(2023),
     );
     if (selectedDate != null) {
-      endDate = DateFormat("dd-MM-yyyy").format(selectedDate);
+      endDate = DateFormat("dd MMM").format(selectedDate);
     }
     update();
   }
@@ -88,6 +95,22 @@ class CreateTourController extends GetxController {
     _coverImage = File(result.path);
     coverImageController.text = _coverImage.toString();
     coverImageUploadStatus = "Uploaded Successfully";
+    update();
+  }
+
+  assignDangerRating(int rating) {
+    dangerRating = rating;
+    update();
+  }
+
+  changeSliderValue(double value) {
+    var intValue = value.toInt();
+    initialAge = intValue;
+    update();
+  }
+
+  changeCatagory(value) {
+    selectedCat = value;
     update();
   }
 }

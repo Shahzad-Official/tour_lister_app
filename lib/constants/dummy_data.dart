@@ -6,4 +6,28 @@ class DummyData {
     "phoneNo": "917996767715",
     "DOB": "24/02/1997",
   };
+  static const Map<String, dynamic> usersData = {
+    "email": "Pawanpoojary36@gmail.com",
+    "phoneNo": "917996767715",
+    "DOB": "24/02/1997",
+    "gender": "Male",
+  };
+  static const List<Map<String, dynamic>> eventsData = [
+    {
+      "name": "eventname",
+      "startDate": "",
+      "endDate": "",
+      "location": "",
+      "startPrice": "",
+      "endPrice": "",
+      "cuttoffTime": "",
+      "allowedNoOfBookings": "",
+      "dangerRating": "",
+      "ageSuitability": "",
+      "catagory": "",
+      "termsAndConditions": "",
+      "coverImage": "",
+      "isLive": false,
+    },
+  ];
 }

@@ -9,11 +9,14 @@ class AppInputField extends StatelessWidget {
   bool obscureText;
   TextEditingController? controller;
   TextInputType? keyboardtype;
-  Widget? suffixIcon;
+  Widget? suffixIcon, prefixIcon;
   void Function()? onTap;
   EdgeInsetsGeometry contentPadding;
   bool? enabled;
-  double? width;
+  double? width, height;
+  int? maxLines;
+  TextInputAction textInputAction;
+  int? maxLength;
   AppInputField({
     Key? key,
     required this.hintText,
@@ -25,6 +28,11 @@ class AppInputField extends StatelessWidget {
     this.onTap,
     this.enabled,
     this.width,
+    this.prefixIcon,
+    this.height,
+    this.maxLines,
+    this.textInputAction = TextInputAction.next,
+    this.maxLength,
   }) : super(key: key);
 
   @override
@@ -33,7 +41,7 @@ class AppInputField extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: width,
-        height: 60,
+        height: height ?? 60,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
@@ -46,12 +54,15 @@ class AppInputField extends StatelessWidget {
           ],
         ),
         child: TextFormField(
-          textInputAction: TextInputAction.next,
+          maxLength: maxLength,
+          maxLines: maxLines,
+          textInputAction: textInputAction,
           enabled: enabled,
           obscureText: obscureText,
           keyboardType: keyboardtype,
           controller: controller,
           decoration: InputDecoration(
+            prefixIcon: prefixIcon,
             border: InputBorder.none,
             suffixIcon: suffixIcon,
             hintText: hintText,
@@ -99,7 +110,11 @@ class DropdownContainer extends StatelessWidget {
       ),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: DropdownButton(
+        child: DropdownButtonFormField(
+          decoration: const InputDecoration(
+            border: InputBorder.none,
+          ),
+          style: GoogleFonts.didactGothic(),
           value: currentValue,
           items: items
               .map(
@@ -118,8 +133,11 @@ class DropdownContainer extends StatelessWidget {
               .toList(),
           onChanged: onValueChange,
           alignment: Alignment.center,
-          underline: const SizedBox(),
-          icon: const SizedBox(),
+          icon: Icon(
+            Icons.arrow_drop_down,
+            size: 30,
+            color: AppColors.primarycolor,
+          ),
         ),
       ),
     );

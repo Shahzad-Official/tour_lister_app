@@ -47,10 +47,7 @@ class MainPage extends StatelessWidget {
                   ],
                 ),
               ),
-              body: Padding(
-                padding: AppPadding.defaultPadding,
-                child: _.mainScreens[_.currentIndex],
-              ),
+              body: _.mainScreens[_.currentIndex],
               bottomNavigationBar: AppBottomSheet(
                 onIndexChanged: (index) => _.changeScreen(index),
                 currentIndex: _.currentIndex,

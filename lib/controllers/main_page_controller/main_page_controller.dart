@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:tour_lister_app/views/lister_profile/account.dart';
 import 'package:tour_lister_app/views/main_screens/screens/create_tour.dart';
 import 'package:tour_lister_app/views/main_screens/screens/manage_tours.dart';
+import 'package:tour_lister_app/views/main_screens/screens/ongoing_bookings.dart';
 
 class MainPageController extends GetxController {
   int currentIndex = 0;
   List<Widget> mainScreens = [
     CreateTour(),
     ManageTours(),
-    Text("data"),
-    Text("data"),
+    OngoingBookings(),
+    Account(),
   ];
   List<String> mainScreensTitle = [
     "Create Tour",

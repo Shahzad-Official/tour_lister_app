@@ -17,7 +17,7 @@ class Profile extends StatelessWidget {
   final String? email, phoneNo, dOB;
   const Profile({
     super.key,
-    this.profileUrl = DummyData.profilePic,
+    required this.profileUrl,
     this.phoneNo,
     this.dOB,
     this.email,
@@ -80,7 +80,7 @@ class Profile extends StatelessWidget {
                   const SizedBox(
                     width: 20,
                   ),
-                  AppCachedImage(
+                  AppCircularCachedImage(
                     picUrl: profileUrl,
                   ),
                 ],

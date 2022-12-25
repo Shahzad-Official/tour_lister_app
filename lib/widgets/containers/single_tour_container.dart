@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
@@ -12,6 +13,7 @@ class SingleTourContainer extends StatelessWidget {
   String? picUrl;
   String startDate, endDate, eventName, location;
   bool isLive;
+  Widget? ratingBar, bottomButton;
   SingleTourContainer({
     Key? key,
     this.picUrl,
@@ -20,19 +22,21 @@ class SingleTourContainer extends StatelessWidget {
     this.startDate = "2nd",
     this.eventName = "Event Culture",
     this.location = "Paris, Europe",
+    this.ratingBar,
+    this.bottomButton,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 130,
+      height: ratingBar == null ? 130 : 145,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: AppColors.backgroundcolor,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primarycolor.withOpacity(0.4),
+            color: AppColors.primarycolor.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 1.5,
             offset: Offset(5, 0),
@@ -69,40 +73,46 @@ class SingleTourContainer extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppText(
-                        text: eventName,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                      ),
-                      isLive
-                          ? Row(
-                              children: [
-                                const Icon(
-                                  Icons.share,
-                                  color: AppColors.primarycolor,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                AppText(
-                                  text: "live",
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  textcolor: Colors.green,
-                                ),
-                              ],
-                            )
-                          : AppText(
-                              text: "Draft",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              textcolor: Colors.grey,
+                  bottomButton == null
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            AppText(
+                              text: eventName,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15,
                             ),
-                    ],
-                  ),
+                            isLive
+                                ? Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.share,
+                                        color: AppColors.primarycolor,
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      AppText(
+                                        text: "live",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        textcolor: Colors.green,
+                                      ),
+                                    ],
+                                  )
+                                : AppText(
+                                    text: "Draft",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    textcolor: Colors.grey,
+                                  ),
+                          ],
+                        )
+                      : AppText(
+                          text: eventName,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                        ),
                   AppText(
                     text: "$startDate - $endDate",
                     fontWeight: FontWeight.w600,
@@ -126,27 +136,29 @@ class SingleTourContainer extends StatelessWidget {
                       ),
                     ],
                   ),
+                  ratingBar ?? const SizedBox(),
                   AppPadding.heightSpace15,
-                  Row(
-                    mainAxisAlignment: isLive
-                        ? MainAxisAlignment.spaceBetween
-                        : MainAxisAlignment.end,
-                    children: [
-                      RoundButton(
-                        text: "Edit",
+                  bottomButton ??
+                      Row(
+                        mainAxisAlignment: isLive
+                            ? MainAxisAlignment.spaceBetween
+                            : MainAxisAlignment.end,
+                        children: [
+                          RoundButton(
+                            text: "Edit",
+                          ),
+                          isLive
+                              ? RoundButton(
+                                  text: "Cancel",
+                                )
+                              : const SizedBox(
+                                  width: 15,
+                                ),
+                          RoundButton(
+                            text: "Delete",
+                          ),
+                        ],
                       ),
-                      isLive
-                          ? RoundButton(
-                              text: "Cancel",
-                            )
-                          : const SizedBox(
-                              width: 15,
-                            ),
-                      RoundButton(
-                        text: "Delete",
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
