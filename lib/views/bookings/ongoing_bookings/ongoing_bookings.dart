@@ -13,45 +13,40 @@ class OngoingBookings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: AppPadding.defaultPadding,
-        child: Column(
-          children: [
-            AppPadding.heightSpace30,
-            AppInputField(
-              hintText: "search for tours",
-              contentPadding: const EdgeInsets.only(top: 20),
-              prefixIcon: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 18.0),
-                child: SvgPicture.string(
-                  SvgIcons.search,
-                ),
-              ),
+    return Column(
+      children: [
+        AppPadding.heightSpace30,
+        AppInputField(
+          hintText: "search for tours",
+          contentPadding: const EdgeInsets.only(top: 20),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 18.0),
+            child: SvgPicture.string(
+              SvgIcons.search,
             ),
-            Column(
-              children: List.generate(10, (index) {
-                return Column(
-                  children: [
-                    AppPadding.heightSpace30,
-                    SingleTourContainer(
-                      ratingBar: const TourRatingBar(),
-                      bottomButton: Align(
-                        alignment: Alignment.bottomRight,
-                        child: RoundButton(
-                          text: "view",
-                        ),
-                      ),
-                      startDate: "12 Mar",
-                      endDate: "2 May",
-                    ),
-                  ],
-                );
-              }),
-            ),
-          ],
+          ),
         ),
-      ),
+        Column(
+          children: List.generate(10, (index) {
+            return Column(
+              children: [
+                AppPadding.heightSpace30,
+                SingleTourContainer(
+                  ratingBar: const TourRatingBar(),
+                  bottomButton: Align(
+                    alignment: Alignment.bottomRight,
+                    child: RoundButton(
+                      text: "view",
+                    ),
+                  ),
+                  startDate: "12 Mar",
+                  endDate: "2 May",
+                ),
+              ],
+            );
+          }),
+        ),
+      ],
     );
   }
 }

@@ -49,12 +49,17 @@ class AppButton extends StatelessWidget {
 class RoundButton extends StatelessWidget {
   double? width;
   String text;
+  double? fontSize;
+  Color? textColor, buttonColor;
   void Function()? onTap;
   RoundButton({
     Key? key,
     this.width,
     required this.text,
     this.onTap,
+    this.fontSize,
+    this.textColor,
+    this.buttonColor,
   }) : super(key: key);
 
   @override
@@ -65,7 +70,10 @@ class RoundButton extends StatelessWidget {
         width: width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color: AppColors.primarycolor,
+          border: Border.all(
+            color: AppColors.primarycolor,
+          ),
+          color: buttonColor ?? AppColors.primarycolor,
         ),
         child: Padding(
           padding: const EdgeInsets.only(
@@ -77,8 +85,8 @@ class RoundButton extends StatelessWidget {
           child: AppText(
             text: text,
             fontWeight: FontWeight.w700,
-            fontSize: 12,
-            textcolor: Colors.white,
+            fontSize: fontSize ?? 12,
+            textcolor: textColor ?? Colors.white,
           ),
         ),
       ),

@@ -8,6 +8,7 @@ import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/controllers/profile_controllers/edit_profile_controller.dart';
+import 'package:tour_lister_app/views/main_screens/main_page.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
 
 import '../../constants/app_colors.dart';
@@ -190,7 +191,14 @@ class EditProfile extends StatelessWidget {
               ),
               AppButton(
                 btnText: "Save",
-                ontap: () {},
+                ontap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MainPage(),
+                    ),
+                  );
+                },
               ),
             ],
           ),

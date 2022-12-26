@@ -10,10 +10,16 @@ import 'package:tour_lister_app/widgets/app_cached_image.dart';
 import '../../widgets/app_text.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage({Key? key}) : super(key: key);
+  int currentIndex;
+  MainPageController mainPageController = Get.put(MainPageController());
+  MainPage({
+    Key? key,
+    this.currentIndex = 1,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    mainPageController.currentIndex = currentIndex;
     return ColoredBox(
       color: AppColors.primarycolor,
       child: SafeArea(
@@ -23,30 +29,34 @@ class MainPage extends StatelessWidget {
           builder: (_) {
             return Scaffold(
               backgroundColor: AppColors.backgroundcolor,
-              appBar: PreferredSize(
-                preferredSize: const Size.fromHeight(60),
-                child: AppBar(
-                  elevation: 0.0,
-                  backgroundColor: AppColors.backgroundcolor,
-                  centerTitle: _.currentIndex == 0 ? true : false,
-                  title: AppText(
-                    text: _.mainScreensTitle[_.currentIndex],
-                    fontWeight: FontWeight.w600,
-                    fontSize: 23,
-                    textcolor: Colors.black,
-                  ),
-                  actions: [
-                    _.currentIndex == 0 || _.currentIndex == 3
-                        ? const SizedBox()
-                        : Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: AppCircularCachedImage(
-                              picUrl: DummyData.profilePic,
-                            ),
-                          ),
-                  ],
-                ),
-              ),
+              appBar: _.currentIndex == 0 ||
+                      _.currentIndex == 1 ||
+                      _.currentIndex == 3
+                  ? PreferredSize(
+                      preferredSize: const Size.fromHeight(60),
+                      child: AppBar(
+                        elevation: 0.0,
+                        backgroundColor: AppColors.backgroundcolor,
+                        centerTitle: _.currentIndex == 0 ? true : false,
+                        title: AppText(
+                          text: _.mainScreensTitle[_.currentIndex],
+                          fontWeight: FontWeight.w600,
+                          fontSize: 23,
+                          textcolor: Colors.black,
+                        ),
+                        actions: [
+                          _.currentIndex == 0 || _.currentIndex == 3
+                              ? const SizedBox()
+                              : Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: AppCircularCachedImage(
+                                    picUrl: DummyData.profilePic,
+                                  ),
+                                ),
+                        ],
+                      ),
+                    )
+                  : null,
               body: _.mainScreens[_.currentIndex],
               bottomNavigationBar: AppBottomSheet(
                 onIndexChanged: (index) => _.changeScreen(index),

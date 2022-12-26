@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tour_lister_app/constants/app_colors.dart';
-import 'package:tour_lister_app/views/bookings/completed_bookings/completed_bookings.dart';
-import 'package:tour_lister_app/views/main_screens/main_page.dart';
-import 'package:tour_lister_app/views/splash_screen.dart';
-import 'package:tour_lister_app/views/lister_profile/edit_profile.dart';
-import 'package:tour_lister_app/views/register/login.dart';
-import 'package:tour_lister_app/views/lister_profile/profile.dart';
-import 'package:tour_lister_app/views/register/sign_up.dart';
+
+import 'constants/app_colors.dart';
+import 'views/main_screens/main_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: AppColors().getMaterialColor(),
       ),
-      home: CompletedBookings(),
+      home: MainPage(),
     );
   }
 }

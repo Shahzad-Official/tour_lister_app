@@ -12,10 +12,10 @@ import '../../widgets/app_button.dart';
 import '../../widgets/app_text.dart';
 import 'edit_profile.dart';
 
-class Profile extends StatelessWidget {
+class ListerProfile extends StatelessWidget {
   final String profileUrl;
   final String? email, phoneNo, dOB;
-  const Profile({
+  const ListerProfile({
     super.key,
     required this.profileUrl,
     this.phoneNo,

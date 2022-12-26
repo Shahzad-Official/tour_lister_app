@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/dummy_data.dart';
-import 'package:tour_lister_app/views/lister_profile/profile.dart';
+import 'package:tour_lister_app/views/lister_profile/lister_profile.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
 
-import '../../constants/app_colors.dart';
 import '../../widgets/app_text.dart';
 
-class Account extends StatelessWidget {
-  const Account({super.key});
+class ListerAccount extends StatelessWidget {
+  const ListerAccount({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class Account extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: ((context) => const Profile(
+                          builder: ((context) => const ListerProfile(
                                 profileUrl: DummyData.profilePic,
                               )),
                         ),
