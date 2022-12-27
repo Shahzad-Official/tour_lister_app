@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:tour_lister_app/constants/app_colors.dart';
-import 'package:tour_lister_app/constants/dummy_data.dart';
-import 'package:tour_lister_app/services/get_events_data.dart';
-import 'package:tour_lister_app/widgets/app_cached_image.dart';
-
 import '../../../constants/app_paddings.dart';
 import '../../../constants/svg_icons.dart';
 import '../../../controllers/main_screens_controllers/manage_bookings_controller.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/app_input_field.dart';
-import '../../../widgets/app_text.dart';
 import '../../../widgets/containers/single_tour_container.dart';
 
 class CompletedBookings extends StatelessWidget {
