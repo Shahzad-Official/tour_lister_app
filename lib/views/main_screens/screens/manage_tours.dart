@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
+import 'package:tour_lister_app/controllers/main_screens_controllers/manage_tours_controller.dart';
 import 'package:tour_lister_app/widgets/app_input_field.dart';
 import 'package:tour_lister_app/widgets/containers/single_tour_container.dart';
 
 class ManageTours extends StatelessWidget {
-  const ManageTours({Key? key}) : super(key: key);
+  ManageTours({Key? key}) : super(key: key);
+  final ManageToursController toursController =
+      Get.put(ManageToursController());
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +31,24 @@ class ManageTours extends StatelessWidget {
               ),
             ),
             Column(
-              children: List.generate(10, (index) {
+              children: List.generate(
+                  toursController.eventsData.eventList.length, (index) {
                 return Column(
                   children: [
                     AppPadding.heightSpace30,
                     SingleTourContainer(
-                      isLive: index == 0 ? true : false,
-                      startDate: "12 Mar",
-                      endDate: "2 May",
+                      eventName:
+                          toursController.eventsData.eventList[index].name!,
+                      location:
+                          toursController.eventsData.eventList[index].location!,
+                      picUrl: toursController
+                          .eventsData.eventList[index].coverImage!,
+                      isLive:
+                          toursController.eventsData.eventList[index].isLive!,
+                      startDate: toursController
+                          .eventsData.eventList[index].startPrice!,
+                      endDate:
+                          toursController.eventsData.eventList[index].endPrice!,
                     ),
                   ],
                 );

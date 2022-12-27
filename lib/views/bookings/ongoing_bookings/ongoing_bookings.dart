@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:tour_lister_app/controllers/main_screens_controllers/manage_bookings_controller.dart';
 import 'package:tour_lister_app/views/users_in_tour/users_in_tour.dart';
 import 'package:tour_lister_app/widgets/app_button.dart';
 import 'package:tour_lister_app/widgets/rating_bar/tour_rating_bar.dart';
@@ -10,7 +12,9 @@ import '../../../widgets/app_input_field.dart';
 import '../../../widgets/containers/single_tour_container.dart';
 
 class OngoingBookings extends StatelessWidget {
-  const OngoingBookings({Key? key}) : super(key: key);
+  final ManageBookingsController _bookingsController =
+      Get.put(ManageBookingsController());
+  OngoingBookings({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +32,18 @@ class OngoingBookings extends StatelessWidget {
           ),
         ),
         Column(
-          children: List.generate(10, (index) {
+          children: List.generate(
+              _bookingsController.eventsData.eventList.length, (index) {
             return Column(
               children: [
                 AppPadding.heightSpace30,
                 SingleTourContainer(
+                  eventName:
+                      _bookingsController.eventsData.eventList[index].name!,
+                  location:
+                      _bookingsController.eventsData.eventList[index].location!,
+                  picUrl: _bookingsController
+                      .eventsData.eventList[index].coverImage!,
                   ratingBar: const TourRatingBar(),
                   bottomButton: Align(
                     alignment: Alignment.bottomRight,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tour_lister_app/controllers/main_screens_controllers/manage_bookings_controller.dart';
 import 'package:tour_lister_app/views/bookings/ongoing_bookings/ongoing_bookings.dart';
-import 'package:tour_lister_app/views/users_in_tour/users_in_tour.dart';
+
 import 'package:tour_lister_app/widgets/app_button.dart';
 
 import '../../../constants/app_colors.dart';
@@ -93,8 +93,8 @@ class ManageBookings extends StatelessWidget {
                   children: [
                     AppPadding.heightSpace10,
                     controller.currentIndex == 0
-                        ? const OngoingBookings()
-                        : const CompletedBookings(),
+                        ? OngoingBookings()
+                        : CompletedBookings(),
                   ],
                 ),
               ),
