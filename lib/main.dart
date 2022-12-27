@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tour_lister_app/views/splash_screen.dart';
 
 import 'constants/app_colors.dart';
-import 'views/main_screens/main_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: AppColors().getMaterialColor(),
       ),
-      home: MainPage(),
+      home: const SplashScreen(),
     );
   }
 }

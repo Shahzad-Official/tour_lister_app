@@ -30,7 +30,7 @@ class AppInputField extends StatelessWidget {
     this.width,
     this.prefixIcon,
     this.height,
-    this.maxLines,
+    this.maxLines = 1,
     this.textInputAction = TextInputAction.next,
     this.maxLength,
   }) : super(key: key);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../constants/app_colors.dart';
+import '../../views/main_screens/main_page.dart';
 
 class SignupController extends GetxController {
   TextEditingController email = TextEditingController();
@@ -90,6 +91,8 @@ class SignupController extends GetxController {
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
-    } else {}
+    } else {
+      Get.offAll(() => MainPage());
+    }
   }
 }

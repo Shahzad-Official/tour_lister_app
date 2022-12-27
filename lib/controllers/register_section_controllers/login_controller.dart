@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tour_lister_app/views/main_screens/main_page.dart';
 
 import '../../constants/app_colors.dart';
 
@@ -52,7 +53,9 @@ class LoginController extends GetxController {
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
-    } else {}
+    } else {
+      Get.off(() => MainPage());
+    }
   }
 
   passwordHide() {
