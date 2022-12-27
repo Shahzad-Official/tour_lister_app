@@ -190,6 +190,7 @@ class CreateTour extends StatelessWidget {
                 AppPadding.heightSpace30,
                 AppInputField(
                   hintText: "Total no of bookings allowed",
+                  keyboardtype: TextInputType.number,
                 ),
                 AppPadding.heightSpace30,
                 AppText(

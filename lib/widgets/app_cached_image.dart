@@ -23,8 +23,11 @@ class AppCircularCachedImage extends StatelessWidget {
         );
       },
       progressIndicatorBuilder: (context, url, progress) {
-        return CircularProgressIndicator(
-          value: progress.progress,
+        return Center(
+          child: CircularProgressIndicator(
+            value: progress.progress,
+            color: Colors.white,
+          ),
         );
       },
     );
@@ -57,8 +60,10 @@ class AppCachedImage extends StatelessWidget {
         );
       },
       progressIndicatorBuilder: (context, url, progress) {
-        return CircularProgressIndicator(
-          value: progress.progress,
+        return Center(
+          child: CircularProgressIndicator(
+            value: progress.progress,
+          ),
         );
       },
     );
