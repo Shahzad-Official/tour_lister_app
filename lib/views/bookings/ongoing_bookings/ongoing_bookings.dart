@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tour_lister_app/views/users_in_tour/users_in_tour.dart';
 import 'package:tour_lister_app/widgets/app_button.dart';
 import 'package:tour_lister_app/widgets/rating_bar/tour_rating_bar.dart';
 
@@ -36,6 +37,14 @@ class OngoingBookings extends StatelessWidget {
                   bottomButton: Align(
                     alignment: Alignment.bottomRight,
                     child: RoundButton(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UsersInTour(),
+                          ),
+                        );
+                      },
                       text: "view",
                     ),
                   ),

@@ -39,9 +39,7 @@ class ManageBookings extends StatelessWidget {
                         AppText(
                           text: controller.currentIndex == 0
                               ? "Ongoing \nBookings"
-                              : controller.currentIndex == 1
-                                  ? "Completed \nBookings"
-                                  : "Tour: Sight Visit",
+                              : "Completed \nBookings",
                           fontWeight: FontWeight.w600,
                           fontSize: 23,
                           textcolor: Colors.black,
@@ -53,49 +51,36 @@ class ManageBookings extends StatelessWidget {
                     ),
                     AppPadding.heightSpace30,
                     AppPadding.heightSpace10,
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Wrap(
-                        spacing: 20,
-                        children: [
-                          RoundButton(
-                            onTap: () {
-                              controller.changeIndex(0);
-                            },
-                            text: "Ongoing Bookings",
-                            buttonColor: controller.currentIndex == 0
-                                ? AppColors.primarycolor
-                                : AppColors.backgroundcolor,
-                            textColor: controller.currentIndex == 0
-                                ? AppColors.backgroundcolor
-                                : AppColors.primarycolor,
-                          ),
-                          RoundButton(
-                            onTap: () {
-                              controller.changeIndex(1);
-                            },
-                            text: "Completed Bookings",
-                            buttonColor: controller.currentIndex == 1
-                                ? AppColors.primarycolor
-                                : AppColors.backgroundcolor,
-                            textColor: controller.currentIndex == 1
-                                ? AppColors.backgroundcolor
-                                : AppColors.primarycolor,
-                          ),
-                          RoundButton(
-                            onTap: () {
-                              controller.changeIndex(2);
-                            },
-                            text: "User Booked",
-                            buttonColor: controller.currentIndex == 2
-                                ? AppColors.primarycolor
-                                : AppColors.backgroundcolor,
-                            textColor: controller.currentIndex == 2
-                                ? AppColors.backgroundcolor
-                                : AppColors.primarycolor,
-                          ),
-                        ],
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        RoundButton(
+                          onTap: () {
+                            controller.changeIndex(0);
+                          },
+                          text: "Ongoing Bookings",
+                          buttonColor: controller.currentIndex == 0
+                              ? AppColors.primarycolor
+                              : AppColors.backgroundcolor,
+                          textColor: controller.currentIndex == 0
+                              ? AppColors.backgroundcolor
+                              : AppColors.primarycolor,
+                          fontSize: 15,
+                        ),
+                        RoundButton(
+                          onTap: () {
+                            controller.changeIndex(1);
+                          },
+                          text: "Completed Bookings",
+                          buttonColor: controller.currentIndex == 1
+                              ? AppColors.primarycolor
+                              : AppColors.backgroundcolor,
+                          textColor: controller.currentIndex == 1
+                              ? AppColors.backgroundcolor
+                              : AppColors.primarycolor,
+                          fontSize: 15,
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -109,9 +94,7 @@ class ManageBookings extends StatelessWidget {
                     AppPadding.heightSpace10,
                     controller.currentIndex == 0
                         ? const OngoingBookings()
-                        : controller.currentIndex == 1
-                            ? const CompletedBookings()
-                            : const UsersInTour(),
+                        : const CompletedBookings(),
                   ],
                 ),
               ),
