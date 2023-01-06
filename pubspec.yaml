@@ -42,6 +42,7 @@ dependencies:
   #PicturePackages
   flutter_svg: ^1.1.6
   image_picker: ^0.8.6
+  file_picker: ^5.2.4
   #StateManagement
   get: ^4.6.5
   #ToastMessage
@@ -52,6 +53,8 @@ dependencies:
   flutter_spinkit: any
   #Ratings
   flutter_rating_bar: ^4.0.1
+  #Number Picker
+  numberpicker: ^2.1.1
 
 
 dev_dependencies:

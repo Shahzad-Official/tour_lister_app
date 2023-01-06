@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/controllers/register_section_controllers/signup_controller.dart';
 import 'package:tour_lister_app/views/register/login.dart';
 
@@ -131,6 +133,25 @@ class SignUp extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Get.dialog(
+                            AlertDialog(
+                              title: AppText(
+                                text: "Terms And Conditions",
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              content: AppText(
+                                overflow: TextOverflow.visible,
+                                text: DummyData.eventsData[0]
+                                    ['termsAndConditions'],
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          );
+                        },
                       text: "Terms of Service ",
                       style: GoogleFonts.poppins(
                         color: Colors.blueAccent,

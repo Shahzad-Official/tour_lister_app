@@ -4,8 +4,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_paddings.dart';
 
-class TourRatingBar extends StatelessWidget {
-  const TourRatingBar({
+class PackageRatingBar extends StatelessWidget {
+  const PackageRatingBar({
     Key? key,
   }) : super(key: key);
 

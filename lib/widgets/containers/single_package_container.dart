@@ -9,12 +9,13 @@ import 'package:tour_lister_app/widgets/app_button.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
 import 'package:tour_lister_app/widgets/app_text.dart';
 
-class SingleTourContainer extends StatelessWidget {
+class SinglePackageContainer extends StatelessWidget {
   String? picUrl;
   String startDate, endDate, eventName, location;
   bool isLive;
   Widget? ratingBar, bottomButton;
-  SingleTourContainer({
+  VoidCallback? onEdit, onCancel, onDelete;
+  SinglePackageContainer({
     Key? key,
     this.picUrl,
     this.isLive = true,
@@ -24,6 +25,9 @@ class SingleTourContainer extends StatelessWidget {
     this.location = "Paris, Europe",
     this.ratingBar,
     this.bottomButton,
+    this.onCancel,
+    this.onDelete,
+    this.onEdit,
   }) : super(key: key);
 
   @override
@@ -145,16 +149,19 @@ class SingleTourContainer extends StatelessWidget {
                             : MainAxisAlignment.end,
                         children: [
                           RoundButton(
+                            onTap: onEdit,
                             text: "Edit",
                           ),
                           isLive
                               ? RoundButton(
+                                  onTap: onCancel,
                                   text: "Cancel",
                                 )
                               : const SizedBox(
                                   width: 15,
                                 ),
                           RoundButton(
+                            onTap: onDelete,
                             text: "Delete",
                           ),
                         ],

@@ -38,7 +38,7 @@ class AppBottomSheet extends StatelessWidget {
                       : AppColors.headTextColor,
                 ),
                 AppText(
-                  text: "Create Tour",
+                  text: "Create Package",
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
                   textcolor: currentIndex == 0
@@ -64,7 +64,7 @@ class AppBottomSheet extends StatelessWidget {
                       : AppColors.headTextColor,
                 ),
                 AppText(
-                  text: "Manage Tour",
+                  text: "Manage Packages",
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
                   textcolor: currentIndex == 1

@@ -1,23 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:tour_lister_app/views/lister_profile/lister_account.dart';
-import 'package:tour_lister_app/views/main_screens/screens/create_tour.dart';
-import 'package:tour_lister_app/views/main_screens/screens/manage_bookings.dart';
-import 'package:tour_lister_app/views/main_screens/screens/manage_tours.dart';
 
-import '../../views/bookings/completed_bookings/completed_bookings.dart';
+import '../../views/lister_profile/lister_account.dart';
+import '../../views/main_screens/screens/create_package.dart';
+import '../../views/main_screens/screens/manage_bookings.dart';
+import '../../views/main_screens/screens/manage_packages.dart';
 
 class MainPageController extends GetxController {
   int currentIndex = 0;
   List<Widget> mainScreens = [
-    CreateTour(),
-    ManageTours(),
+    CreatePackage(),
+    ManagePackages(),
     ManageBookings(),
     ListerAccount(),
   ];
   List<String> mainScreensTitle = [
-    "Create Tour",
-    "All Tours",
+    "Create Package",
+    "All Packages",
     "Ongoing Bookings",
     "Account",
   ];

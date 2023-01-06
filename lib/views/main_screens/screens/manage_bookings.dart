@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tour_lister_app/controllers/main_screens_controllers/manage_bookings_controller.dart';
+import 'package:tour_lister_app/controllers/bookings_controllers/manage_bookings_controller.dart';
 import 'package:tour_lister_app/views/bookings/ongoing_bookings/ongoing_bookings.dart';
 
 import 'package:tour_lister_app/widgets/app_button.dart';

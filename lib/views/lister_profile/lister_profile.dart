@@ -15,12 +15,14 @@ import 'edit_profile.dart';
 class ListerProfile extends StatelessWidget {
   final String profileUrl;
   final String? email, phoneNo, dOB;
+  final bool? isVerified;
   const ListerProfile({
     super.key,
     required this.profileUrl,
     this.phoneNo,
     this.dOB,
     this.email,
+    this.isVerified,
   });
 
   @override
@@ -80,8 +82,29 @@ class ListerProfile extends StatelessWidget {
                   const SizedBox(
                     width: 20,
                   ),
-                  AppCircularCachedImage(
-                    picUrl: profileUrl,
+                  SizedBox(
+                    height: 70,
+                    width: 70,
+                    child: Stack(
+                      children: [
+                        AppCircularCachedImage(
+                          picUrl: profileUrl,
+                        ),
+                        isVerified ?? true
+                            ? Align(
+                                alignment: Alignment.bottomRight,
+                                child: ColoredBox(
+                                  color: Colors.white,
+                                  child: SvgPicture.string(
+                                    SvgIcons.verified,
+                                    width: 20,
+                                    color: AppColors.primarycolor,
+                                  ),
+                                ),
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
                   ),
                 ],
               ),

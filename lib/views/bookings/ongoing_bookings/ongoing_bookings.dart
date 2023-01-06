@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:tour_lister_app/controllers/main_screens_controllers/manage_bookings_controller.dart';
-import 'package:tour_lister_app/views/users_in_tour/users_in_tour.dart';
+import 'package:tour_lister_app/controllers/bookings_controllers/manage_bookings_controller.dart';
+import 'package:tour_lister_app/views/users_in_package/users_in_package.dart';
 import 'package:tour_lister_app/widgets/app_button.dart';
-import 'package:tour_lister_app/widgets/rating_bar/tour_rating_bar.dart';
+import 'package:tour_lister_app/widgets/rating_bar/package_rating_bar.dart';
 
 import '../../../constants/app_paddings.dart';
 import '../../../constants/svg_icons.dart';
 import '../../../widgets/app_input_field.dart';
-import '../../../widgets/containers/single_tour_container.dart';
+import '../../../widgets/containers/single_package_container.dart';
 
 class OngoingBookings extends StatelessWidget {
   final ManageBookingsController _bookingsController =
@@ -37,14 +37,14 @@ class OngoingBookings extends StatelessWidget {
             return Column(
               children: [
                 AppPadding.heightSpace30,
-                SingleTourContainer(
+                SinglePackageContainer(
                   eventName:
                       _bookingsController.eventsData.eventList[index].name!,
                   location:
                       _bookingsController.eventsData.eventList[index].location!,
                   picUrl: _bookingsController
                       .eventsData.eventList[index].coverImage!,
-                  ratingBar: const TourRatingBar(),
+                  ratingBar: const PackageRatingBar(),
                   bottomButton: Align(
                     alignment: Alignment.bottomRight,
                     child: RoundButton(
@@ -52,7 +52,12 @@ class OngoingBookings extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => UsersInTour(),
+                            builder: (context) => UsersInPackage(
+                              tourName: _bookingsController
+                                  .eventsData.eventList[index].name!,
+                              users: _bookingsController
+                                  .eventsData.eventList[index].users!,
+                            ),
                           ),
                         );
                       },

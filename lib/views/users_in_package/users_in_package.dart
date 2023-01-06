@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
-import 'package:tour_lister_app/views/users_in_tour/user_details.dart';
+import 'package:tour_lister_app/models/events/events_model.dart';
+import 'package:tour_lister_app/views/users_in_package/user_details.dart';
 import 'package:tour_lister_app/widgets/app_tile.dart';
 
 import '../../constants/dummy_data.dart';
@@ -10,11 +11,13 @@ import '../../constants/svg_icons.dart';
 import '../../widgets/app_cached_image.dart';
 import '../../widgets/app_text.dart';
 
-class UsersInTour extends StatelessWidget {
+class UsersInPackage extends StatelessWidget {
   String tourName;
-  UsersInTour({
+  List<Users> users;
+  UsersInPackage({
     Key? key,
     this.tourName = "Sight visit",
+    required this.users,
   }) : super(key: key);
 
   @override
@@ -40,7 +43,7 @@ class UsersInTour extends StatelessWidget {
                 ),
               ),
               title: AppText(
-                text: "Tour : $tourName",
+                text: "Package : $tourName",
                 fontWeight: FontWeight.w600,
                 fontSize: 23,
                 textcolor: Colors.black,
@@ -70,19 +73,26 @@ class UsersInTour extends StatelessWidget {
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 15,
+                    itemCount: users.length,
                     itemBuilder: (context, index) {
                       return AppTile(
+                        picUrl: users[index].pic!,
                         onView: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => UserDetails(
-                                  name: "Ahmad Ali",
-                                ),
-                              ));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UserDetails(
+                                name: users[index].name,
+                                dOB: users[index].dOB,
+                                email: users[index].email,
+                                gender: users[index].gender,
+                                phoneNo: users[index].phoneNo,
+                                profileUrl: users[index].pic,
+                              ),
+                            ),
+                          );
                         },
-                        titleText: "Ahmad Ali",
+                        titleText: users[index].name!,
                       );
                     },
                   ),
