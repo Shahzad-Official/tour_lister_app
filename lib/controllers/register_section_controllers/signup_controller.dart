@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:tour_lister_app/utils/app_snackbar.dart';
+
 import '../../constants/app_colors.dart';
+import '../../services/registration/signup_service.dart';
 import '../../views/main_screens/main_page.dart';
 
 class SignupController extends GetxController {
   TextEditingController email = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController name = TextEditingController();
-
+  String? docId;
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
   bool isObsecure = true;
+  String countryCode = "+92";
 
   bool _isEmailValid(String email) {
     String exp =
@@ -92,7 +96,20 @@ class SignupController extends GetxController {
         backgroundColor: AppColors.primarycolor,
       );
     } else {
-      Get.offAll(() => MainPage());
+      try {
+        await SignupService().registerUser(
+          userName: name.text,
+          email: email.text,
+          phoneNo: "$countryCode" "${phone.text}",
+          password: password.text,
+          confirmPassword: confirmPassword.text,
+        );
+        AppSnackbar.snackBar(
+            title: "Message", message: "Successfully Registered");
+        print(docId);
+      } catch (e) {
+        AppSnackbar.snackBar(title: "Messag", message: e.toString());
+      }
     }
   }
 }

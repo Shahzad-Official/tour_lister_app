@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
-import 'package:tour_lister_app/constants/app_paddings.dart';
-import 'package:tour_lister_app/constants/dummy_data.dart';
+
 import 'package:tour_lister_app/controllers/main_page_controller/main_page_controller.dart';
 import 'package:tour_lister_app/widgets/app_bottom_sheet.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
@@ -49,9 +50,27 @@ class MainPage extends StatelessWidget {
                               ? const SizedBox()
                               : Padding(
                                   padding: const EdgeInsets.only(top: 8.0),
-                                  child: AppCircularCachedImage(
-                                    picUrl: DummyData.profilePic,
-                                  ),
+                                  child: StreamBuilder(
+                                      stream: FirebaseFirestore.instance
+                                          .collection("listers")
+                                          .doc(FirebaseAuth
+                                              .instance.currentUser!.uid)
+                                          .get()
+                                          .asStream(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          return AppCircularCachedImage(
+                                            picUrl: snapshot.data!
+                                                .data()!['profile'],
+                                          );
+                                        } else {
+                                          return const Center(
+                                            child: CircularProgressIndicator(
+                                              color: AppColors.primarycolor,
+                                            ),
+                                          );
+                                        }
+                                      }),
                                 ),
                         ],
                       ),

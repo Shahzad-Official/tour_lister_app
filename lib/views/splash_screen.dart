@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
+import 'package:tour_lister_app/views/main_screens/main_page.dart';
 
 import '../widgets/app_text.dart';
 import 'register/get_started.dart';
@@ -18,7 +20,18 @@ class SplashScreen extends StatelessWidget {
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const GetStarted(),
+          builder: (context) {
+            return StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return MainPage();
+                } else {
+                  return const GetStarted();
+                }
+              },
+            );
+          },
         ),
       ),
     );

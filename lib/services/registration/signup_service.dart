@@ -1,0 +1,105 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tour_lister_app/constants/dummy_data.dart';
+
+import 'package:tour_lister_app/utils/app_snackbar.dart';
+
+import '../../views/main_screens/main_page.dart';
+import 'login_service.dart';
+
+class SignupService {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  registerUser(
+      {required String userName,
+      required String email,
+      required String phoneNo,
+      required String password,
+      required String confirmPassword}) async {
+    try {
+      UserCredential authCredentials = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      await FirebaseFirestore.instance
+          .collection("listers")
+          .doc(authCredentials.user!.uid)
+          .set({
+        "profile": DummyData.profilePic,
+        "userName": userName,
+        "dateOfBirth": "01-01-2000",
+        "token": authCredentials.user!.uid,
+        "email": email,
+        "phoneNo": phoneNo,
+      });
+
+      await LoginService.loginUser(email: email, password: password);
+    } catch (e) {
+      AppSnackbar.snackBar(title: "Error", message: e.toString());
+    }
+  }
+
+  googleSignUpService() async {
+    try {
+      var googleSignInAccount = await _googleSignIn.signIn();
+      var googleSignInAuthentication =
+          await googleSignInAccount!.authentication;
+      AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      var user = await _firebaseAuth.signInWithCredential(credential);
+      if (user.user != null) {
+        await FirebaseFirestore.instance
+            .collection("listers")
+            .doc(user.user!.uid)
+            .set({
+          "email": user.user!.email,
+          "token": user.user!.uid,
+          "userName": user.user!.displayName,
+          "profile": user.user!.photoURL,
+          "dateOfBirth": "10-10-2000",
+          "phoneNo": "+923000000000",
+        });
+        AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
+        Get.offAll(() => MainPage());
+      } else {
+        AppSnackbar.snackBar(title: "Message", message: "User Not available");
+      }
+    } catch (e) {
+      AppSnackbar.snackBar(title: "Error", message: e.toString());
+    }
+  }
+
+  faceBookSignUpService() async {
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
+      var user = await FirebaseAuth.instance
+          .signInWithCredential(facebookAuthCredential);
+      if (user.user != null) {
+        await FirebaseFirestore.instance
+            .collection("listers")
+            .doc(user.user!.uid)
+            .set({
+          "email": user.user!.email,
+          "token": user.user!.uid,
+          "userName": user.user!.displayName,
+          "profile": user.user!.photoURL,
+          "dateOfBirth": "10-10-2000",
+          "phoneNo": "+923000000000",
+        });
+        AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
+        Get.offAll(() => MainPage());
+      } else {
+        AppSnackbar.snackBar(title: "Message", message: "User Not available");
+      }
+    } catch (e) {
+      AppSnackbar.snackBar(title: "Error", message: e.toString());
+    }
+  }
+}

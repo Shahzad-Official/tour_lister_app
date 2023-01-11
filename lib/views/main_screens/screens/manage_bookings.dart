@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tour_lister_app/controllers/bookings_controllers/manage_bookings_controller.dart';
@@ -13,7 +16,9 @@ import '../../../widgets/app_text.dart';
 import '../../bookings/completed_bookings/completed_bookings.dart';
 
 class ManageBookings extends StatelessWidget {
-  const ManageBookings({Key? key}) : super(key: key);
+  const ManageBookings({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +49,25 @@ class ManageBookings extends StatelessWidget {
                           fontSize: 23,
                           textcolor: Colors.black,
                         ),
-                        AppCircularCachedImage(
-                          picUrl: DummyData.profilePic,
-                        ),
+                        StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection("listers")
+                                .doc(FirebaseAuth.instance.currentUser!.uid)
+                                .get()
+                                .asStream(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return AppCircularCachedImage(
+                                  picUrl: snapshot.data!.data()!['profile'],
+                                );
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.primarycolor,
+                                  ),
+                                );
+                              }
+                            }),
                       ],
                     ),
                     AppPadding.heightSpace30,

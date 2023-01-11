@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/widgets/app_text.dart';
 
 class AppButton extends StatelessWidget {
   String btnText;
+  bool isLoading;
   void Function() ontap;
   AppButton({
     Key? key,
     required this.btnText,
     required this.ontap,
+    this.isLoading = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ontap,
+      onTap: isLoading ? null : ontap,
       child: Container(
         height: 58,
         decoration: BoxDecoration(
@@ -34,12 +37,17 @@ class AppButton extends StatelessWidget {
           ],
         ),
         child: Center(
-          child: AppText(
-            text: btnText,
-            textcolor: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
+          child: isLoading
+              ? const SpinKitThreeBounce(
+                  color: Colors.white,
+                  size: 20,
+                )
+              : AppText(
+                  text: btnText,
+                  textcolor: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
         ),
       ),
     );

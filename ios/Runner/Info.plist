@@ -47,5 +47,20 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+	<key>CFBundleURLSchemes</key>
+	<array>
+		<string>fb877664539949992</string>
+	</array>
+	</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>877664539949992</string>
+	<key>FacebookClientToken</key>
+	<string>a7540fea3db172b67fa014c82c97194c</string>
+	<key>FacebookDisplayName</key>
+	<string>321GoLister</string>
 </dict>
 </plist>

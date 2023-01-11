@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
@@ -17,8 +18,26 @@ import '../../widgets/app_input_field.dart';
 import '../../widgets/app_text.dart';
 import 'package:image_picker/image_picker.dart';
 
-class EditProfile extends StatelessWidget {
-  EditProfile({super.key});
+class EditProfile extends StatefulWidget {
+  final String profile;
+  final String? email, phoneNo, dOB, name;
+  final bool? isVerified;
+  EditProfile({
+    super.key,
+    required this.profile,
+    this.phoneNo,
+    this.dOB,
+    this.email,
+    this.isVerified,
+    this.name,
+  });
+
+  @override
+  State<EditProfile> createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfile> {
+  bool isLoading = false;
   final EditProfileController _profileController =
       Get.put(EditProfileController());
 
@@ -74,7 +93,7 @@ class EditProfile extends StatelessWidget {
                           } else {
                             return AppCircularCachedImage(
                               picRadius: 60,
-                              picUrl: DummyData.profilePic,
+                              picUrl: widget.profile,
                             );
                           }
                         },
@@ -151,24 +170,23 @@ class EditProfile extends StatelessWidget {
                 height: 50,
               ),
               AppInputField(
-                hintText: "Pawan Kumar",
+                hintText: widget.name.toString(),
                 controller: _profileController.name,
               ),
               const SizedBox(
                 height: 20,
               ),
               AppInputField(
-                hintText: "abc@gmail.com",
+                hintText: widget.email.toString(),
                 controller: _profileController.email,
                 keyboardtype: TextInputType.emailAddress,
               ),
               const SizedBox(
                 height: 20,
               ),
-              AppInputField(
-                hintText: "+971455656",
+              PhoneField(
                 controller: _profileController.phone,
-                keyboardtype: TextInputType.number,
+                countryCode: _profileController.countryCode,
               ),
               const SizedBox(
                 height: 20,
@@ -178,11 +196,12 @@ class EditProfile extends StatelessWidget {
                 initState: (_) {},
                 builder: (_) {
                   return AppInputField(
+                    controller: _.date,
                     enabled: false,
                     onTap: () async {
                       await _.selectDate(context);
                     },
-                    hintText: _.date ?? _.currentDate(),
+                    hintText: widget.dOB.toString(),
                   );
                 },
               ),
@@ -190,14 +209,14 @@ class EditProfile extends StatelessWidget {
                 height: 70,
               ),
               AppButton(
+                isLoading: isLoading,
                 btnText: "Save",
-                ontap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MainPage(),
-                    ),
-                  );
+                ontap: () async {
+                  isLoading = true;
+                  setState(() {});
+                  await _profileController.isValidUser();
+                  isLoading = false;
+                  setState(() {});
                 },
               ),
             ],

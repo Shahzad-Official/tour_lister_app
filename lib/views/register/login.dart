@@ -5,15 +5,22 @@ import 'package:get/get.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/controllers/register_section_controllers/login_controller.dart';
+import 'package:tour_lister_app/services/registration/login_service.dart';
 import 'package:tour_lister_app/views/register/sign_up.dart';
 
 import '../../widgets/app_button.dart';
 import '../../widgets/app_input_field.dart';
 import '../../widgets/app_text.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     LoginController loginController = Get.put(LoginController());
@@ -38,7 +45,7 @@ class Login extends StatelessWidget {
               ),
               AppInputField(
                 controller: loginController.email,
-                hintText: "Enter Username",
+                hintText: "Enter Email",
               ),
               const SizedBox(
                 height: 15,
@@ -87,9 +94,14 @@ class Login extends StatelessWidget {
                 height: 25,
               ),
               AppButton(
+                isLoading: isLoading,
                 btnText: "LOGIN",
-                ontap: () {
-                  loginController.isValidUser();
+                ontap: () async {
+                  isLoading = true;
+                  setState(() {});
+                  await loginController.isValidUser();
+                  isLoading = false;
+                  setState(() {});
                 },
               ),
               const SizedBox(
@@ -126,13 +138,35 @@ class Login extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 80,
-                    child: Image.asset("assets/googleLogo.png"),
+                  InkWell(
+                    onTap: isLoading
+                        ? () {}
+                        : () async {
+                            isLoading = true;
+                            setState(() {});
+                            await LoginService().googleSignInService();
+                            isLoading = false;
+                            setState(() {});
+                          },
+                    child: SizedBox(
+                      height: 80,
+                      child: Image.asset("assets/googleLogo.png"),
+                    ),
                   ),
-                  SizedBox(
-                    height: 80,
-                    child: Image.asset("assets/fLogo.png"),
+                  InkWell(
+                    onTap: isLoading
+                        ? () {}
+                        : () async {
+                            isLoading = true;
+                            setState(() {});
+                            await LoginService().faceBookLoginService();
+                            isLoading = false;
+                            setState(() {});
+                          },
+                    child: SizedBox(
+                      height: 80,
+                      child: Image.asset("assets/fLogo.png"),
+                    ),
                   ),
                 ],
               ),

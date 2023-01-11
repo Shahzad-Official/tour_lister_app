@@ -5,17 +5,25 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/controllers/register_section_controllers/signup_controller.dart';
+import 'package:tour_lister_app/services/registration/signup_service.dart';
 import 'package:tour_lister_app/views/register/login.dart';
 
 import '../../constants/app_paddings.dart';
 import '../../constants/svg_icons.dart';
+import '../../services/registration/login_service.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_input_field.dart';
 import '../../widgets/app_text.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
 
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     SignupController signupController = Get.put(SignupController());
@@ -51,9 +59,9 @@ class SignUp extends StatelessWidget {
                 hintText: "Email",
               ),
               AppPadding.heightSpace30,
-              AppInputField(
+              PhoneField(
                 controller: signupController.phone,
-                hintText: "Phone Number",
+                countryCode: signupController.countryCode,
               ),
               AppPadding.heightSpace30,
               GetBuilder<SignupController>(
@@ -174,10 +182,51 @@ class SignUp extends StatelessWidget {
               ),
               AppPadding.heightSpace30,
               AppButton(
+                isLoading: isLoading,
                 btnText: "SIGN UP",
-                ontap: () {
-                  signupController.isValidUser();
+                ontap: () async {
+                  isLoading = true;
+                  setState(() {});
+                  await signupController.isValidUser();
+                  isLoading = false;
+                  setState(() {});
                 },
+              ),
+              AppPadding.heightSpace30,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: isLoading
+                        ? () {}
+                        : () async {
+                            isLoading = true;
+                            setState(() {});
+                            await SignupService().googleSignUpService();
+                            isLoading = false;
+                            setState(() {});
+                          },
+                    child: SizedBox(
+                      height: 80,
+                      child: Image.asset("assets/googleLogo.png"),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: isLoading
+                        ? () {}
+                        : () async {
+                            isLoading = true;
+                            setState(() {});
+                            await SignupService().faceBookSignUpService();
+                            isLoading = false;
+                            setState(() {});
+                          },
+                    child: SizedBox(
+                      height: 80,
+                      child: Image.asset("assets/fLogo.png"),
+                    ),
+                  ),
+                ],
               ),
               AppPadding.heightSpace30,
               Row(
@@ -207,6 +256,7 @@ class SignUp extends StatelessWidget {
                   ),
                 ],
               ),
+              AppPadding.heightSpace30,
             ],
           ),
         ),

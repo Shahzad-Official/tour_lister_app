@@ -1,10 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
+import 'package:tour_lister_app/services/profile_services/get_profile_data.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
 
 import '../../constants/app_colors.dart';
@@ -14,7 +14,7 @@ import 'edit_profile.dart';
 
 class ListerProfile extends StatelessWidget {
   final String profileUrl;
-  final String? email, phoneNo, dOB;
+  final String? email, phoneNo, dOB, name;
   final bool? isVerified;
   const ListerProfile({
     super.key,
@@ -23,6 +23,7 @@ class ListerProfile extends StatelessWidget {
     this.dOB,
     this.email,
     this.isVerified,
+    this.name,
   });
 
   @override
@@ -66,7 +67,7 @@ class ListerProfile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       AppText(
-                        text: "Hi! Pawan",
+                        text: "Hi! $name",
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                         textcolor: const Color(0xff232332),
@@ -165,7 +166,14 @@ class ListerProfile extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: ((context) => EditProfile()),
+                      builder: ((context) => EditProfile(
+                            profile: profileUrl,
+                            dOB: dOB,
+                            email: email,
+                            isVerified: isVerified,
+                            name: name,
+                            phoneNo: phoneNo,
+                          )),
                     ),
                   );
                 },

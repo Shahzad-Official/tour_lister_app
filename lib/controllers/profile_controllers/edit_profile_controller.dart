@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:tour_lister_app/services/profile_services/edit_profile_service.dart';
 
 import '../../constants/app_colors.dart';
 
@@ -11,7 +12,9 @@ class EditProfileController extends GetxController {
   TextEditingController email = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController name = TextEditingController();
+  TextEditingController date = TextEditingController();
   String gender = "Male";
+  String countryCode = "+92";
   List<String> genders = [
     "Male",
     "Female",
@@ -21,8 +24,6 @@ class EditProfileController extends GetxController {
     gender = value;
     update();
   }
-
-  String? date;
 
   currentDate() {
     var date = DateTime.now();
@@ -35,10 +36,10 @@ class EditProfileController extends GetxController {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1990),
-      lastDate: DateTime(2023),
+      lastDate: DateTime(2024),
     );
     if (selectedDate != null) {
-      date = DateFormat("dd-MM-yyyy").format(selectedDate);
+      date.text = DateFormat("dd-MM-yyyy").format(selectedDate);
     }
     update();
     return date;
@@ -90,6 +91,24 @@ class EditProfileController extends GetxController {
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
-    } else {}
+    } else {
+      if (image != null) {
+        await EditProfileService.updateProfile(
+          newEmail: email.text,
+          newPhoneNo: "$countryCode" "${phone.text}",
+          newUserName: name.text,
+          dob: date.text,
+          file: image!,
+        );
+      } else {
+        await EditProfileService.updateProfile(
+          newEmail: email.text,
+          newPhoneNo: "$countryCode" "${phone.text}",
+          newUserName: name.text,
+          dob: date.text,
+        );
+      }
+      update();
+    }
   }
 }

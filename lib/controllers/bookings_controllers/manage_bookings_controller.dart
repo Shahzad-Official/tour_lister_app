@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:tour_lister_app/controllers/main_page_controller/main_page_controller.dart';
 
 import '../../services/get_events_data.dart';
 

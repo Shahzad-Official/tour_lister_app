@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 
 import 'app_text.dart';
@@ -133,10 +134,55 @@ class DropdownContainer extends StatelessWidget {
               .toList(),
           onChanged: onValueChange,
           alignment: Alignment.center,
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_drop_down,
             size: 30,
             color: AppColors.primarycolor,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PhoneField extends StatelessWidget {
+  final TextEditingController controller;
+  String countryCode;
+  PhoneField({
+    Key? key,
+    required this.controller,
+    required this.countryCode,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            offset: const Offset(0, 2),
+            color: Colors.grey.withOpacity(0.20),
+            blurRadius: 8,
+          ),
+        ],
+      ),
+      child: IntlPhoneField(
+        showDropdownIcon: false,
+        controller: controller,
+        initialCountryCode: "PK",
+        onChanged: (value) {
+          countryCode = value.countryCode;
+        },
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: const BorderSide(color: Colors.transparent),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: const BorderSide(color: Colors.transparent),
           ),
         ),
       ),

@@ -1,12 +1,23 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tour_lister_app/views/main_screens/main_page.dart';
+import 'package:tour_lister_app/views/register/get_started.dart';
 import 'package:tour_lister_app/views/splash_screen.dart';
 
 import 'constants/app_colors.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    runApp(const MyApp());
+  } catch (e) {
+    debugPrint(e.toString());
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -20,9 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: AppColors().getMaterialColor(),
       ),
-      home: MainPage(
-        currentIndex: 3,
-      ),
+      home: const SplashScreen(),
     );
   }
 }

@@ -15,9 +15,9 @@ class PackageRatingBar extends StatelessWidget {
       children: [
         AppPadding.heightSpace15,
         RatingBar(
+          ignoreGestures: true,
           itemSize: 15,
           initialRating: 2.1,
-          allowHalfRating: true,
           itemCount: 4,
           ratingWidget: RatingWidget(
             full: Container(

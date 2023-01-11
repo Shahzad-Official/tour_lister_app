@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:tour_lister_app/constants/dummy_data.dart';
 
 import '../constants/app_colors.dart';
 
@@ -26,7 +27,7 @@ class AppCircularCachedImage extends StatelessWidget {
         return Center(
           child: CircularProgressIndicator(
             value: progress.progress,
-            color: Colors.white,
+            color: AppColors.primarycolor,
           ),
         );
       },

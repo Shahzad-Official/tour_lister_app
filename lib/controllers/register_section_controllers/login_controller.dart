@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tour_lister_app/views/main_screens/main_page.dart';
 
 import '../../constants/app_colors.dart';
+import '../../services/registration/login_service.dart';
 
 class LoginController extends GetxController {
   TextEditingController email = TextEditingController();
@@ -54,7 +54,7 @@ class LoginController extends GetxController {
         backgroundColor: AppColors.primarycolor,
       );
     } else {
-      Get.off(() => MainPage());
+      await LoginService.loginUser(email: email.text, password: password.text);
     }
   }
 
