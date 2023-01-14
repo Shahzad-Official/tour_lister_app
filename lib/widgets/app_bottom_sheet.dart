@@ -90,7 +90,7 @@ class AppBottomSheet extends StatelessWidget {
                       : AppColors.headTextColor,
                 ),
                 AppText(
-                  text: "Mange Bookings",
+                  text: "Manage Bookings",
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
                   textcolor: currentIndex == 2

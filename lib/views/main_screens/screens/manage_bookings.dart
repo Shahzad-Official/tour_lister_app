@@ -73,9 +73,10 @@ class ManageBookings extends StatelessWidget {
                     AppPadding.heightSpace30,
                     AppPadding.heightSpace10,
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         RoundButton(
+                          width: MediaQuery.of(context).size.width * 0.4,
                           onTap: () {
                             controller.changeIndex(0);
                           },
@@ -86,9 +87,10 @@ class ManageBookings extends StatelessWidget {
                           textColor: controller.currentIndex == 0
                               ? AppColors.backgroundcolor
                               : AppColors.primarycolor,
-                          fontSize: 15,
+                          fontSize: 13,
                         ),
                         RoundButton(
+                          width: MediaQuery.of(context).size.width * 0.42,
                           onTap: () {
                             controller.changeIndex(1);
                           },
@@ -99,7 +101,7 @@ class ManageBookings extends StatelessWidget {
                           textColor: controller.currentIndex == 1
                               ? AppColors.backgroundcolor
                               : AppColors.primarycolor,
-                          fontSize: 15,
+                          fontSize: 13,
                         ),
                       ],
                     ),

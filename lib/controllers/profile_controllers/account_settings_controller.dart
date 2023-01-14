@@ -1,12 +1,14 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-
-import '../main_page_controller/main_page_controller.dart';
+import 'package:tour_lister_app/services/profile_services/account_settings_services.dart';
 
 class AccountSettingsController extends GetxController {
   String? fileName;
+  bool isLoading = false;
   getProfile() async {
     var res = await FirebaseFirestore.instance
         .collection("listers")
@@ -17,6 +19,8 @@ class AccountSettingsController extends GetxController {
   }
 
   uploadCertificate() async {
+    isLoading = true;
+    update();
     var result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf', 'docx', 'doc'],
@@ -24,6 +28,13 @@ class AccountSettingsController extends GetxController {
     if (result != null) {
       fileName = result.files.first.name;
 
+      await AccountSettingsServices().uploadCertificateService(
+        certificate: File(result.files.first.path!),
+      );
+      isLoading = false;
+      update();
+    } else {
+      isLoading = false;
       update();
     }
   }

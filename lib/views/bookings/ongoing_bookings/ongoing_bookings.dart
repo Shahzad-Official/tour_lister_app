@@ -48,6 +48,7 @@ class OngoingBookings extends StatelessWidget {
                   bottomButton: Align(
                     alignment: Alignment.bottomRight,
                     child: RoundButton(
+                      width: MediaQuery.of(context).size.width * 0.2,
                       onTap: () {
                         Navigator.push(
                           context,

@@ -20,11 +20,13 @@ class EditProfileService {
       String? url;
       if (file != null) {
         await FirebaseStorage.instance
-            .ref(user.uid)
+            .ref("listers")
+            .child(user.uid)
             .child("profile")
             .putFile(file);
         url = await FirebaseStorage.instance
-            .ref(user.uid)
+            .ref("listers")
+            .child(user.uid)
             .child("profile")
             .getDownloadURL();
 
@@ -57,9 +59,9 @@ class EditProfileService {
       }
 
       await FirebaseAuth.instance.currentUser!.updateEmail(newEmail);
-      Get.offAll(() => MainPage());
       AppSnackbar.snackBar(
           title: "Message", message: "Profile Updated SuccessFully");
+      Get.offAll(() => MainPage());
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }

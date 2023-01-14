@@ -1,37 +1,41 @@
 class ProfileModel {
   String? profile;
-  String? dateOfBirth;
+  String? dob;
   String? userName;
   String? email;
   String? phoneNo;
   String? token;
+  bool? isVerified;
 
   ProfileModel({
     this.profile,
-    this.dateOfBirth,
+    this.dob,
     this.userName,
     this.email,
     this.phoneNo,
     this.token,
+    this.isVerified,
   });
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
     profile = json['profile'];
-    dateOfBirth = json['dateOfBirth'];
+    dob = json['dob'];
     userName = json['userName'];
     email = json['email'];
     phoneNo = json['phoneNo'];
     token = json['token'];
+    isVerified = json['isVerified'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
     data['profile'] = profile;
-    data['dateOfBirth'] = dateOfBirth;
+    data['dob'] = dob;
     data['userName'] = userName;
     data['email'] = email;
     data['phoneNo'] = phoneNo;
     data['token'] = token;
+    data['isVerified'] = isVerified;
     return data;
   }
 }

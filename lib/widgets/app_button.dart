@@ -57,23 +57,25 @@ class AppButton extends StatelessWidget {
 class RoundButton extends StatelessWidget {
   double? width;
   String text;
-  double? fontSize;
+  double fontSize;
   Color? textColor, buttonColor;
   void Function()? onTap;
+  bool isLoading;
   RoundButton({
     Key? key,
     this.width,
     required this.text,
     this.onTap,
-    this.fontSize,
+    this.fontSize = 12,
     this.textColor,
     this.buttonColor,
+    this.isLoading = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: isLoading ? null : onTap,
       child: Container(
         width: width,
         decoration: BoxDecoration(
@@ -90,11 +92,18 @@ class RoundButton extends StatelessWidget {
             top: 3,
             bottom: 5,
           ),
-          child: AppText(
-            text: text,
-            fontWeight: FontWeight.w700,
-            fontSize: fontSize ?? 12,
-            textcolor: textColor ?? Colors.white,
+          child: Center(
+            child: isLoading
+                ? SpinKitThreeBounce(
+                    color: textColor ?? Colors.white,
+                    size: fontSize - 2,
+                  )
+                : AppText(
+                    text: text,
+                    fontWeight: FontWeight.w700,
+                    fontSize: fontSize,
+                    textcolor: textColor ?? Colors.white,
+                  ),
           ),
         ),
       ),

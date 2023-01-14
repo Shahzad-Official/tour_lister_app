@@ -44,12 +44,14 @@ class CompletedBookings extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       RoundButton(
+                        fontSize: 10,
                         text: "Duplicate",
                       ),
                       const SizedBox(
                         width: 10,
                       ),
                       RoundButton(
+                        fontSize: 10,
                         text: "Relist Package",
                       ),
                     ],

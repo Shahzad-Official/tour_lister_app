@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/controllers/package_controllers/create_package_controller.dart';
+import 'package:tour_lister_app/services/location_services/get_location_service.dart';
 import 'package:tour_lister_app/widgets/app_button.dart';
 import 'package:tour_lister_app/widgets/app_input_field.dart';
 import 'package:tour_lister_app/widgets/app_text.dart';
 
 class CreatePackage extends StatelessWidget {
-  const CreatePackage({Key? key}) : super(key: key);
+  final GetLocationService _locationService = Get.put(GetLocationService());
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,10 @@ class CreatePackage extends StatelessWidget {
                 ),
                 AppPadding.heightSpace30,
                 AppInputField(
+                  enabled: false,
+                  onTap: () async {
+                    await _.determineLocation();
+                  },
                   controller: _.location,
                   hintText: "Location",
                   contentPadding: const EdgeInsets.only(
@@ -481,12 +487,14 @@ class CreatePackage extends StatelessWidget {
                   maxLength: 200,
                   maxLines: 10,
                   keyboardtype: TextInputType.multiline,
+                  textInputAction: TextInputAction.done,
                 ),
                 AppPadding.heightSpace30,
                 AppButton(
+                  isLoading: _.isLoading,
                   btnText: "Create",
-                  ontap: () {
-                    _.isValidInfo(context);
+                  ontap: () async {
+                    await _.isValidInfo(context);
                   },
                 )
               ],

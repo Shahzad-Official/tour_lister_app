@@ -28,10 +28,14 @@ class SignupService {
           .set({
         "profile": DummyData.profilePic,
         "userName": userName,
-        "dateOfBirth": "01-01-2000",
+        "dob": "01-01-2000",
         "token": authCredentials.user!.uid,
         "email": email,
         "phoneNo": phoneNo,
+        "isVerified": false,
+        "emailVerified": false,
+        "created_on": DateTime.now(),
+        "disabled": false,
       });
 
       await LoginService.loginUser(email: email, password: password);
@@ -60,8 +64,12 @@ class SignupService {
           "token": user.user!.uid,
           "userName": user.user!.displayName,
           "profile": user.user!.photoURL,
-          "dateOfBirth": "10-10-2000",
+          "dob": "10-10-2000",
           "phoneNo": "+923000000000",
+          "isVerified": false,
+          "emailVerified": true,
+          "created_on": DateTime.now(),
+          "disabled": false,
         });
         AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
         Get.offAll(() => MainPage());
@@ -90,8 +98,12 @@ class SignupService {
           "token": user.user!.uid,
           "userName": user.user!.displayName,
           "profile": user.user!.photoURL,
-          "dateOfBirth": "10-10-2000",
+          "dob": "10-10-2000",
           "phoneNo": "+923000000000",
+          "isVerified": false,
+          "emailVerified": true,
+          "created_on": DateTime.now(),
+          "disabled": false,
         });
         AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
         Get.offAll(() => MainPage());

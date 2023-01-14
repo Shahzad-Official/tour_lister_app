@@ -6,12 +6,17 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
+import 'package:tour_lister_app/services/location_services/get_location_service.dart';
+import 'package:tour_lister_app/services/package_services/create_package_service.dart';
 import 'package:tour_lister_app/utils/formated_datetime.dart';
 import 'package:tour_lister_app/views/main_screens/main_page.dart';
+import 'package:tour_lister_app/views/main_screens/screens/create_package.dart';
 
 import '../../constants/app_colors.dart';
 
 class CreatePackageController extends GetxController {
+  final CreatePackageService _createPackageService = CreatePackageService();
+  final GetLocationService _locationService = GetLocationService();
   TextEditingController packageName = TextEditingController();
   TextEditingController location = TextEditingController();
   TextEditingController cuttoffTime = TextEditingController();
@@ -26,6 +31,7 @@ class CreatePackageController extends GetxController {
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
   TextEditingController extraInfoController = TextEditingController();
+  File? termsAndConditionFile;
   int toursStayDays = 0;
   int dangerRating = 1;
   DateTime? startDate;
@@ -46,7 +52,44 @@ class CreatePackageController extends GetxController {
     "Couples",
     "Family",
   ];
-  isValidInfo(context) {
+
+  File? _otherImage;
+  pickOtherImage() async {
+    var result =
+        await ImagePicker.platform.getImage(source: ImageSource.gallery);
+    if (result == null) return;
+
+    _otherImage = File(result.path);
+
+    otherImageController.text = "Uploaded Successfully";
+    update();
+  }
+
+  File? _coverImage;
+  pickCoverImage() async {
+    var result =
+        await ImagePicker.platform.getImage(source: ImageSource.gallery);
+    if (result == null) return;
+
+    _coverImage = File(result.path);
+
+    coverImageController.text = "Uploaded Successfully";
+    update();
+  }
+
+  bool isLoading = false;
+  determineLocation() async {
+    isLoading = true;
+    location.text = "loading...";
+    update();
+    await _locationService.determinePosition();
+    isLoading = false;
+    location.text = _locationService.address!;
+    update();
+  }
+
+  isValidInfo(context) async {
+    noOfBookigs.text = selectedPersons;
     if (packageName.text.isEmpty) {
       Get.snackbar(
         "Error",
@@ -146,19 +189,32 @@ class CreatePackageController extends GetxController {
         backgroundColor: AppColors.primarycolor,
       );
     } else {
-      Get.snackbar(
-        "Message",
-        "Package has been created successfully",
-        colorText: Colors.white,
-        backgroundColor: AppColors.primarycolor,
+      isLoading = true;
+      update();
+      await _createPackageService.createPackage(
+        lattitude: _locationService.position!.latitude.toString(),
+        longitude: _locationService.position!.longitude.toString(),
+        packageName: packageName.text,
+        startTime: startTimeController.text,
+        endTime: endTimeController.text,
+        startDate: startDateController.text,
+        endDate: endDateController.text,
+        startPrice: startPrice.text,
+        endPrice: endPrice.text,
+        cuttOffTime: cuttoffTime.text,
+        otherImage: _otherImage!,
+        coverImage: _coverImage!,
+        noOfPersonsInPackage: noOfBookigs.text,
+        dangerRating: dangerRating.toString(),
+        ageSuitability: initialAge.toString(),
+        typeOfTour: selectedCat,
+        extraInfo: extraInfoController.text,
+        foodServed:
+            "${Get.find<FoodServicesController>().breakFastServedTimes} BreakFast  ${Get.find<FoodServicesController>().lunchServedTimes} Lunch  ${Get.find<FoodServicesController>().dinnerServedTimes} Dinner  ",
+        termsAndCondition: termsAndConditionFile!,
       );
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MainPage(
-              currentIndex: 1,
-            ),
-          ));
+      isLoading = false;
+      update();
     }
   }
 
@@ -270,30 +326,6 @@ class CreatePackageController extends GetxController {
     }
   }
 
-  File? _otherImage;
-  pickOtherImage() async {
-    var result =
-        await ImagePicker.platform.getImage(source: ImageSource.gallery);
-    if (result == null) return;
-
-    _otherImage = File(result.path);
-
-    otherImageController.text = "Uploaded Successfully";
-    update();
-  }
-
-  File? _coverImage;
-  pickCoverImage() async {
-    var result =
-        await ImagePicker.platform.getImage(source: ImageSource.gallery);
-    if (result == null) return;
-
-    _coverImage = File(result.path);
-
-    coverImageController.text = "Uploaded Successfully";
-    update();
-  }
-
   pickPDFFile() async {
     var result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -301,6 +333,7 @@ class CreatePackageController extends GetxController {
     );
     if (result != null) {
       termsAndConditions.text = result.files.first.name;
+      termsAndConditionFile = File(result.files.first.path!);
     } else {
       debugPrint("Error: File not Picked....");
     }
@@ -324,12 +357,16 @@ class CreatePackageController extends GetxController {
       noOfBookigs.text = "1";
     } else if (selectedCat == "Couples") {
       noOfBookigs.text = "2";
+    } else {
+      noOfBookigs.text = selectedPersons;
     }
     update();
   }
 
   changeNoOfSeats(value) {
     selectedPersons = value;
+    noOfBookigs.text = selectedPersons;
+
     update();
   }
 }

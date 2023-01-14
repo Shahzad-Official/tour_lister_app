@@ -1,16 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:tour_lister_app/services/registration/signup_service.dart';
 import 'package:tour_lister_app/utils/app_snackbar.dart';
 import 'package:tour_lister_app/views/main_screens/main_page.dart';
+import 'package:tour_lister_app/views/register/sign_up.dart';
 
 class LoginService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  doesContainId(uId) async {
+    var lis = await FirebaseFirestore.instance.collection("listers").get();
+    var res = lis.docs.any((element) => element.id == uId);
+    print(res);
+    if (res) {
+      AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
+      Get.offAll(() => MainPage());
+    } else {
+      AppSnackbar.snackBar(
+          title: "Message", message: "User not available! SignUp first");
+      Get.offAll(() => const SignUp());
+    }
+    return res;
+  }
+
   static loginUser({
     required String email,
     required String password,
@@ -35,9 +49,9 @@ class LoginService {
         idToken: googleSignInAuthentication.idToken,
       );
 
-      await _firebaseAuth.signInWithCredential(credential);
-      AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
-      Get.offAll(() => MainPage());
+      var user = await _firebaseAuth.signInWithCredential(credential);
+      var userId = user.user!.uid;
+      doesContainId(userId);
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }
@@ -49,10 +63,10 @@ class LoginService {
 
       final OAuthCredential facebookAuthCredential =
           FacebookAuthProvider.credential(loginResult.accessToken!.token);
-      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-
-      AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
-      Get.offAll(() => MainPage());
+      var user =
+          await _firebaseAuth.signInWithCredential(facebookAuthCredential);
+      var userId = user.user!.uid;
+      doesContainId(userId);
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }

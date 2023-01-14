@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
@@ -42,6 +43,11 @@ class ListerAccount extends StatelessWidget {
     return FutureBuilder<ProfileModel>(
         future: GetProfileData().getProfileData(),
         builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            isVerified = snapshot.data!.isVerified;
+          } else {
+            isVerified = false;
+          }
           return Container(
             padding: AppPadding.defaultPadding,
             child: GetBuilder<AccountSettingsController>(
@@ -122,7 +128,7 @@ class ListerAccount extends StatelessWidget {
                                     MaterialPageRoute(
                                       builder: ((context) => ListerProfile(
                                             name: snapshot.data!.userName,
-                                            dOB: snapshot.data!.dateOfBirth,
+                                            dOB: snapshot.data!.dob,
                                             email: snapshot.data!.email,
                                             phoneNo: snapshot.data!.phoneNo,
                                             profileUrl: snapshot.data!.profile!,
@@ -160,8 +166,9 @@ class ListerAccount extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ListerProfile(
+                                  isVerified: snapshot.data!.isVerified,
                                   name: snapshot.data!.userName,
-                                  dOB: snapshot.data!.dateOfBirth,
+                                  dOB: snapshot.data!.dob,
                                   email: snapshot.data!.email,
                                   phoneNo: snapshot.data!.phoneNo,
                                   profileUrl: snapshot.data!.profile!,
@@ -175,17 +182,6 @@ class ListerAccount extends StatelessWidget {
                           textcolor: const Color(0xff232332),
                         ),
                       ),
-                      // const Divider(),
-                      // ListTile(
-                      //   contentPadding: EdgeInsets.zero,
-                      //   onTap: () {},
-                      //   leading: AppText(
-                      //     text: "My Bookings",
-                      //     fontWeight: FontWeight.w400,
-                      //     fontSize: 18,
-                      //     textcolor: const Color(0xff232332),
-                      //   ),
-                      // ),
                       const Divider(),
                       ListTile(
                         contentPadding: EdgeInsets.zero,
@@ -247,6 +243,12 @@ class ListerAccount extends StatelessWidget {
                           textcolor: const Color(0xff232332),
                         ),
                       ),
+                      controller.isLoading
+                          ? const SpinKitThreeBounce(
+                              color: AppColors.primarycolor,
+                              size: 15,
+                            )
+                          : const SizedBox(),
                       controller.fileName != null
                           ? Padding(
                               padding: const EdgeInsets.only(top: 18.0),

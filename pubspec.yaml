@@ -64,7 +64,9 @@ dependencies:
   #Social_Login
   google_sign_in: any
   flutter_facebook_auth: ^5.0.7
-  
+  #Location
+  geolocator: ^9.0.2
+  geocoding: any
 
 dev_dependencies:
   flutter_test:

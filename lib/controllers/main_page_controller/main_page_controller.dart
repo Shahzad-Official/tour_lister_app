@@ -13,7 +13,7 @@ class MainPageController extends GetxController {
   int currentIndex = 0;
 
   List<Widget> mainScreens = [
-    const CreatePackage(),
+    CreatePackage(),
     const ManagePackages(),
     const ManageBookings(),
     ListerAccount(),
