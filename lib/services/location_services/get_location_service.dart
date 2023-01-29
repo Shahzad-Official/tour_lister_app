@@ -31,6 +31,7 @@ class GetLocationService extends GetxController {
         mapType: MapType.normal,
         requiredGPS: true,
         automaticallyAnimateToCurrentLocation: true,
+        initialCenter: const LatLng(30.0736, 71.1805),
         desiredAccuracy: LocationAccuracy.best,
         title: "Pick your location",
         layersButtonEnabled: true,

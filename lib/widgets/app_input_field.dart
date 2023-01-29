@@ -6,19 +6,20 @@ import 'package:tour_lister_app/constants/app_colors.dart';
 import 'app_text.dart';
 
 class AppInputField extends StatelessWidget {
-  String hintText;
-  bool obscureText;
-  TextEditingController? controller;
-  TextInputType? keyboardtype;
-  Widget? suffixIcon, prefixIcon;
-  void Function()? onTap;
-  EdgeInsetsGeometry contentPadding;
-  bool? enabled;
-  double? width, height;
-  int? maxLines;
-  TextInputAction textInputAction;
-  int? maxLength;
-  AppInputField({
+  final String hintText;
+  final bool obscureText;
+  final TextEditingController? controller;
+  final TextInputType? keyboardtype;
+  final Widget? suffixIcon, prefixIcon;
+  final void Function()? onTap;
+  final EdgeInsetsGeometry contentPadding;
+  final bool? enabled;
+  final double? width, height;
+  final int? maxLines;
+  final TextInputAction textInputAction;
+  final int? maxLength;
+  final void Function(String query)? onChanged;
+  const AppInputField({
     Key? key,
     required this.hintText,
     this.controller,
@@ -34,6 +35,7 @@ class AppInputField extends StatelessWidget {
     this.maxLines = 1,
     this.textInputAction = TextInputAction.next,
     this.maxLength,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -55,6 +57,7 @@ class AppInputField extends StatelessWidget {
           ],
         ),
         child: TextFormField(
+          onChanged: onChanged,
           maxLength: maxLength,
           maxLines: maxLines,
           textInputAction: textInputAction,

@@ -1,13 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:tour_lister_app/constants/dummy_data.dart';
 
 import '../constants/app_colors.dart';
 
 class AppCircularCachedImage extends StatelessWidget {
-  String picUrl;
-  double? picRadius;
-  AppCircularCachedImage({
+  final String picUrl;
+  final double? picRadius;
+  const AppCircularCachedImage({
     Key? key,
     required this.picUrl,
     this.picRadius = 35,
@@ -36,9 +35,9 @@ class AppCircularCachedImage extends StatelessWidget {
 }
 
 class AppCachedImage extends StatelessWidget {
-  String picUrl;
-  double borderRadius;
-  AppCachedImage({
+  final String picUrl;
+  final double borderRadius;
+  const AppCachedImage({
     Key? key,
     required this.picUrl,
     this.borderRadius = 15,
@@ -51,7 +50,7 @@ class AppCachedImage extends StatelessWidget {
       imageBuilder: (context, imageProvider) {
         return Container(
           decoration: BoxDecoration(
-            color: AppColors.primarycolor,
+            color: AppColors.primarycolor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(borderRadius),
             image: DecorationImage(
               fit: BoxFit.cover,

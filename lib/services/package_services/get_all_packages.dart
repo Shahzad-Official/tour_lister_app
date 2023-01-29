@@ -3,13 +3,26 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tour_lister_app/models/packages/packages_model.dart';
 
 class GetAllPackages {
+  List<PackagesModel> allPackages = [];
+  Future<List<PackagesModel>> getAllPackages() async {
+    allPackages.clear();
+    await FirebaseFirestore.instance
+        .collection("packages")
+        .where("listerId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .orderBy("created_on")
+        .get()
+        .then((value) {
+      for (var i in value.docs) {
+        allPackages.add(PackagesModel.fromJson(i.data()));
+      }
+    });
+    return allPackages;
+  }
+
   Stream<List<PackagesModel>> getPackagesList() {
-    return FirebaseFirestore.instance
+    var list = FirebaseFirestore.instance
         .collection('packages')
         .where("listerId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-        // .orderBy(
-        //   "created_on",
-        // )
         .snapshots()
         .map(
           (snapShot) => snapShot.docs
@@ -20,5 +33,6 @@ class GetAllPackages {
               )
               .toList(),
         );
+    return list;
   }
 }

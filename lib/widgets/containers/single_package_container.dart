@@ -56,7 +56,7 @@ class SinglePackageContainer extends StatelessWidget {
             child: Container(
               width: 110,
               decoration: BoxDecoration(
-                color: AppColors.primarycolor,
+                color: AppColors.primarycolor.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: AppCachedImage(
