@@ -61,12 +61,16 @@ dependencies:
   firebase_auth: ^4.2.5
   firebase_storage: ^11.0.10
   cloud_firestore: ^4.3.1
+  #Local_Database
+  shared_preferences: any
+  
   #Social_Login
   google_sign_in: any
   flutter_facebook_auth: ^5.0.7
   #Location
   geolocator: ^9.0.2
   geocoding: any
+  map_address_picker: ^0.3.5
 
 dev_dependencies:
   flutter_test:

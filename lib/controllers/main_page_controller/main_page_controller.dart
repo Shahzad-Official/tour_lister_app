@@ -1,8 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:tour_lister_app/constants/dummy_data.dart';
 
 import '../../views/lister_profile/lister_account.dart';
 import '../../views/main_screens/screens/create_package.dart';
@@ -13,8 +10,8 @@ class MainPageController extends GetxController {
   int currentIndex = 0;
 
   List<Widget> mainScreens = [
-    CreatePackage(),
-    const ManagePackages(),
+    const CreatePackage(),
+    ManagePackages(),
     const ManageBookings(),
     ListerAccount(),
   ];

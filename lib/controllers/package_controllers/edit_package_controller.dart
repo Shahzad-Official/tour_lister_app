@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -18,14 +17,13 @@ class EditPackageController extends GetxController {
     var selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1990),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2025),
     );
     if (selectedDate != null) {
       startDate = selectedDate;
       var formatedDate = DateFormat("dd MMM").format(selectedDate);
       startDateController.text = formatedDate;
-      selectStartTime(context);
     }
     update();
   }
@@ -33,15 +31,14 @@ class EditPackageController extends GetxController {
   selectEndDate(context) async {
     var selectedDate = await showDatePicker(
       context: context,
-      initialDate: startDate!,
-      firstDate: DateTime(1990),
+      initialDate: DateTime.now(),
+      firstDate: startDate!.add(const Duration(days: 1)),
       lastDate: DateTime(2025),
     );
     if (selectedDate != null) {
       endDate = selectedDate;
       var formatedDate = DateFormat("dd MMM").format(selectedDate);
       endDateController.text = formatedDate;
-      selectEndTime(context);
     }
     update();
   }

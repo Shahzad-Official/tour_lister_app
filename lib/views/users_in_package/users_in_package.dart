@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
-import 'package:tour_lister_app/models/events/events_model.dart';
+import 'package:tour_lister_app/models/packages/packages_model.dart';
 import 'package:tour_lister_app/views/users_in_package/user_details.dart';
 import 'package:tour_lister_app/widgets/app_tile.dart';
 

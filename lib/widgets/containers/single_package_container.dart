@@ -43,7 +43,7 @@ class SinglePackageContainer extends StatelessWidget {
             color: AppColors.primarycolor.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 1.5,
-            offset: Offset(5, 0),
+            offset: const Offset(5, 0),
           ),
         ],
       ),
@@ -81,10 +81,12 @@ class SinglePackageContainer extends StatelessWidget {
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            AppText(
-                              text: eventName,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
+                            Expanded(
+                              child: AppText(
+                                text: eventName,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                              ),
                             ),
                             isLive
                                 ? Row(
@@ -133,10 +135,13 @@ class SinglePackageContainer extends StatelessWidget {
                       const SizedBox(
                         width: 5,
                       ),
-                      AppText(
-                        text: location,
-                        fontWeight: FontWeight.w600,
-                        textcolor: AppColors.headTextColor,
+                      Expanded(
+                        child: AppText(
+                          text: location,
+                          fontWeight: FontWeight.w600,
+                          textcolor: AppColors.headTextColor,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),

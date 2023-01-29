@@ -17,19 +17,13 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -52,6 +46,17 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyC0AwA_VAuN0aFggv8r0lVmBeWMHvn4zL4',
+    appId: '1:533343553586:web:c28a8eee66d9734909142b',
+    messagingSenderId: '533343553586',
+    projectId: 'go-17dd4',
+    authDomain: 'go-17dd4.firebaseapp.com',
+    databaseURL: 'https://go-17dd4-default-rtdb.firebaseio.com',
+    storageBucket: 'go-17dd4.appspot.com',
+    measurementId: 'G-3JESK9XE4M',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBR5Kl1RScb47IZqAsfykc_2QHiD9o649o',
     appId: '1:533343553586:android:27856f614730fd0a09142b',
@@ -59,5 +64,17 @@ class DefaultFirebaseOptions {
     projectId: 'go-17dd4',
     databaseURL: 'https://go-17dd4-default-rtdb.firebaseio.com',
     storageBucket: 'go-17dd4.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyCS12dEwUJ1r6hQGDraZIfmyzxSas7W3dI',
+    appId: '1:533343553586:ios:2c03150cb82e2c3409142b',
+    messagingSenderId: '533343553586',
+    projectId: 'go-17dd4',
+    databaseURL: 'https://go-17dd4-default-rtdb.firebaseio.com',
+    storageBucket: 'go-17dd4.appspot.com',
+    androidClientId: '533343553586-enqtjup1u4l5e5mj3u5pl5e0jh7dsobh.apps.googleusercontent.com',
+    iosClientId: '533343553586-o0v5e8e6n3bd00qteat5pl032vm3ktla.apps.googleusercontent.com',
+    iosBundleId: 'com.example.tourListerApp',
   );
 }

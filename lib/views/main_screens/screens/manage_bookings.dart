@@ -11,15 +11,23 @@ import 'package:tour_lister_app/widgets/app_button.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_paddings.dart';
 import '../../../constants/dummy_data.dart';
+import '../../../services/package_services/get_all_packages.dart';
 import '../../../widgets/app_cached_image.dart';
 import '../../../widgets/app_text.dart';
 import '../../bookings/completed_bookings/completed_bookings.dart';
 
-class ManageBookings extends StatelessWidget {
+class ManageBookings extends StatefulWidget {
   const ManageBookings({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<ManageBookings> createState() => _ManageBookingsState();
+}
+
+class _ManageBookingsState extends State<ManageBookings> {
+  TextEditingController textEditingController = TextEditingController();
+  GetAllPackages getAllPackages = GetAllPackages();
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ManageBookingsController>(
@@ -114,6 +122,10 @@ class ManageBookings extends StatelessWidget {
                 padding: AppPadding.defaultPadding,
                 child: Column(
                   children: [
+                    TextFormField(
+                      controller: textEditingController,
+                      maxLines: 30,
+                    ),
                     AppPadding.heightSpace10,
                     controller.currentIndex == 0
                         ? OngoingBookings()

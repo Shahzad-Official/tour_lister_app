@@ -5,14 +5,16 @@ import 'package:get/get.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 
 import 'package:tour_lister_app/controllers/main_page_controller/main_page_controller.dart';
+import 'package:tour_lister_app/services/location_services/get_location_service.dart';
 import 'package:tour_lister_app/widgets/app_bottom_sheet.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
 
 import '../../widgets/app_text.dart';
 
 class MainPage extends StatelessWidget {
-  int currentIndex;
-  MainPageController mainPageController = Get.put(MainPageController());
+  final int currentIndex;
+  final MainPageController mainPageController = Get.put(MainPageController());
+  final GetLocationService locationController = Get.put(GetLocationService());
   MainPage({
     Key? key,
     this.currentIndex = 1,

@@ -66,27 +66,15 @@ class ListerAccount extends StatelessWidget {
                             width: 70,
                             child: Stack(
                               children: [
-                                StreamBuilder(
-                                    stream: FirebaseFirestore.instance
-                                        .collection("listers")
-                                        .doc(FirebaseAuth
-                                            .instance.currentUser!.uid)
-                                        .get()
-                                        .asStream(),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        return AppCircularCachedImage(
-                                          picUrl:
-                                              snapshot.data!.data()!['profile'],
-                                        );
-                                      } else {
-                                        return const Center(
-                                          child: CircularProgressIndicator(
-                                            color: AppColors.primarycolor,
-                                          ),
-                                        );
-                                      }
-                                    }),
+                                snapshot.hasData
+                                    ? AppCircularCachedImage(
+                                        picUrl: snapshot.data!.profile!,
+                                      )
+                                    : const Center(
+                                        child: CircularProgressIndicator(
+                                          color: AppColors.primarycolor,
+                                        ),
+                                      ),
                                 isVerified ?? true
                                     ? Align(
                                         alignment: Alignment.bottomRight,
@@ -127,6 +115,8 @@ class ListerAccount extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: ((context) => ListerProfile(
+                                            isVerified:
+                                                snapshot.data!.isVerified,
                                             name: snapshot.data!.userName,
                                             dOB: snapshot.data!.dob,
                                             email: snapshot.data!.email,

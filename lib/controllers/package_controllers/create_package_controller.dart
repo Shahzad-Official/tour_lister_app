@@ -8,9 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/services/location_services/get_location_service.dart';
 import 'package:tour_lister_app/services/package_services/create_package_service.dart';
-import 'package:tour_lister_app/utils/formated_datetime.dart';
-import 'package:tour_lister_app/views/main_screens/main_page.dart';
-import 'package:tour_lister_app/views/main_screens/screens/create_package.dart';
 
 import '../../constants/app_colors.dart';
 
@@ -40,9 +37,8 @@ class CreatePackageController extends GetxController {
   TimeOfDay? endTime;
   int initialAge = 16;
   String selectedCat = "Family";
-  String selectedPersons = "2";
+  String selectedPersons = "3";
   List<String> availableNoofSeats = [
-    "2",
     "3",
     "4",
     "5",
@@ -78,11 +74,11 @@ class CreatePackageController extends GetxController {
   }
 
   bool isLoading = false;
-  determineLocation() async {
+  determineLocation(context) async {
     isLoading = true;
     location.text = "loading...";
     update();
-    await _locationService.determinePosition();
+    await _locationService.determinePosition(context);
     isLoading = false;
     location.text = _locationService.address!;
     update();
@@ -192,8 +188,9 @@ class CreatePackageController extends GetxController {
       isLoading = true;
       update();
       await _createPackageService.createPackage(
-        lattitude: _locationService.position!.latitude.toString(),
-        longitude: _locationService.position!.longitude.toString(),
+        address: location.text,
+        latitude: _locationService.position!.latLng!.latitude,
+        longitude: _locationService.position!.latLng!.longitude,
         packageName: packageName.text,
         startTime: startTimeController.text,
         endTime: endTimeController.text,
@@ -222,7 +219,7 @@ class CreatePackageController extends GetxController {
     var selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1990),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2025),
     );
     if (selectedDate != null) {
@@ -238,7 +235,7 @@ class CreatePackageController extends GetxController {
     var selectedDate = await showDatePicker(
       context: context,
       initialDate: startDate!,
-      firstDate: DateTime(1990),
+      firstDate: startDate!,
       lastDate: DateTime(2025),
     );
     if (selectedDate != null) {

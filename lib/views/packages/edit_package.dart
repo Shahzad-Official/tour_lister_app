@@ -13,8 +13,14 @@ import '../../widgets/app_input_field.dart';
 import '../../widgets/app_text.dart';
 
 class EditPackage extends StatelessWidget {
-  String picUrl, pkgName, pkgLocation, startDate, endDate, startTime, endTime;
-  EditPackage({
+  final String picUrl,
+      pkgName,
+      pkgLocation,
+      startDate,
+      endDate,
+      startTime,
+      endTime;
+  const EditPackage({
     Key? key,
     required this.picUrl,
     required this.endDate,
@@ -85,7 +91,7 @@ class EditPackage extends StatelessWidget {
                           child: AppText(
                             text: pkgName,
                             textcolor: Colors.black,
-                            fontSize: 15,
+                            fontSize: 17,
                           ),
                         ),
                       ),
@@ -102,7 +108,7 @@ class EditPackage extends StatelessWidget {
                           child: AppText(
                             text: pkgLocation,
                             textcolor: Colors.black,
-                            fontSize: 15,
+                            fontSize: 16,
                           ),
                         ),
                       ),
@@ -219,10 +225,11 @@ class EditPackage extends StatelessWidget {
                         btnText: "Save",
                         ontap: () {
                           Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MainPage(),
-                              ));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MainPage(),
+                            ),
+                          );
                         },
                       ),
                     ],
