@@ -10,6 +10,7 @@ import 'package:tour_lister_app/services/location_services/get_location_service.
 import 'package:tour_lister_app/services/package_services/create_package_service.dart';
 
 import '../../constants/app_colors.dart';
+import '../../utils/app_snackbar.dart';
 
 class CreatePackageController extends GetxController {
   final CreatePackageService _createPackageService = CreatePackageService();
@@ -142,6 +143,13 @@ class CreatePackageController extends GetxController {
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
+    } else if (int.parse(startPrice.text) > int.parse(endPrice.text)) {
+      Get.snackbar(
+        "Error",
+        "StartPrice must be lower than endPrice.",
+        colorText: Colors.white,
+        backgroundColor: AppColors.primarycolor,
+      );
     } else if (cuttoffTime.text.isEmpty) {
       Get.snackbar(
         "Error",
@@ -194,8 +202,8 @@ class CreatePackageController extends GetxController {
         packageName: packageName.text,
         startTime: startTimeController.text,
         endTime: endTimeController.text,
-        startDate: startDateController.text,
-        endDate: endDateController.text,
+        startDate: startDate.toString(),
+        endDate: endDate.toString(),
         startPrice: startPrice.text,
         endPrice: endPrice.text,
         cuttOffTime: cuttoffTime.text,
@@ -226,25 +234,27 @@ class CreatePackageController extends GetxController {
       startDate = selectedDate;
       var formatedDate = DateFormat("dd MMM").format(selectedDate);
       startDateController.text = formatedDate;
-      selectStartTime(context);
     }
     update();
   }
 
   selectEndDate(context) async {
-    var selectedDate = await showDatePicker(
-      context: context,
-      initialDate: startDate!,
-      firstDate: startDate!,
-      lastDate: DateTime(2025),
-    );
-    if (selectedDate != null) {
-      endDate = selectedDate;
-      var formatedDate = DateFormat("dd MMM").format(selectedDate);
-      endDateController.text = formatedDate;
-      selectEndTime(context);
+    if (startDate == null) {
+      AppSnackbar.snackBar(title: "Error", message: "Select StartDate first");
+    } else {
+      var selectedDate = await showDatePicker(
+        context: context,
+        initialDate: startDate!.add(const Duration(days: 1)),
+        firstDate: startDate!.add(const Duration(days: 1)),
+        lastDate: DateTime(2025),
+      );
+      if (selectedDate != null) {
+        endDate = selectedDate;
+        var formatedDate = DateFormat("dd MMM").format(selectedDate);
+        endDateController.text = formatedDate;
+      }
+      update();
     }
-    update();
   }
 
   calculateDateInDays() {

@@ -168,11 +168,11 @@ class ListerProfile extends StatelessWidget {
                     MaterialPageRoute(
                       builder: ((context) => EditProfile(
                             profile: profileUrl,
-                            dOB: dOB,
-                            email: email,
+                            dOB: dOB!,
+                            email: email!,
                             isVerified: isVerified,
-                            name: name,
-                            phoneNo: phoneNo,
+                            name: name!,
+                            phoneNo: phoneNo!,
                           )),
                     ),
                   );

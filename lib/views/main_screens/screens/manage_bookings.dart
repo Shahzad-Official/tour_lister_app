@@ -122,10 +122,6 @@ class _ManageBookingsState extends State<ManageBookings> {
                 padding: AppPadding.defaultPadding,
                 child: Column(
                   children: [
-                    TextFormField(
-                      controller: textEditingController,
-                      maxLines: 30,
-                    ),
                     AppPadding.heightSpace10,
                     controller.currentIndex == 0
                         ? OngoingBookings()

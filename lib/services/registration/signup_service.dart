@@ -29,13 +29,15 @@ class SignupService {
         "profile": DummyData.profilePic,
         "userName": userName,
         "dob": "01-01-2000",
-        "token": authCredentials.user!.uid,
+        "uid": authCredentials.user!.uid,
         "email": email,
         "phoneNo": phoneNo,
         "isVerified": false,
         "emailVerified": false,
         "created_on": DateTime.now(),
         "disabled": false,
+        "commission": "5",
+        "role": "company",
       });
 
       await LoginService.loginUser(email: email, password: password);
@@ -61,7 +63,7 @@ class SignupService {
             .doc(user.user!.uid)
             .set({
           "email": user.user!.email,
-          "token": user.user!.uid,
+          "uid": user.user!.uid,
           "userName": user.user!.displayName,
           "profile": user.user!.photoURL,
           "dob": "10-10-2000",
@@ -70,6 +72,8 @@ class SignupService {
           "emailVerified": true,
           "created_on": DateTime.now(),
           "disabled": false,
+          "commission": "5",
+          "role": "company",
         });
         AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
         Get.offAll(() => MainPage());
@@ -95,7 +99,7 @@ class SignupService {
             .doc(user.user!.uid)
             .set({
           "email": user.user!.email,
-          "token": user.user!.uid,
+          "uid": user.user!.uid,
           "userName": user.user!.displayName,
           "profile": user.user!.photoURL,
           "dob": "10-10-2000",
@@ -104,6 +108,8 @@ class SignupService {
           "emailVerified": true,
           "created_on": DateTime.now(),
           "disabled": false,
+          "commission": "5",
+          "role": "company",
         });
         AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
         Get.offAll(() => MainPage());

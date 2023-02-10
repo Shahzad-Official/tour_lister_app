@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:tour_lister_app/models/packages/packages_model.dart';
 import 'package:tour_lister_app/services/get_events_data.dart';
@@ -14,20 +13,23 @@ class ManagePackagesController extends GetxController {
   final GetAllPackages _getAllPackages = GetAllPackages();
   GetEventsData eventsData = GetEventsData();
   List<String> addressList = [];
-  List<PackagesModel>? newPackagesList;
+  List<PackagesModel> packageList = [];
+  List<PackagesModel> newPackagesList = [];
   searchPackages(String query) async {
-    if (newPackagesList != null) {
-      newPackagesList!.clear();
-      isSearching = true;
-      update();
-      await _getAllPackages.getAllPackages();
-      var list = _getAllPackages.allPackages.where((element) {
-        return element.packageName!.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-      newPackagesList = list;
-      isSearching = false;
-      update();
+    newPackagesList.clear();
+    isSearching = true;
+    update();
+
+    await _getAllPackages.getAllPackages();
+    var list = _getAllPackages.allPackages.where((element) {
+      return element.packageName!.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+    newPackagesList = list;
+    if (query.isEmpty) {
+      newPackagesList.clear();
     }
+    isSearching = false;
+    update();
   }
 
   deletePackage(String packageId) async {

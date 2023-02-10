@@ -13,7 +13,7 @@ class LoginService {
   doesContainId(uId) async {
     var lis = await FirebaseFirestore.instance.collection("listers").get();
     var res = lis.docs.any((element) => element.id == uId);
-    print(res);
+
     if (res) {
       AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
       Get.offAll(() => MainPage());

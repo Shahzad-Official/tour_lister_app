@@ -4,7 +4,7 @@ class ProfileModel {
   String? userName;
   String? email;
   String? phoneNo;
-  String? token;
+  String? uid;
   bool? isVerified;
 
   ProfileModel({
@@ -13,7 +13,7 @@ class ProfileModel {
     this.userName,
     this.email,
     this.phoneNo,
-    this.token,
+    this.uid,
     this.isVerified,
   });
 
@@ -23,7 +23,7 @@ class ProfileModel {
     userName = json['userName'];
     email = json['email'];
     phoneNo = json['phoneNo'];
-    token = json['token'];
+    uid = json['uid'];
     isVerified = json['isVerified'];
   }
 
@@ -34,7 +34,7 @@ class ProfileModel {
     data['userName'] = userName;
     data['email'] = email;
     data['phoneNo'] = phoneNo;
-    data['token'] = token;
+    data['uid'] = uid;
     data['isVerified'] = isVerified;
     return data;
   }

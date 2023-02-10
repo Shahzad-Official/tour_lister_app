@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/controllers/package_controllers/edit_package_controller.dart';
+import 'package:tour_lister_app/utils/date_format.dart';
 import 'package:tour_lister_app/views/main_screens/main_page.dart';
 import 'package:tour_lister_app/widgets/app_button.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
@@ -34,8 +35,12 @@ class EditPackage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     EditPackageController packageController = Get.put(EditPackageController());
-    packageController.startDateController.text = startDate;
-    packageController.endDateController.text = endDate;
+    packageController.startDate = DateTime.parse(startDate);
+    packageController.endDate = DateTime.parse(endDate);
+    packageController.startDateController.text =
+        CustomDateFormat.dateFormat(startDate);
+    packageController.endDateController.text =
+        CustomDateFormat.dateFormat(endDate);
     packageController.startTimeController.text = startTime;
     packageController.endTimeController.text = endTime;
     return ColoredBox(

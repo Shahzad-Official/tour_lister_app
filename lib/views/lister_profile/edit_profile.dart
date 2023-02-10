@@ -1,15 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
-import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/controllers/profile_controllers/edit_profile_controller.dart';
-import 'package:tour_lister_app/views/main_screens/main_page.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
 
 import '../../constants/app_colors.dart';
@@ -20,16 +15,16 @@ import 'package:image_picker/image_picker.dart';
 
 class EditProfile extends StatefulWidget {
   final String profile;
-  final String? email, phoneNo, dOB, name;
+  final String email, phoneNo, dOB, name;
   final bool? isVerified;
-  EditProfile({
+  const EditProfile({
     super.key,
     required this.profile,
-    this.phoneNo,
-    this.dOB,
-    this.email,
+    required this.phoneNo,
+    required this.dOB,
+    required this.email,
     this.isVerified,
-    this.name,
+    required this.name,
   });
 
   @override
@@ -37,9 +32,16 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  bool isLoading = false;
-  final EditProfileController _profileController =
+  final EditProfileController _editprofileController =
       Get.put(EditProfileController());
+  @override
+  void initState() {
+    super.initState();
+    _editprofileController.name.text = widget.name;
+    _editprofileController.email.text = widget.email;
+
+    _editprofileController.date.text = widget.dOB;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,158 +71,159 @@ class _EditProfileState extends State<EditProfile> {
       body: SingleChildScrollView(
         child: Container(
           padding: AppPadding.defaultPadding,
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 10),
-                height: 125,
-                width: 125,
-                child: Stack(
+          child: GetBuilder<EditProfileController>(
+              init: EditProfileController(),
+              builder: (profileController) {
+                return Column(
                   children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: GetBuilder<EditProfileController>(
-                        init: EditProfileController(),
-                        initState: (_) {},
-                        builder: (_) {
-                          if (_.image != null) {
-                            return CircleAvatar(
-                              radius: 60,
-                              backgroundImage: FileImage(
-                                _.image!,
-                              ),
-                            );
-                          } else {
-                            return AppCircularCachedImage(
-                              picRadius: 60,
-                              picUrl: widget.profile,
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        width: MediaQuery.of(context).size.width * 0.10,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromARGB(86, 0, 0, 0),
-                              blurRadius: 15,
-                              spreadRadius: 1,
-                              offset: Offset(2, 0),
-                            ),
-                          ],
-                        ),
-                        child: PopupMenuButton(
-                          position: PopupMenuPosition.under,
-                          itemBuilder: (context) {
-                            return [
-                              PopupMenuItem(
-                                child: TextButton(
-                                  onPressed: () {
-                                    _profileController.getimage(
-                                      ImageSource.gallery,
-                                    );
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    "Choose from gallery",
-                                    style: GoogleFonts.poppins(
-                                      color: const Color(0xff8E89A9),
+                    Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      height: 125,
+                      width: 125,
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: GetBuilder<EditProfileController>(
+                              init: EditProfileController(),
+                              initState: (_) {},
+                              builder: (_) {
+                                if (_.image != null) {
+                                  return CircleAvatar(
+                                    radius: 60,
+                                    backgroundImage: FileImage(
+                                      _.image!,
                                     ),
-                                  ),
-                                ),
-                              ),
-                              PopupMenuItem(
-                                child: TextButton(
-                                  onPressed: () {
-                                    _profileController.getimage(
-                                      ImageSource.camera,
-                                    );
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    "Camera",
-                                    style: GoogleFonts.poppins(
-                                      color: const Color(0xff8E89A9),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ];
-                          },
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: SvgPicture.string(SvgIcons.pencil),
+                                  );
+                                } else {
+                                  return AppCircularCachedImage(
+                                    picRadius: 60,
+                                    picUrl: widget.profile,
+                                  );
+                                }
+                              },
                             ),
                           ),
-                        ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.06,
+                              width: MediaQuery.of(context).size.width * 0.10,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color.fromARGB(86, 0, 0, 0),
+                                    blurRadius: 15,
+                                    spreadRadius: 1,
+                                    offset: Offset(2, 0),
+                                  ),
+                                ],
+                              ),
+                              child: PopupMenuButton(
+                                onSelected: (value) {
+                                  print(value);
+                                },
+                                position: PopupMenuPosition.under,
+                                itemBuilder: (context) {
+                                  return [
+                                    PopupMenuItem(
+                                      onTap: () {
+                                        profileController.getimage(
+                                          ImageSource.camera,
+                                        );
+                                      },
+                                      child: Text(
+                                        "Camera",
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                          color: const Color(0xff8E89A9),
+                                        ),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      onTap: () {
+                                        profileController.getimage(
+                                          ImageSource.gallery,
+                                        );
+                                      },
+                                      child: Text(
+                                        "Choose from gallery",
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                          color: const Color(0xff8E89A9),
+                                        ),
+                                      ),
+                                    ),
+                                  ];
+                                },
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: SvgPicture.string(SvgIcons.pencil),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                    )
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    AppInputField(
+                      hintText: widget.name.toString(),
+                      controller: profileController.name,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    AppInputField(
+                      hintText: widget.email.toString(),
+                      controller: profileController.email,
+                      keyboardtype: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    PhoneField(
+                      controller: profileController.phone,
+                      countryCode: profileController.countryCode,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    GetBuilder<EditProfileController>(
+                      init: EditProfileController(),
+                      initState: (_) {},
+                      builder: (_) {
+                        return AppInputField(
+                          controller: _.date,
+                          enabled: false,
+                          onTap: () async {
+                            await _.selectDate(context);
+                          },
+                          hintText: widget.dOB.toString(),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: 70,
+                    ),
+                    AppButton(
+                      isLoading: profileController.isLoading,
+                      btnText: "Save",
+                      ontap: () async {
+                        await profileController.isValidUser();
+                      },
+                    ),
                   ],
-                ),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              AppInputField(
-                hintText: widget.name.toString(),
-                controller: _profileController.name,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              AppInputField(
-                hintText: widget.email.toString(),
-                controller: _profileController.email,
-                keyboardtype: TextInputType.emailAddress,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              PhoneField(
-                controller: _profileController.phone,
-                countryCode: _profileController.countryCode,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              GetBuilder<EditProfileController>(
-                init: EditProfileController(),
-                initState: (_) {},
-                builder: (_) {
-                  return AppInputField(
-                    controller: _.date,
-                    enabled: false,
-                    onTap: () async {
-                      await _.selectDate(context);
-                    },
-                    hintText: widget.dOB.toString(),
-                  );
-                },
-              ),
-              const SizedBox(
-                height: 70,
-              ),
-              AppButton(
-                isLoading: isLoading,
-                btnText: "Save",
-                ontap: () async {
-                  isLoading = true;
-                  setState(() {});
-                  await _profileController.isValidUser();
-                  isLoading = false;
-                  setState(() {});
-                },
-              ),
-            ],
-          ),
+                );
+              }),
         ),
       ),
     );

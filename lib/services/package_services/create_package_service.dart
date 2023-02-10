@@ -80,9 +80,7 @@ class CreatePackageService {
             ),
           );
         });
-        AppSnackbar.snackBar(
-            title: "Message", message: "Package created Successfully");
-        Get.offAll(() => MainPage());
+
         await _firebaseStorage
             .ref("packages_files")
             .child(value.id)
@@ -118,6 +116,9 @@ class CreatePackageService {
           );
         });
       });
+      AppSnackbar.snackBar(
+          title: "Message", message: "Package created Successfully");
+      Get.offAll(() => MainPage());
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }

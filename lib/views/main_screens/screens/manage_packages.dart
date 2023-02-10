@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/controllers/package_controllers/manage_package_controller.dart';
 import 'package:tour_lister_app/models/packages/packages_model.dart';
 import 'package:tour_lister_app/services/package_services/get_all_packages.dart';
 import 'package:tour_lister_app/utils/app_navigation.dart';
+import 'package:tour_lister_app/utils/date_format.dart';
 import 'package:tour_lister_app/views/packages/edit_package.dart';
 import 'package:tour_lister_app/widgets/app_button.dart';
 import 'package:tour_lister_app/widgets/app_input_field.dart';
@@ -17,52 +19,47 @@ class ManagePackages extends StatelessWidget {
   ManagePackages({Key? key}) : super(key: key);
   final GetAllPackages _getAllPackages = GetAllPackages();
 
-  final ManagePackagesController _packagesController = Get.put(
-    ManagePackagesController(),
-  );
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
         padding: AppPadding.defaultPadding,
-        child: Column(
-          children: [
-            AppPadding.heightSpace30,
-            AppInputField(
-              onChanged: (query) async {
-                await _packagesController.searchPackages(query);
-              },
-              hintText: "search for tours",
-              contentPadding: const EdgeInsets.only(top: 20),
-              prefixIcon: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 18.0),
-                child: SvgPicture.string(
-                  SvgIcons.search,
-                ),
-              ),
-            ),
-            FutureBuilder<List<PackagesModel>>(
-              future: _getAllPackages.getAllPackages(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data!.isEmpty) {
-                    return Center(
-                      child: AppText(text: "No Package Available"),
-                    );
-                  } else {
-                    return GetBuilder<ManagePackagesController>(
-                        init: ManagePackagesController(),
-                        builder: (packageController) {
-                          return packageController.isSearching
-                              ? const Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                              : Column(
+        child: GetBuilder<ManagePackagesController>(
+            init: ManagePackagesController(),
+            builder: (controller) {
+              return Column(
+                children: [
+                  AppPadding.heightSpace30,
+                  AppInputField(
+                    onChanged: (query) async {
+                      await controller.searchPackages(query);
+                    },
+                    hintText: "search for tours",
+                    contentPadding: const EdgeInsets.only(top: 20),
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 18.0),
+                      child: SvgPicture.string(
+                        SvgIcons.search,
+                      ),
+                    ),
+                  ),
+                  controller.isSearching
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : FutureBuilder<List<PackagesModel>>(
+                          future: _getAllPackages.getAllPackages(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data!.isEmpty) {
+                                return Center(
+                                  child: AppText(text: "No Package Available"),
+                                );
+                              } else {
+                                return Column(
                                   children: List.generate(
-                                      packageController.newPackagesList != null
-                                          ? packageController
-                                              .newPackagesList!.length
+                                      controller.newPackagesList.isNotEmpty
+                                          ? controller.newPackagesList.length
                                           : snapshot.data!.length, (index) {
                                     return Column(
                                       children: [
@@ -103,10 +100,11 @@ class ManagePackages extends StatelessWidget {
                                                               : () async {
                                                                   await _
                                                                       .deletePackage(
-                                                                    packageController.newPackagesList !=
-                                                                            null
-                                                                        ? packageController
-                                                                            .newPackagesList![
+                                                                    controller
+                                                                            .newPackagesList
+                                                                            .isNotEmpty
+                                                                        ? controller
+                                                                            .newPackagesList[
                                                                                 index]
                                                                             .packageId!
                                                                         : snapshot
@@ -128,58 +126,128 @@ class ManagePackages extends StatelessWidget {
                                             Navigate.to(
                                               context,
                                               EditPackage(
-                                                picUrl: packageController
-                                                            .newPackagesList !=
-                                                        null
-                                                    ? packageController
-                                                        .newPackagesList![index]
+                                                picUrl: controller
+                                                        .newPackagesList
+                                                        .isNotEmpty
+                                                    ? controller
+                                                        .newPackagesList[index]
                                                         .thumbnailUrl!
                                                     : snapshot.data![index]
                                                         .thumbnailUrl!,
-                                                endDate: snapshot
-                                                    .data![index].endDate!,
-                                                endTime: snapshot
-                                                    .data![index].endTime!,
-                                                pkgLocation: snapshot
-                                                    .data![index]
-                                                    .location!
-                                                    .address!,
-                                                pkgName: snapshot
-                                                    .data![index].packageName!,
-                                                startDate: snapshot
-                                                    .data![index].startDate!,
-                                                startTime: snapshot
-                                                    .data![index].startTime!,
+                                                endDate: controller
+                                                        .newPackagesList
+                                                        .isNotEmpty
+                                                    ? controller
+                                                        .newPackagesList[index]
+                                                        .endDate!
+                                                    : snapshot
+                                                        .data![index].endDate!,
+                                                endTime: controller
+                                                        .newPackagesList
+                                                        .isNotEmpty
+                                                    ? controller
+                                                        .newPackagesList[index]
+                                                        .endTime!
+                                                    : snapshot
+                                                        .data![index].endTime!,
+                                                pkgLocation: controller
+                                                        .newPackagesList
+                                                        .isNotEmpty
+                                                    ? controller
+                                                        .newPackagesList[index]
+                                                        .location!
+                                                        .address!
+                                                    : snapshot.data![index]
+                                                        .location!.address!,
+                                                pkgName: controller
+                                                        .newPackagesList
+                                                        .isNotEmpty
+                                                    ? controller
+                                                        .newPackagesList[index]
+                                                        .packageName!
+                                                    : snapshot.data![index]
+                                                        .packageName!,
+                                                startDate: controller
+                                                        .newPackagesList
+                                                        .isNotEmpty
+                                                    ? controller
+                                                        .newPackagesList[index]
+                                                        .startDate!
+                                                    : snapshot.data![index]
+                                                        .startDate!,
+                                                startTime: controller
+                                                        .newPackagesList
+                                                        .isNotEmpty
+                                                    ? controller
+                                                        .newPackagesList[index]
+                                                        .startTime!
+                                                    : snapshot.data![index]
+                                                        .startTime!,
                                               ),
                                             );
                                           },
-                                          eventName: snapshot
-                                              .data![index].packageName!,
-                                          location: snapshot
-                                              .data![index].location!.address!,
-                                          picUrl: snapshot
-                                              .data![index].thumbnailUrl!,
-                                          isLive: snapshot.data![index].isLive!,
-                                          startDate:
-                                              snapshot.data![index].startDate!,
-                                          endDate:
-                                              snapshot.data![index].endDate!,
+                                          eventName: controller
+                                                  .newPackagesList.isNotEmpty
+                                              ? controller
+                                                  .newPackagesList[index]
+                                                  .packageName!
+                                              : snapshot
+                                                  .data![index].packageName!,
+                                          location: controller
+                                                  .newPackagesList.isNotEmpty
+                                              ? controller
+                                                  .newPackagesList[index]
+                                                  .location!
+                                                  .address!
+                                              : snapshot.data![index].location!
+                                                  .address!,
+                                          picUrl: controller
+                                                  .newPackagesList.isNotEmpty
+                                              ? controller
+                                                  .newPackagesList[index]
+                                                  .thumbnailUrl!
+                                              : snapshot
+                                                  .data![index].thumbnailUrl!,
+                                          isLive: controller
+                                                  .newPackagesList.isNotEmpty
+                                              ? controller
+                                                  .newPackagesList[index]
+                                                  .isLive!
+                                              : snapshot.data![index].isLive!,
+                                          startDate: CustomDateFormat
+                                              .dateFormat(controller
+                                                      .newPackagesList
+                                                      .isNotEmpty
+                                                  ? controller
+                                                      .newPackagesList[index]
+                                                      .startDate!
+                                                  : snapshot
+                                                      .data![index].startDate!),
+                                          endDate: CustomDateFormat.dateFormat(
+                                            controller
+                                                    .newPackagesList.isNotEmpty
+                                                ? controller
+                                                    .newPackagesList[index]
+                                                    .endDate!
+                                                : snapshot
+                                                    .data![index].endDate!,
+                                          ),
                                         ),
                                       ],
                                     );
                                   }),
                                 );
-                        });
-                  }
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
-            ),
-          ],
-        ),
+                              }
+                            } else {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          },
+                        ),
+                ],
+              );
+            }),
       ),
     );
   }

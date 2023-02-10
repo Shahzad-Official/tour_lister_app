@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:tour_lister_app/utils/app_snackbar.dart';
 
 class EditPackageController extends GetxController {
   TextEditingController startDateController = TextEditingController();
@@ -31,8 +32,8 @@ class EditPackageController extends GetxController {
   selectEndDate(context) async {
     var selectedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: startDate!.add(const Duration(days: 1)),
+      initialDate: endDate!,
+      firstDate: endDate!,
       lastDate: DateTime(2025),
     );
     if (selectedDate != null) {

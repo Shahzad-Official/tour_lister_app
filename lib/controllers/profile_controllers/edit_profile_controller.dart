@@ -15,6 +15,7 @@ class EditProfileController extends GetxController {
   TextEditingController date = TextEditingController();
   String gender = "Male";
   String countryCode = "+92";
+  bool isLoading = false;
   List<String> genders = [
     "Male",
     "Female",
@@ -92,6 +93,8 @@ class EditProfileController extends GetxController {
         backgroundColor: AppColors.primarycolor,
       );
     } else {
+      isLoading = true;
+      update();
       if (image != null) {
         await EditProfileService.updateProfile(
           newEmail: email.text,
@@ -108,6 +111,7 @@ class EditProfileController extends GetxController {
           dob: date.text,
         );
       }
+      isLoading = false;
       update();
     }
   }
