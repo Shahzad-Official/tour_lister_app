@@ -3,26 +3,56 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tour_lister_app/services/get_user_data.dart';
 import 'package:tour_lister_app/utils/app_snackbar.dart';
 import 'package:tour_lister_app/views/main_screens/main_page.dart';
+import 'package:tour_lister_app/views/register/login.dart';
 import 'package:tour_lister_app/views/register/sign_up.dart';
 
 class LoginService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  doesContainId(uId) async {
-    var lis = await FirebaseFirestore.instance.collection("listers").get();
-    var res = lis.docs.any((element) => element.id == uId);
+  final GetUserData _userData = GetUserData();
 
-    if (res) {
-      AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
-      Get.offAll(() => MainPage());
-    } else {
-      AppSnackbar.snackBar(
-          title: "Message", message: "User not available! SignUp first");
-      Get.offAll(() => const SignUp());
-    }
-    return res;
+  doesContainId(uId) async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .get()
+        .then((value) async {
+      value.docs.any(
+        (element) {
+          if (element.exists) {
+            _userData.getUserData(uId);
+            if (element.data()["email"] == _userData.userProfile.email &&
+                element.data()['role'] == "user") {
+              AppSnackbar.snackBar(
+                  title: "Error", message: "User Already Exists.");
+              _googleSignIn.signOut();
+              Get.offAll(() => const SignUp());
+              return true;
+            } else if (element.data()["email"] == _userData.userProfile.email &&
+                element.data()['role'] == "lister") {
+              AppSnackbar.snackBar(
+                  title: "Message", message: "Successfully LogedIn");
+              Get.offAll(() => MainPage());
+              return true;
+            } else if (_userData.userProfile.email == null) {
+              AppSnackbar.snackBar(
+                  title: "Message", message: "User not Available.");
+              Get.offAll(() => const SignUp());
+              return true;
+            } else {
+              return false;
+            }
+          } else {
+            AppSnackbar.snackBar(
+                title: "Message", message: "User not Available.");
+            Get.offAll(() => const SignUp());
+            return true;
+          }
+        },
+      );
+    });
   }
 
   static loginUser({

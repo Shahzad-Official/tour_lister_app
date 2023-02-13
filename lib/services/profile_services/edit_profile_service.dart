@@ -20,39 +20,33 @@ class EditProfileService {
       String? url;
       if (file != null) {
         await FirebaseStorage.instance
-            .ref("listers")
+            .ref("users")
             .child(user.uid)
             .child("profile")
             .putFile(file);
         url = await FirebaseStorage.instance
-            .ref("listers")
+            .ref("users")
             .child(user.uid)
             .child("profile")
             .getDownloadURL();
 
-        await FirebaseFirestore.instance
-            .collection("listers")
-            .doc(user.uid)
-            .set(
+        await FirebaseFirestore.instance.collection("users").doc(user.uid).set(
           {
             "email": newEmail,
             "phoneNo": newPhoneNo,
             "userName": newUserName,
-            "dateOfBirth": dob,
+            "dob": dob,
             "profile": url,
           },
           SetOptions(merge: true),
         );
       } else {
-        await FirebaseFirestore.instance
-            .collection("listers")
-            .doc(user.uid)
-            .set(
+        await FirebaseFirestore.instance.collection("users").doc(user.uid).set(
           {
             "email": newEmail,
             "phoneNo": newPhoneNo,
             "userName": newUserName,
-            "dateOfBirth": dob,
+            "dob": dob,
           },
           SetOptions(merge: true),
         );

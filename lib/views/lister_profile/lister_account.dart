@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -6,11 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
-import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/controllers/profile_controllers/account_settings_controller.dart';
 import 'package:tour_lister_app/models/lister_profile/profile_model.dart';
-import 'package:tour_lister_app/services/profile_services/get_profile_data.dart';
+import 'package:tour_lister_app/services/get_user_data.dart';
 import 'package:tour_lister_app/views/lister_profile/lister_profile.dart';
 import 'package:tour_lister_app/views/settings_screens/notification_page.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
@@ -23,6 +21,7 @@ class ListerAccount extends StatelessWidget {
     super.key,
     this.isVerified,
   });
+  final GetUserData _userData = GetUserData();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +40,7 @@ class ListerAccount extends StatelessWidget {
     );
 
     return FutureBuilder<ProfileModel>(
-        future: GetProfileData().getProfileData(),
+        future: _userData.getUserData(FirebaseAuth.instance.currentUser!.uid),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             isVerified = snapshot.data!.isVerified;
@@ -211,7 +210,8 @@ class ListerAccount extends StatelessWidget {
                       ListTile(
                         contentPadding: EdgeInsets.zero,
                         onTap: () async {
-                          await GetProfileData().getProfileData();
+                          await _userData.getUserData(
+                              FirebaseAuth.instance.currentUser!.uid);
                         },
                         leading: AppText(
                           text: "Link Stripe Account",

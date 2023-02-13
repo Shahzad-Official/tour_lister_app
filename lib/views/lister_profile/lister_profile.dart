@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
-import 'package:tour_lister_app/services/profile_services/get_profile_data.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
 
 import '../../constants/app_colors.dart';

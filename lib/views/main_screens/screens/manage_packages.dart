@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/controllers/package_controllers/manage_package_controller.dart';
 import 'package:tour_lister_app/models/packages/packages_model.dart';
 import 'package:tour_lister_app/services/package_services/get_all_packages.dart';
+import 'package:tour_lister_app/services/registration/login_service.dart';
 import 'package:tour_lister_app/utils/app_navigation.dart';
 import 'package:tour_lister_app/utils/date_format.dart';
 import 'package:tour_lister_app/views/packages/edit_package.dart';
@@ -18,6 +20,7 @@ import 'package:tour_lister_app/widgets/containers/single_package_container.dart
 class ManagePackages extends StatelessWidget {
   ManagePackages({Key? key}) : super(key: key);
   final GetAllPackages _getAllPackages = GetAllPackages();
+  final LoginService loginService = LoginService();
 
   @override
   Widget build(BuildContext context) {

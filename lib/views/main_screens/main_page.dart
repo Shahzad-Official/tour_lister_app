@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 
 import 'package:tour_lister_app/controllers/main_page_controller/main_page_controller.dart';
+import 'package:tour_lister_app/models/lister_profile/profile_model.dart';
+import 'package:tour_lister_app/services/get_user_data.dart';
 import 'package:tour_lister_app/services/location_services/get_location_service.dart';
 import 'package:tour_lister_app/widgets/app_bottom_sheet.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
@@ -19,6 +21,7 @@ class MainPage extends StatelessWidget {
     Key? key,
     this.currentIndex = 1,
   }) : super(key: key);
+  final GetUserData _userData = GetUserData();
 
   @override
   Widget build(BuildContext context) {
@@ -52,18 +55,14 @@ class MainPage extends StatelessWidget {
                               ? const SizedBox()
                               : Padding(
                                   padding: const EdgeInsets.only(top: 8.0),
-                                  child: StreamBuilder(
-                                      stream: FirebaseFirestore.instance
-                                          .collection("listers")
-                                          .doc(FirebaseAuth
-                                              .instance.currentUser!.uid)
-                                          .get()
-                                          .asStream(),
+                                  child: FutureBuilder<ProfileModel>(
+                                      future: _userData.getUserData(
+                                        FirebaseAuth.instance.currentUser!.uid,
+                                      ),
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
                                           return AppCircularCachedImage(
-                                            picUrl: snapshot.data!
-                                                .data()!['profile'],
+                                            picUrl: snapshot.data!.profile!,
                                           );
                                         } else {
                                           return const Center(

@@ -4,6 +4,7 @@ class ProfileModel {
   String? userName;
   String? email;
   String? phoneNo;
+  String? role;
   String? uid;
   bool? isVerified;
 
@@ -15,6 +16,7 @@ class ProfileModel {
     this.phoneNo,
     this.uid,
     this.isVerified,
+    this.role,
   });
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class ProfileModel {
     phoneNo = json['phoneNo'];
     uid = json['uid'];
     isVerified = json['isVerified'];
+    role = json['role'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +38,7 @@ class ProfileModel {
     data['email'] = email;
     data['phoneNo'] = phoneNo;
     data['uid'] = uid;
+    data['role'] = role;
     data['isVerified'] = isVerified;
     return data;
   }

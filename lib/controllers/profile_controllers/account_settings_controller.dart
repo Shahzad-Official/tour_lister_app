@@ -11,7 +11,7 @@ class AccountSettingsController extends GetxController {
   bool isLoading = false;
   getProfile() async {
     var res = await FirebaseFirestore.instance
-        .collection("listers")
+        .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
     String profile = res.data()!['profile'];

@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tour_lister_app/controllers/bookings_controllers/manage_bookings_controller.dart';
+import 'package:tour_lister_app/models/lister_profile/profile_model.dart';
+import 'package:tour_lister_app/services/get_user_data.dart';
 import 'package:tour_lister_app/views/bookings/ongoing_bookings/ongoing_bookings.dart';
 
 import 'package:tour_lister_app/widgets/app_button.dart';
@@ -28,6 +30,7 @@ class ManageBookings extends StatefulWidget {
 class _ManageBookingsState extends State<ManageBookings> {
   TextEditingController textEditingController = TextEditingController();
   GetAllPackages getAllPackages = GetAllPackages();
+  final GetUserData _userData = GetUserData();
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ManageBookingsController>(
@@ -57,16 +60,14 @@ class _ManageBookingsState extends State<ManageBookings> {
                           fontSize: 23,
                           textcolor: Colors.black,
                         ),
-                        StreamBuilder(
-                            stream: FirebaseFirestore.instance
-                                .collection("listers")
-                                .doc(FirebaseAuth.instance.currentUser!.uid)
-                                .get()
-                                .asStream(),
+                        FutureBuilder<ProfileModel>(
+                            future: _userData.getUserData(
+                                FirebaseAuth.instance.currentUser!.uid),
                             builder: (context, snapshot) {
+                              print(snapshot.data);
                               if (snapshot.hasData) {
                                 return AppCircularCachedImage(
-                                  picUrl: snapshot.data!.data()!['profile'],
+                                  picUrl: snapshot.data!.profile!,
                                 );
                               } else {
                                 return const Center(
