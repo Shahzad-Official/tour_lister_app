@@ -47,6 +47,7 @@ class AppTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   RoundButton(
+                    height: 40,
                     onTap: onView,
                     text: "View",
                   ),
@@ -54,6 +55,7 @@ class AppTile extends StatelessWidget {
                     width: 20,
                   ),
                   RoundButton(
+                    height: 40,
                     onTap: onRemove,
                     text: "Remove",
                   ),

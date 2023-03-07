@@ -1,8 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tour_lister_app/views/main_screens/main_page.dart';
-import 'package:tour_lister_app/views/register/get_started.dart';
 import 'package:tour_lister_app/views/splash_screen.dart';
 
 import 'constants/app_colors.dart';

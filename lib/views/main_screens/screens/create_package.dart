@@ -6,14 +6,16 @@ import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/controllers/package_controllers/create_package_controller.dart';
-import 'package:tour_lister_app/utils/app_navigation.dart';
-import 'package:tour_lister_app/views/main_screens/main_page.dart';
+import 'package:tour_lister_app/models/icons_model.dart';
+import 'package:tour_lister_app/services/inclusions_services/get_icons.dart';
+
 import 'package:tour_lister_app/widgets/app_button.dart';
 import 'package:tour_lister_app/widgets/app_input_field.dart';
 import 'package:tour_lister_app/widgets/app_text.dart';
 
 class CreatePackage extends StatelessWidget {
-  const CreatePackage({super.key});
+  CreatePackage({super.key});
+  final GetIcons _getIcons = GetIcons();
 
   @override
   Widget build(BuildContext context) {
@@ -388,6 +390,80 @@ class CreatePackage extends StatelessWidget {
                     _.changeCatagory(value);
                   },
                 ),
+                AppPadding.heightSpace30,
+                FutureBuilder<List<IconsModel>>(
+                  future: _getIcons.getIcons(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      if (snapshot.data == null) {
+                        return const Text("Data not available");
+                      } else {
+                        return PopupMenuButton(
+                          child: ListTile(
+                            title: AppText(text: "Inclusions"),
+                            trailing: const Icon(
+                              Icons.keyboard_arrow_down_rounded,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(
+                                color: AppColors.headTextColor.withOpacity(0.7),
+                              ),
+                            ),
+                          ),
+                          itemBuilder: (context) {
+                            return List.generate(
+                              snapshot.data!.length,
+                              (index) {
+                                return PopupMenuItem(
+                                  onTap: () {
+                                    _.addIcon(
+                                      iconData: snapshot.data![index],
+                                    );
+                                  },
+                                  child: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      snapshot.data![index].iconImage
+                                          .toString(),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      }
+                    }
+                  },
+                ),
+                _.listIcons.isEmpty
+                    ? const SizedBox()
+                    : Column(
+                        children: [
+                          AppPadding.heightSpace30,
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: _.listIcons.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: AppText(
+                                  text: _.listIcons[index].iconName.toString(),
+                                ),
+                                trailing: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    _.listIcons[index].iconImage.toString(),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                AppPadding.heightSpace30,
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

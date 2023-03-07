@@ -55,13 +55,13 @@ class AppButton extends StatelessWidget {
 }
 
 class RoundButton extends StatelessWidget {
-  double? width;
-  String text;
-  double fontSize;
-  Color? textColor, buttonColor;
-  void Function()? onTap;
-  bool isLoading;
-  RoundButton({
+  final double? width, height;
+  final String text;
+  final double fontSize;
+  final Color? textColor, buttonColor;
+  final void Function()? onTap;
+  final bool isLoading;
+  const RoundButton({
     Key? key,
     this.width,
     required this.text,
@@ -70,6 +70,7 @@ class RoundButton extends StatelessWidget {
     this.textColor,
     this.buttonColor,
     this.isLoading = false,
+    this.height,
   }) : super(key: key);
 
   @override
@@ -77,6 +78,7 @@ class RoundButton extends StatelessWidget {
     return InkWell(
       onTap: isLoading ? null : onTap,
       child: Container(
+        height: height,
         width: width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),

@@ -19,39 +19,33 @@ class LoginService {
         .collection("users")
         .get()
         .then((value) async {
-      value.docs.any(
-        (element) {
-          if (element.exists) {
-            _userData.getUserData(uId);
-            if (element.data()["email"] == _userData.userProfile.email &&
-                element.data()['role'] == "user") {
-              AppSnackbar.snackBar(
-                  title: "Error", message: "User Already Exists.");
-              _googleSignIn.signOut();
-              Get.offAll(() => const SignUp());
-              return true;
-            } else if (element.data()["email"] == _userData.userProfile.email &&
-                element.data()['role'] == "lister") {
-              AppSnackbar.snackBar(
-                  title: "Message", message: "Successfully LogedIn");
-              Get.offAll(() => MainPage());
-              return true;
-            } else if (_userData.userProfile.email == null) {
-              AppSnackbar.snackBar(
-                  title: "Message", message: "User not Available.");
-              Get.offAll(() => const SignUp());
-              return true;
-            } else {
-              return false;
-            }
-          } else {
-            AppSnackbar.snackBar(
-                title: "Message", message: "User not Available.");
-            Get.offAll(() => const SignUp());
-            return true;
-          }
-        },
-      );
+      if (value.docs.isEmpty) {
+        AppSnackbar.snackBar(
+            title: "Message", message: "User not available! SignUp first");
+        _googleSignIn.signOut();
+        Get.offAll(() => const SignUp());
+      } else {
+        await _userData.getUserData(uId);
+
+        if (_userData.userProfile.uid == null) {
+          AppSnackbar.snackBar(
+              title: "Message", message: "User not available! SignUp first");
+          _googleSignIn.signOut();
+          Get.offAll(() => const SignUp());
+        } else if (_userData.userProfile.uid == uId &&
+            _userData.userProfile.role == "user") {
+          AppSnackbar.snackBar(title: "Error", message: "User Already Exists.");
+          _googleSignIn.signOut();
+          Get.offAll(() => const Login());
+          return true;
+        } else if (_userData.userProfile.uid == uId &&
+            _userData.userProfile.role == "lister") {
+          AppSnackbar.snackBar(
+              title: "Message", message: "Successfully LogedIn");
+          Get.offAll(() => MainPage());
+          return true;
+        }
+      }
     });
   }
 

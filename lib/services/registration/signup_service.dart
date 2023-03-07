@@ -9,13 +9,14 @@ import 'package:tour_lister_app/services/get_user_data.dart';
 import 'package:tour_lister_app/utils/app_snackbar.dart';
 
 import '../../views/main_screens/main_page.dart';
+import '../../views/register/login.dart';
 import '../../views/register/sign_up.dart';
 import 'login_service.dart';
 
 class SignupService {
-  final GetUserData _userData = GetUserData();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GetUserData _userData = GetUserData();
   verifyUser({
     required String uid,
     required String email,
@@ -26,36 +27,56 @@ class SignupService {
         .collection("users")
         .get()
         .then((value) async {
-      value.docs.any(
-        (element) {
-          if (element.id == uid) {
-            AppSnackbar.snackBar(
-                title: "Error", message: "User Already Exists.");
-            _googleSignIn.signOut();
-            Get.offAll(() => const SignUp());
-            return true;
-          } else {
-            FirebaseFirestore.instance.collection("users").doc(uid).set({
-              "email": email,
-              "role": "lister",
-              "uid": uid,
-              "userName": displayName,
-              "profile": photoURL,
-              "dob": "10-10-2000",
-              "phoneNo": "+923000000000",
-              "isVerified": false,
-              "emailVerified": true,
-              "created_on": DateTime.now(),
-              "disabled": false,
-              "commission": "5",
-            });
-            AppSnackbar.snackBar(
-                title: "Message", message: "Successfully LogedIn");
-            Get.offAll(() => MainPage());
-            return true;
-          }
-        },
-      );
+      if (value.docs.isEmpty) {
+        FirebaseFirestore.instance.collection("users").doc(uid).set({
+          "email": email,
+          "role": "user",
+          "uid": uid,
+          "userName": displayName,
+          "profile": photoURL,
+          "dob": "10-10-2000",
+          "phoneNo": "+923000000000",
+          "isVerified": false,
+          "emailVerified": true,
+          "created_on": DateTime.now(),
+          "disabled": false,
+          "commission": "5",
+        });
+        AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
+        Get.offAll(() => MainPage());
+      } else {
+        await _userData.getUserData(uid);
+
+        if (_userData.userProfile.uid == null) {
+          FirebaseFirestore.instance.collection("users").doc(uid).set({
+            "email": email,
+            "role": "user",
+            "uid": uid,
+            "userName": displayName,
+            "profile": photoURL,
+            "dob": "10-10-2000",
+            "phoneNo": "+923000000000",
+            "isVerified": false,
+            "emailVerified": true,
+            "created_on": DateTime.now(),
+            "disabled": false,
+            "commission": "5",
+          });
+          AppSnackbar.snackBar(
+              title: "Message", message: "Successfully LogedIn");
+          Get.offAll(() => MainPage());
+        } else if (_userData.userProfile.uid == uid &&
+            _userData.userProfile.role == "lister") {
+          AppSnackbar.snackBar(title: "Error", message: "User Account Exists.");
+          _googleSignIn.signOut();
+          Get.offAll(() => const Login());
+        } else if (_userData.userProfile.uid == uid &&
+            _userData.userProfile.role == "user") {
+          AppSnackbar.snackBar(title: "Error", message: "User Already Exists.");
+          _googleSignIn.signOut();
+          Get.offAll(() => const Login());
+        }
+      }
     });
   }
 

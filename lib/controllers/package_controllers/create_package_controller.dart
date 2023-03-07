@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
+import 'package:tour_lister_app/models/icons_model.dart';
 import 'package:tour_lister_app/services/location_services/get_location_service.dart';
 import 'package:tour_lister_app/services/package_services/create_package_service.dart';
 
@@ -374,6 +375,14 @@ class CreatePackageController extends GetxController {
     selectedPersons = value;
     noOfBookigs.text = selectedPersons;
 
+    update();
+  }
+
+  List<IconsModel> listIcons = [];
+  addIcon({
+    required IconsModel iconData,
+  }) {
+    listIcons.add(iconData);
     update();
   }
 }
