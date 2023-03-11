@@ -10,6 +10,7 @@ import 'package:tour_lister_app/models/icons_model.dart';
 import 'package:tour_lister_app/services/inclusions_services/get_icons.dart';
 
 import 'package:tour_lister_app/widgets/app_button.dart';
+import 'package:tour_lister_app/widgets/app_cached_image.dart';
 import 'package:tour_lister_app/widgets/app_input_field.dart';
 import 'package:tour_lister_app/widgets/app_text.dart';
 
@@ -175,10 +176,15 @@ class CreatePackage extends StatelessWidget {
                       hintText: "Start Price",
                     ),
                     AppInputField(
+                      validator: (text) {
+                        if (text!.isEmpty) {
+                          print("object");
+                        }
+                      },
                       controller: _.endPrice,
                       keyboardtype: TextInputType.number,
                       width: MediaQuery.of(context).size.width * 0.415,
-                      hintText: "End Price",
+                      hintText: "Final Price",
                     ),
                   ],
                 ),
@@ -210,30 +216,6 @@ class CreatePackage extends StatelessWidget {
                 ),
                 AppPadding.heightSpace30,
                 AppInputField(
-                  controller: _.otherImageController,
-                  enabled: false,
-                  onTap: () {
-                    _.pickOtherImage();
-                  },
-                  hintText: "Upload Other Images",
-                  contentPadding: const EdgeInsets.only(
-                    top: 20,
-                    left: 15,
-                  ),
-                  suffixIcon: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 17,
-                    ),
-                    child: SvgPicture.string(
-                      SvgIcons.cameraFilled,
-                      width: 30,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-                AppPadding.heightSpace30,
-                AppInputField(
                   controller: _.coverImageController,
                   enabled: false,
                   onTap: () {
@@ -257,7 +239,38 @@ class CreatePackage extends StatelessWidget {
                   ),
                 ),
                 AppPadding.heightSpace30,
-                _.selectedCat == "Family"
+                AppInputField(
+                  controller: _.otherImageController,
+                  enabled: false,
+                  onTap: () {
+                    _.pickOtherImage();
+                  },
+                  hintText: "Upload Other Images",
+                  contentPadding: const EdgeInsets.only(
+                    top: 20,
+                    left: 15,
+                  ),
+                  suffixIcon: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 17,
+                    ),
+                    child: SvgPicture.string(
+                      SvgIcons.cameraFilled,
+                      width: 30,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+                AppPadding.heightSpace30,
+                AppText(
+                  text: "Total No of Bookings",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  textcolor: AppColors.headTextColor,
+                ),
+                AppPadding.heightSpace10,
+                _.selectedCat == "Family/Group"
                     ? DropdownContainer(
                         currentValue: _.selectedPersons,
                         items: _.availableNoofSeats,
@@ -271,6 +284,14 @@ class CreatePackage extends StatelessWidget {
                         hintText: "Total no of bookings allowed",
                         keyboardtype: TextInputType.number,
                       ),
+                AppPadding.heightSpace30,
+                DropdownContainer(
+                  currentValue: _.selectedCat,
+                  items: _.catagories,
+                  onValueChange: (value) {
+                    _.changeCatagory(value);
+                  },
+                ),
                 AppPadding.heightSpace30,
                 AppText(
                   text: "Danger Rating",
@@ -349,7 +370,7 @@ class CreatePackage extends StatelessWidget {
                 ),
                 AppPadding.heightSpace30,
                 AppText(
-                  text: "Age Sutability",
+                  text: "Age Suitability",
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                   textcolor: AppColors.headTextColor,
@@ -370,25 +391,16 @@ class CreatePackage extends StatelessWidget {
                       ),
                     ),
                     Slider(
-                      label: "hello",
                       thumbColor: Colors.white,
                       inactiveColor: Colors.black,
-                      min: 16,
-                      max: 60,
+                      min: 1,
+                      max: 16,
                       value: _.initialAge.toDouble(),
                       onChanged: (value) {
                         _.changeSliderValue(value);
                       },
                     ),
                   ],
-                ),
-                AppPadding.heightSpace30,
-                DropdownContainer(
-                  currentValue: _.selectedCat,
-                  items: _.catagories,
-                  onValueChange: (value) {
-                    _.changeCatagory(value);
-                  },
                 ),
                 AppPadding.heightSpace30,
                 FutureBuilder<List<IconsModel>>(
@@ -446,17 +458,118 @@ class CreatePackage extends StatelessWidget {
                         children: [
                           AppPadding.heightSpace30,
                           ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: _.listIcons.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                title: AppText(
-                                  text: _.listIcons[index].iconName.toString(),
-                                ),
-                                trailing: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    _.listIcons[index].iconImage.toString(),
-                                  ),
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      height: 110,
+                                      width: 90,
+                                      child: Stack(
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.bottomRight,
+                                            child: Container(
+                                              height: 100,
+                                              width: 80,
+                                              decoration: BoxDecoration(
+                                                color: AppColors.primarycolor
+                                                    .withOpacity(0.3),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                  color: AppColors.primarycolor,
+                                                ),
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  SizedBox(
+                                                    height: 50,
+                                                    width: 50,
+                                                    child: AppCachedImage(
+                                                      picUrl: _.listIcons[index]
+                                                          .iconImage
+                                                          .toString(),
+                                                    ),
+                                                  ),
+                                                  AppText(
+                                                    text: _.listIcons[index]
+                                                        .iconName
+                                                        .toString(),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              _.removeIcon(
+                                                iconData: _.listIcons[index],
+                                              );
+                                            },
+                                            child: const CircleAvatar(
+                                              radius: 15,
+                                              backgroundColor:
+                                                  AppColors.primarycolor,
+                                              child: Icon(
+                                                Icons.close,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 80,
+                                      height: 50,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              _.inclusionAddition(index);
+                                            },
+                                            child: const CircleAvatar(
+                                              radius: 15,
+                                              child: Icon(
+                                                Icons.add,
+                                                size: 20,
+                                              ),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              _.inclusionSubtraction(index);
+                                            },
+                                            child: const CircleAvatar(
+                                              radius: 15,
+                                              child: Icon(
+                                                Icons.remove,
+                                                size: 20,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    AppText(
+                                      text: _.count[index].toString(),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                      textcolor: Colors.black,
+                                    ),
+                                  ],
                                 ),
                               );
                             },
@@ -554,6 +667,16 @@ class CreatePackage extends StatelessWidget {
                           : Colors.black,
                     ),
                   ),
+                ),
+                AppPadding.heightSpace30,
+                AppInputField(
+                  controller: _.description,
+                  height: 150,
+                  hintText: "Package Description",
+                  maxLength: 200,
+                  maxLines: 10,
+                  keyboardtype: TextInputType.multiline,
+                  textInputAction: TextInputAction.done,
                 ),
                 AppPadding.heightSpace30,
                 AppInputField(

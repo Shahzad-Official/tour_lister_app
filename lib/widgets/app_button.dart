@@ -61,9 +61,11 @@ class RoundButton extends StatelessWidget {
   final Color? textColor, buttonColor;
   final void Function()? onTap;
   final bool isLoading;
+  final BoxShape shape;
   const RoundButton({
     Key? key,
     this.width,
+    this.shape = BoxShape.rectangle,
     required this.text,
     this.onTap,
     this.fontSize = 12,
@@ -81,7 +83,9 @@ class RoundButton extends StatelessWidget {
         height: height,
         width: width,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
+          shape: shape,
+          borderRadius:
+              shape == BoxShape.circle ? null : BorderRadius.circular(5),
           border: Border.all(
             color: AppColors.primarycolor,
           ),

@@ -1,5 +1,7 @@
+import 'dart:collection';
 import 'dart:io';
 
+import 'package:duration_picker/duration_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,6 +32,7 @@ class CreatePackageController extends GetxController {
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
   TextEditingController extraInfoController = TextEditingController();
+  TextEditingController description = TextEditingController();
   File? termsAndConditionFile;
   int toursStayDays = 0;
   int dangerRating = 1;
@@ -37,18 +40,17 @@ class CreatePackageController extends GetxController {
   DateTime? endDate;
   TimeOfDay? startTime;
   TimeOfDay? endTime;
-  int initialAge = 16;
-  String selectedCat = "Family";
+  int initialAge = 1;
+  String selectedCat = "Family/Group";
   String selectedPersons = "3";
-  List<String> availableNoofSeats = [
-    "3",
-    "4",
-    "5",
-  ];
+  List<String> get availableNoofSeats => List.generate(
+        17,
+        (index) => (3 + index).toString(),
+      );
   List<String> catagories = [
     "Individual",
     "Couples",
-    "Family",
+    "Family/Group",
   ];
 
   File? _otherImage;
@@ -147,7 +149,7 @@ class CreatePackageController extends GetxController {
     } else if (int.parse(startPrice.text) > int.parse(endPrice.text)) {
       Get.snackbar(
         "Error",
-        "StartPrice must be lower than endPrice.",
+        "StartPrice must be lower than Final Price.",
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
@@ -186,10 +188,10 @@ class CreatePackageController extends GetxController {
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
-    } else if (extraInfoController.text.isEmpty) {
+    } else if (description.text.isEmpty) {
       Get.snackbar(
         "Error",
-        "Please Give Extra Info for package",
+        "Please provide Description for package",
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
@@ -258,43 +260,18 @@ class CreatePackageController extends GetxController {
     }
   }
 
-  calculateDateInDays() {
-    var newStartDate = DateTime(
-      startDate!.year,
-      startDate!.month,
-      startDate!.day,
-      startTime!.hour,
-      startTime!.minute,
-    );
-    var newEndDate = DateTime(
-      endDate!.year,
-      endDate!.month,
-      endDate!.day,
-      endTime!.hour,
-      endDate!.minute,
-    );
-
-    toursStayDays = -(newStartDate.difference(newEndDate).inDays);
-    if (toursStayDays < 2) {
-      var inHours = -(newStartDate.difference(newEndDate).inHours);
-      print("hours $inHours");
-    } else {
-      print("Days$toursStayDays");
-    }
-
-    update();
-  }
-
-  selectTime(context) async {
-    var time = await showTimePicker(
+  selectTime(context) {
+    showDurationPicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      initialTime: const Duration(minutes: 10),
+    ).then(
+      (value) {
+        Duration duration = value!;
+        String sDuration =
+            "${duration.inHours} H:${duration.inMinutes.remainder(60)} M";
+        cuttoffTime.text = sDuration;
+      },
     );
-    if (time != null) {
-      var formatedTime = time.format(context);
-      cuttoffTime.text = formatedTime;
-      update();
-    }
   }
 
   selectStartTime(context) async {
@@ -325,11 +302,7 @@ class CreatePackageController extends GetxController {
       endTime = time;
       var formatedTime = time.format(context);
       endTimeController.text = formatedTime;
-      if (startDateController.text.isNotEmpty &&
-          endDateController.text.isNotEmpty &&
-          startTimeController.text.isNotEmpty) {
-        calculateDateInDays();
-      }
+
       update();
     }
   }
@@ -378,12 +351,45 @@ class CreatePackageController extends GetxController {
     update();
   }
 
-  List<IconsModel> listIcons = [];
+  List<IconsModel> get listIcons {
+    return icons.toSet().toList();
+  }
+
   addIcon({
     required IconsModel iconData,
   }) {
-    listIcons.add(iconData);
+    icons.add(iconData);
     update();
+  }
+
+  removeIcon({
+    required IconsModel iconData,
+  }) {
+    icons.remove(iconData);
+    update();
+  }
+
+  List<IconsModel> icons = [];
+
+  List<int> count = List.generate(20, (index) => 0);
+
+  inclusionAddition(
+    int index,
+  ) {
+    count[index]++;
+
+    update();
+  }
+
+  inclusionSubtraction(
+    int index,
+  ) {
+    if (count[index] == 0) {
+    } else {
+      count[index]--;
+
+      update();
+    }
   }
 }
 

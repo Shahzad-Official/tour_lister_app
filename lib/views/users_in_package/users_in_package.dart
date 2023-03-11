@@ -85,7 +85,6 @@ class UsersInPackage extends StatelessWidget {
                                 name: users[index].name,
                                 dOB: users[index].dOB,
                                 email: users[index].email,
-                                gender: users[index].gender,
                                 phoneNo: users[index].phoneNo,
                                 profileUrl: users[index].pic,
                               ),

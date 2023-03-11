@@ -19,6 +19,7 @@ class AppInputField extends StatelessWidget {
   final TextInputAction textInputAction;
   final int? maxLength;
   final void Function(String query)? onChanged;
+  final String? Function(String? text)? validator;
   const AppInputField({
     Key? key,
     required this.hintText,
@@ -36,6 +37,7 @@ class AppInputField extends StatelessWidget {
     this.textInputAction = TextInputAction.next,
     this.maxLength,
     this.onChanged,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -57,8 +59,10 @@ class AppInputField extends StatelessWidget {
           ],
         ),
         child: TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: onChanged,
           maxLength: maxLength,
+          validator: validator,
           maxLines: maxLines,
           textInputAction: textInputAction,
           enabled: enabled,
@@ -115,6 +119,9 @@ class DropdownContainer extends StatelessWidget {
       child: Align(
         alignment: Alignment.centerLeft,
         child: DropdownButtonFormField(
+          isExpanded: false,
+          menuMaxHeight: 150,
+          borderRadius: BorderRadius.circular(10),
           decoration: const InputDecoration(
             border: InputBorder.none,
           ),

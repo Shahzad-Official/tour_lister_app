@@ -115,21 +115,6 @@ class UserDetails extends StatelessWidget {
               const Divider(),
               AppPadding.heightSpace20,
               AppText(
-                text: "Gender",
-                textcolor: AppColors.headTextColor,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-              ),
-              AppPadding.heightSpace10,
-              AppText(
-                text: gender ?? DummyData.usersData['gender'],
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-              AppPadding.heightSpace10,
-              const Divider(),
-              AppPadding.heightSpace20,
-              AppText(
                 text: "Date of Birth",
                 textcolor: AppColors.headTextColor,
                 fontSize: 15,

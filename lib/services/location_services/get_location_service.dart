@@ -25,13 +25,12 @@ class GetLocationService extends GetxController {
       isLoading = true;
       update();
 
-      // ignore: use_build_context_synchronously
       position = await showLocationPicker(
         context,
         mapType: MapType.normal,
         requiredGPS: true,
         automaticallyAnimateToCurrentLocation: true,
-        initialCenter: const LatLng(30.0736, 71.1805),
+        initialCenter: const LatLng(11.6978351, 122.6217542),
         desiredAccuracy: LocationAccuracy.best,
         title: "Pick your location",
         layersButtonEnabled: true,

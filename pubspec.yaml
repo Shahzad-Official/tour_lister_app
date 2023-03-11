@@ -60,6 +60,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   #Number Picker
   numberpicker: ^2.1.1
+  duration_picker: ^1.1.1
   #Firebase_DataBase
   firebase_core: any
   firebase_auth: ^4.2.5
