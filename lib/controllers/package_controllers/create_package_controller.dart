@@ -146,10 +146,10 @@ class CreatePackageController extends GetxController {
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
-    } else if (int.parse(startPrice.text) > int.parse(endPrice.text)) {
+    } else if (int.parse(startPrice.text) < int.parse(endPrice.text)) {
       Get.snackbar(
         "Error",
-        "StartPrice must be lower than Final Price.",
+        "StartPrice must be higher than Final Price.",
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );

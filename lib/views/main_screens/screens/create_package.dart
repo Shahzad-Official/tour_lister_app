@@ -176,11 +176,6 @@ class CreatePackage extends StatelessWidget {
                       hintText: "Start Price",
                     ),
                     AppInputField(
-                      validator: (text) {
-                        if (text!.isEmpty) {
-                          print("object");
-                        }
-                      },
                       controller: _.endPrice,
                       keyboardtype: TextInputType.number,
                       width: MediaQuery.of(context).size.width * 0.415,
@@ -576,72 +571,72 @@ class CreatePackage extends StatelessWidget {
                           ),
                         ],
                       ),
-                AppPadding.heightSpace30,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AppPadding.heightSpace30,
-                    AppText(
-                      text: "Food Served to Each Person",
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      textcolor: AppColors.headTextColor,
-                    ),
-                    AppPadding.heightSpace30,
-                    GetBuilder<FoodServicesController>(
-                        init: FoodServicesController(),
-                        builder: (controller) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: List.generate(controller.foodIcons.length,
-                                (index) {
-                              return Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: AppColors.backgroundcolor,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.2),
-                                      offset: const Offset(2, 2),
-                                      spreadRadius: 1,
-                                      blurRadius: 10,
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  children: [
-                                    SvgPicture.string(
-                                      controller.foodIcons[index],
-                                      width: 30,
-                                      color: AppColors.headTextColor,
-                                    ),
-                                    NumberPicker(
-                                      itemHeight: 40,
-                                      itemWidth: 70,
-                                      minValue: 1,
-                                      maxValue: 5,
-                                      value:
-                                          controller.foodServedTimesList[index],
-                                      onChanged: (value) {
-                                        controller.changeFoodServesValues(
-                                            value, index);
-                                      },
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: AppColors.primarycolor,
-                                        ),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }),
-                          );
-                        })
-                  ],
-                ),
+                // AppPadding.heightSpace30,
+                // Column(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     AppPadding.heightSpace30,
+                //     AppText(
+                //       text: "Food Served to Each Person",
+                //       fontSize: 15,
+                //       fontWeight: FontWeight.w600,
+                //       textcolor: AppColors.headTextColor,
+                //     ),
+                //     AppPadding.heightSpace30,
+                //     GetBuilder<FoodServicesController>(
+                //         init: FoodServicesController(),
+                //         builder: (controller) {
+                //           return Row(
+                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //             children: List.generate(controller.foodIcons.length,
+                //                 (index) {
+                //               return Container(
+                //                 padding: const EdgeInsets.all(10),
+                //                 decoration: BoxDecoration(
+                //                   borderRadius: BorderRadius.circular(10),
+                //                   color: AppColors.backgroundcolor,
+                //                   boxShadow: [
+                //                     BoxShadow(
+                //                       color: Colors.black.withOpacity(0.2),
+                //                       offset: const Offset(2, 2),
+                //                       spreadRadius: 1,
+                //                       blurRadius: 10,
+                //                     ),
+                //                   ],
+                //                 ),
+                //                 child: Column(
+                //                   children: [
+                //                     SvgPicture.string(
+                //                       controller.foodIcons[index],
+                //                       width: 30,
+                //                       color: AppColors.headTextColor,
+                //                     ),
+                //                     NumberPicker(
+                //                       itemHeight: 40,
+                //                       itemWidth: 70,
+                //                       minValue: 1,
+                //                       maxValue: 5,
+                //                       value:
+                //                           controller.foodServedTimesList[index],
+                //                       onChanged: (value) {
+                //                         controller.changeFoodServesValues(
+                //                             value, index);
+                //                       },
+                //                       decoration: BoxDecoration(
+                //                         border: Border.all(
+                //                           color: AppColors.primarycolor,
+                //                         ),
+                //                         borderRadius: BorderRadius.circular(10),
+                //                       ),
+                //                     ),
+                //                   ],
+                //                 ),
+                //               );
+                //             }),
+                //           );
+                //         })
+                //   ],
+                // ),
                 AppPadding.heightSpace30,
                 AppInputField(
                   controller: _.termsAndConditions,

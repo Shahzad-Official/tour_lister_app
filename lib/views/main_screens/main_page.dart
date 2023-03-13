@@ -78,7 +78,9 @@ class MainPage extends StatelessWidget {
                   : null,
               body: _.mainScreens[_.currentIndex],
               bottomNavigationBar: AppBottomSheet(
-                onIndexChanged: (index) => _.changeScreen(index),
+                onIndexChanged: (index) {
+                  _.changeScreen(index);
+                },
                 currentIndex: _.currentIndex,
               ),
             );
