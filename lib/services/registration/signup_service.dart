@@ -3,14 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/services/get_user_data.dart';
 
 import 'package:tour_lister_app/utils/app_snackbar.dart';
 
 import '../../views/main_screens/main_page.dart';
 import '../../views/register/login.dart';
-import '../../views/register/sign_up.dart';
 import 'login_service.dart';
 
 class SignupService {

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tour_lister_app/models/icons_model.dart';
 import 'package:tour_lister_app/utils/app_snackbar.dart';

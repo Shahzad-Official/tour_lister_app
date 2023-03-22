@@ -28,94 +28,108 @@ class CreatePackageService {
     required String dangerRating,
     required String ageSuitability,
     required String typeOfTour,
-    required String foodServed,
     required File termsAndCondition,
     required double latitude,
     required double longitude,
+    required String description,
+    required List inclusions,
     String? extraInfo,
   }) async {
     try {
-      await _firestore.collection("packages").add({
-        "packageId": "",
-        "created_on": DateTime.now(),
-        "listerId": _firebaseAuth.currentUser!.uid,
-        "packageName": packageName,
-        "location": {
-          "address": address,
-          "latitude": latitude,
-          "longitude": longitude,
+      await _firestore.collection("packages").add(
+        {
+          "packageId": "",
+          "created_on": DateTime.now(),
+          "listerId": _firebaseAuth.currentUser!.uid,
+          "packageName": packageName,
+          "location": {
+            "address": address,
+            "latitude": latitude,
+            "longitude": longitude,
+          },
+          "inclusions": inclusions,
+          "startTime": startTime,
+          "isLive": false,
+          "endTime": endTime,
+          "startDate": startDate,
+          "endDate": endDate,
+          "startPrice": startPrice,
+          "endPrice": endPrice,
+          "cuttOffTime": cuttOffTime,
+          "noOfPersonsInPackage": noOfPersonsInPackage,
+          "dangerRating": dangerRating,
+          "ageSuitability": ageSuitability,
+          "typeOfTour": typeOfTour,
+          "description": description,
+          "extraInfo": extraInfo,
         },
-        "startTime": startTime,
-        "isLive": false,
-        "endTime": endTime,
-        "startDate": startDate,
-        "endDate": endDate,
-        "startPrice": startPrice,
-        "endPrice": endPrice,
-        "cuttOffTime": cuttOffTime,
-        "noOfPersonsInPackage": noOfPersonsInPackage,
-        "dangerRating": dangerRating,
-        "ageSuitability": ageSuitability,
-        "typeOfTour": typeOfTour,
-        "foodServed": foodServed,
-        "extraInfo": extraInfo,
-      }).then((value) async {
-        await _firestore.collection("packages").doc(value.id).update({
-          "packageId": value.id,
-        });
+      ).then(
+        (value) async {
+          await _firestore.collection("packages").doc(value.id).update(
+            {
+              "packageId": value.id,
+            },
+          );
 
-        await _firebaseStorage
-            .ref("packages_files")
-            .child(value.id)
-            .child("thumbnail")
-            .putFile(coverImage)
-            .then((p0) async {
-          var thumbnailUrl = await p0.ref.getDownloadURL();
-          await _firestore.collection("packages").doc(value.id).set(
-            {
-              "thumbnailUrl": thumbnailUrl,
+          await _firebaseStorage
+              .ref("packages_files")
+              .child(value.id)
+              .child("thumbnail")
+              .putFile(coverImage)
+              .then(
+            (p0) async {
+              var thumbnailUrl = await p0.ref.getDownloadURL();
+              await _firestore.collection("packages").doc(value.id).set(
+                {
+                  "thumbnailUrl": thumbnailUrl,
+                },
+                SetOptions(
+                  merge: true,
+                ),
+              );
             },
-            SetOptions(
-              merge: true,
-            ),
           );
-        });
 
-        await _firebaseStorage
-            .ref("packages_files")
-            .child(value.id)
-            .child("otherImages")
-            .putFile(otherImage)
-            .then((p0) async {
-          var otherImage = await p0.ref.getDownloadURL();
-          await _firestore.collection("packages").doc(value.id).set(
-            {
-              "otherImage": [
-                otherImage,
-              ],
+          await _firebaseStorage
+              .ref("packages_files")
+              .child(value.id)
+              .child("otherImages")
+              .putFile(otherImage)
+              .then(
+            (p0) async {
+              var otherImage = await p0.ref.getDownloadURL();
+              await _firestore.collection("packages").doc(value.id).set(
+                {
+                  "otherImage": [
+                    otherImage,
+                  ],
+                },
+                SetOptions(
+                  merge: true,
+                ),
+              );
             },
-            SetOptions(
-              merge: true,
-            ),
           );
-        });
-        await _firebaseStorage
-            .ref("packages_files")
-            .child(value.id)
-            .child("termsAndConditions")
-            .putFile(termsAndCondition)
-            .then((p0) async {
-          var terms = await p0.ref.getDownloadURL();
-          await _firestore.collection("packages").doc(value.id).set(
-            {
-              "termsAndConditions": terms,
+          await _firebaseStorage
+              .ref("packages_files")
+              .child(value.id)
+              .child("termsAndConditions")
+              .putFile(termsAndCondition)
+              .then(
+            (p0) async {
+              var terms = await p0.ref.getDownloadURL();
+              await _firestore.collection("packages").doc(value.id).set(
+                {
+                  "termsAndConditions": terms,
+                },
+                SetOptions(
+                  merge: true,
+                ),
+              );
             },
-            SetOptions(
-              merge: true,
-            ),
           );
-        });
-      });
+        },
+      );
       AppSnackbar.snackBar(
           title: "Message", message: "Package created Successfully");
       Get.offAll(() => MainPage());

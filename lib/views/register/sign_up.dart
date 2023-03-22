@@ -10,7 +10,6 @@ import 'package:tour_lister_app/views/register/login.dart';
 
 import '../../constants/app_paddings.dart';
 import '../../constants/svg_icons.dart';
-import '../../services/registration/login_service.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_input_field.dart';
 import '../../widgets/app_text.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:tour_lister_app/utils/app_snackbar.dart';
 
 class EditPackageController extends GetxController {
   TextEditingController startDateController = TextEditingController();
@@ -74,37 +73,8 @@ class EditPackageController extends GetxController {
       endTimeController.text = formatedTime;
       if (startDateController.text.isNotEmpty &&
           endDateController.text.isNotEmpty &&
-          startTimeController.text.isNotEmpty) {
-        calculateDateInDays();
-      }
+          startTimeController.text.isNotEmpty) {}
       update();
     }
-  }
-
-  calculateDateInDays() {
-    var newStartDate = DateTime(
-      startDate!.year,
-      startDate!.month,
-      startDate!.day,
-      startTime!.hour,
-      startTime!.minute,
-    );
-    var newEndDate = DateTime(
-      endDate!.year,
-      endDate!.month,
-      endDate!.day,
-      endTime!.hour,
-      endDate!.minute,
-    );
-
-    tourStayDays = -(newStartDate.difference(newEndDate).inDays);
-    if (tourStayDays < 2) {
-      var inHours = -(newStartDate.difference(newEndDate).inHours);
-      print("hours $inHours");
-    } else {
-      print("Days$tourStayDays");
-    }
-
-    update();
   }
 }

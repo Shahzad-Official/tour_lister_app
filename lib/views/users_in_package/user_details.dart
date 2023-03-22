@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:tour_lister_app/utils/app_navigation.dart';
 import 'package:tour_lister_app/views/chat_views/chat_screen.dart';
 import 'package:tour_lister_app/widgets/app_button.dart';

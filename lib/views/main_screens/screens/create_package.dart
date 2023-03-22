@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
@@ -447,7 +446,7 @@ class CreatePackage extends StatelessWidget {
                     }
                   },
                 ),
-                _.listIcons.isEmpty
+                _.icons.isEmpty
                     ? const SizedBox()
                     : Column(
                         children: [
@@ -455,7 +454,7 @@ class CreatePackage extends StatelessWidget {
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: _.listIcons.length,
+                            itemCount: _.icons.length,
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 8.0),
@@ -491,14 +490,14 @@ class CreatePackage extends StatelessWidget {
                                                     height: 50,
                                                     width: 50,
                                                     child: AppCachedImage(
-                                                      picUrl: _.listIcons[index]
+                                                      picUrl: _.icons[index]
                                                           .iconImage
                                                           .toString(),
                                                     ),
                                                   ),
                                                   AppText(
-                                                    text: _.listIcons[index]
-                                                        .iconName
+                                                    text: _
+                                                        .icons[index].iconName
                                                         .toString(),
                                                   ),
                                                 ],
@@ -508,7 +507,7 @@ class CreatePackage extends StatelessWidget {
                                           InkWell(
                                             onTap: () {
                                               _.removeIcon(
-                                                iconData: _.listIcons[index],
+                                                iconData: _.icons[index],
                                               );
                                             },
                                             child: const CircleAvatar(

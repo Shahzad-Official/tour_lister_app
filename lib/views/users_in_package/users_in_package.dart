@@ -48,9 +48,9 @@ class UsersInPackage extends StatelessWidget {
                 fontSize: 23,
                 textcolor: Colors.black,
               ),
-              actions: [
+              actions: const [
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: EdgeInsets.only(top: 8.0),
                   child: AppCircularCachedImage(
                     picUrl: DummyData.profilePic,
                   ),

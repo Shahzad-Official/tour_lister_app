@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tour_lister_app/controllers/bookings_controllers/manage_bookings_controller.dart';
@@ -12,7 +10,6 @@ import 'package:tour_lister_app/widgets/app_button.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_paddings.dart';
-import '../../../constants/dummy_data.dart';
 import '../../../services/package_services/get_all_packages.dart';
 import '../../../widgets/app_cached_image.dart';
 import '../../../widgets/app_text.dart';
@@ -64,7 +61,6 @@ class _ManageBookingsState extends State<ManageBookings> {
                             future: _userData.getUserData(
                                 FirebaseAuth.instance.currentUser!.uid),
                             builder: (context, snapshot) {
-                              print(snapshot.data);
                               if (snapshot.hasData) {
                                 return AppCircularCachedImage(
                                   picUrl: snapshot.data!.profile!,

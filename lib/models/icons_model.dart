@@ -14,10 +14,10 @@ class IconsModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['created_on'] = this.createdOn;
-    data['IconImage'] = this.iconImage;
-    data['IconName'] = this.iconName;
+    final Map<String, dynamic> data = {};
+    data['created_on'] = createdOn;
+    data['IconImage'] = iconImage;
+    data['IconName'] = iconName;
     return data;
   }
 }

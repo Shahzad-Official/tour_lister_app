@@ -8,7 +8,7 @@ import '../../views/main_screens/screens/manage_bookings.dart';
 import '../../views/main_screens/screens/manage_packages.dart';
 
 class MainPageController extends GetxController {
-  int currentIndex = 0;
+  int currentIndex = 1;
   final CreatePackageController _controller =
       Get.put(CreatePackageController());
 

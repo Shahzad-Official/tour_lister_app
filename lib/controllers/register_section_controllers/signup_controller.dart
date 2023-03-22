@@ -5,7 +5,6 @@ import 'package:tour_lister_app/utils/app_snackbar.dart';
 
 import '../../constants/app_colors.dart';
 import '../../services/registration/signup_service.dart';
-import '../../views/main_screens/main_page.dart';
 
 class SignupController extends GetxController {
   TextEditingController email = TextEditingController();
@@ -106,7 +105,6 @@ class SignupController extends GetxController {
         );
         AppSnackbar.snackBar(
             title: "Message", message: "Successfully Registered");
-        print(docId);
       } catch (e) {
         AppSnackbar.snackBar(title: "Messag", message: e.toString());
       }

@@ -42,12 +42,12 @@ class CompletedBookings extends StatelessWidget {
                       .eventsData.eventList[index].coverImage!,
                   bottomButton: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
+                    children: const [
                       RoundButton(
                         fontSize: 10,
                         text: "Duplicate",
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 10,
                       ),
                       RoundButton(

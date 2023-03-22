@@ -11,26 +11,32 @@ class DeletePackageService {
           .child(filesPath)
           .child("thumbnail")
           .delete()
-          .then((value) async {
-        await FirebaseStorage.instance
-            .ref("packages_files")
-            .child(filesPath)
-            .child("otherImages")
-            .delete()
-            .then((value) async {
+          .then(
+        (value) async {
           await FirebaseStorage.instance
               .ref("packages_files")
               .child(filesPath)
-              .child("termsAndConditions")
+              .child("otherImages")
               .delete()
-              .then((value) async {
-            await FirebaseFirestore.instance
-                .collection("packages")
-                .doc(packageId)
-                .delete();
-          });
-        });
-      });
+              .then(
+            (value) async {
+              await FirebaseStorage.instance
+                  .ref("packages_files")
+                  .child(filesPath)
+                  .child("termsAndConditions")
+                  .delete()
+                  .then(
+                (value) async {
+                  await FirebaseFirestore.instance
+                      .collection("packages")
+                      .doc(packageId)
+                      .delete();
+                },
+              );
+            },
+          );
+        },
+      );
     } catch (e) {
       debugPrint(e.toString());
     }

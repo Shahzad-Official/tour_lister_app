@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:io';
 
 import 'package:duration_picker/duration_picker.dart';
@@ -11,6 +10,7 @@ import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/models/icons_model.dart';
 import 'package:tour_lister_app/services/location_services/get_location_service.dart';
 import 'package:tour_lister_app/services/package_services/create_package_service.dart';
+import 'package:tour_lister_app/services/package_services/get_all_packages.dart';
 
 import '../../constants/app_colors.dart';
 import '../../utils/app_snackbar.dart';
@@ -18,6 +18,7 @@ import '../../utils/app_snackbar.dart';
 class CreatePackageController extends GetxController {
   final CreatePackageService _createPackageService = CreatePackageService();
   final GetLocationService _locationService = GetLocationService();
+  GetAllPackages getAllPackages = GetAllPackages();
   TextEditingController packageName = TextEditingController();
   TextEditingController location = TextEditingController();
   TextEditingController cuttoffTime = TextEditingController();
@@ -217,9 +218,18 @@ class CreatePackageController extends GetxController {
         ageSuitability: initialAge.toString(),
         typeOfTour: selectedCat,
         extraInfo: extraInfoController.text,
-        foodServed:
-            "${Get.find<FoodServicesController>().breakFastServedTimes} BreakFast  ${Get.find<FoodServicesController>().lunchServedTimes} Lunch  ${Get.find<FoodServicesController>().dinnerServedTimes} Dinner  ",
+        description: description.text,
         termsAndCondition: termsAndConditionFile!,
+        inclusions: List.generate(
+          icons.length,
+          (index) {
+            return {
+              "iconName": icons[index].iconName,
+              "iconImage": icons[index].iconImage,
+              "inclusionCount": count[index],
+            };
+          },
+        ),
       );
       isLoading = false;
       update();
@@ -351,10 +361,6 @@ class CreatePackageController extends GetxController {
     update();
   }
 
-  List<IconsModel> get listIcons {
-    return icons.toSet().toList();
-  }
-
   addIcon({
     required IconsModel iconData,
   }) {
@@ -391,36 +397,13 @@ class CreatePackageController extends GetxController {
       update();
     }
   }
-}
 
-class FoodServicesController extends GetxController {
-  int dinnerServedTimes = 1;
-  int breakFastServedTimes = 1;
-  int lunchServedTimes = 1;
+  loadData() async {
+    await getAllPackages.getAllPackages();
+  }
 
-  List<String> foodIcons = [
-    SvgIcons.breakFast,
-    SvgIcons.lunch,
-    SvgIcons.dinner,
-  ];
-  List<int> foodServedTimesList = [
-    1,
-    1,
-    1,
-  ];
-
-  changeFoodServesValues(int value, int index) {
-    if (index == 0) {
-      breakFastServedTimes = value;
-      foodServedTimesList[0] = breakFastServedTimes;
-    } else if (index == 1) {
-      lunchServedTimes = value;
-      foodServedTimesList[1] = lunchServedTimes;
-    } else if (index == 2) {
-      dinnerServedTimes = value;
-      foodServedTimesList[2] = dinnerServedTimes;
-    }
-
-    update();
+  @override
+  void onInit() {
+    super.onInit();
   }
 }

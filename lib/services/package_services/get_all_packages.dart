@@ -4,18 +4,30 @@ import 'package:tour_lister_app/models/packages/packages_model.dart';
 
 class GetAllPackages {
   List<PackagesModel> allPackages = [];
-  Future<List<PackagesModel>> getAllPackages() async {
+  Future<List<PackagesModel>> getAllPackages({
+    bool isLive = true,
+  }) async {
     allPackages.clear();
     await FirebaseFirestore.instance
         .collection("packages")
         .where("listerId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .where(
+          "isLive",
+          isEqualTo: isLive,
+        )
         .orderBy("created_on")
         .get()
-        .then((value) {
-      for (var i in value.docs) {
-        allPackages.add(PackagesModel.fromJson(i.data()));
-      }
-    });
+        .then(
+      (value) {
+        for (var i in value.docs) {
+          allPackages.add(
+            PackagesModel.fromJson(
+              i.data(),
+            ),
+          );
+        }
+      },
+    );
     return allPackages;
   }
 
