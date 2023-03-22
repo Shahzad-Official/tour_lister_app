@@ -14,7 +14,7 @@ import '../../constants/svg_icons.dart';
 import '../../widgets/app_input_field.dart';
 import '../../widgets/app_text.dart';
 
-class EditPackage extends StatelessWidget {
+class EditPackage extends StatefulWidget {
   final String picUrl,
       pkgName,
       pkgLocation,
@@ -36,16 +36,26 @@ class EditPackage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<EditPackage> createState() => _EditPackageState();
+}
+
+class _EditPackageState extends State<EditPackage> {
+  EditPackageController packageController = Get.put(EditPackageController());
+  initializeData() {
+    if (widget.packageData.packageId != null) {
+      packageController.startDate = DateTime.parse(widget.startDate);
+      packageController.endDate = DateTime.parse(widget.endDate);
+      packageController.startDateController.text =
+          CustomDateFormat.dateFormat(widget.startDate);
+      packageController.endDateController.text =
+          CustomDateFormat.dateFormat(widget.endDate);
+      packageController.startTimeController.text = widget.startTime;
+      packageController.endTimeController.text = widget.endTime;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    EditPackageController packageController = Get.put(EditPackageController());
-    packageController.startDate = DateTime.parse(startDate);
-    packageController.endDate = DateTime.parse(endDate);
-    packageController.startDateController.text =
-        CustomDateFormat.dateFormat(startDate);
-    packageController.endDateController.text =
-        CustomDateFormat.dateFormat(endDate);
-    packageController.startTimeController.text = startTime;
-    packageController.endTimeController.text = endTime;
     return ColoredBox(
       color: AppColors.backgroundcolor,
       child: SafeArea(
@@ -82,7 +92,7 @@ class EditPackage extends StatelessWidget {
                       height: 210,
                       width: double.infinity,
                       child: AppCachedImage(
-                        picUrl: picUrl,
+                        picUrl: widget.picUrl,
                       ),
                     ),
                     AppPadding.heightSpace15,
@@ -97,7 +107,7 @@ class EditPackage extends StatelessWidget {
                       subtitle: Padding(
                         padding: const EdgeInsets.only(top: 5.0),
                         child: AppText(
-                          text: pkgName,
+                          text: widget.pkgName,
                           textcolor: Colors.black,
                           fontSize: 17,
                         ),
@@ -114,7 +124,7 @@ class EditPackage extends StatelessWidget {
                       subtitle: Padding(
                         padding: const EdgeInsets.only(top: 5.0),
                         child: AppText(
-                          text: pkgLocation,
+                          text: widget.pkgLocation,
                           textcolor: Colors.black,
                           fontSize: 16,
                         ),
