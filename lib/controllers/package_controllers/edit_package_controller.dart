@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:duration_picker/duration_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:map_address_picker/models/location_result.dart';
 import '../../constants/app_colors.dart';
 import '../../models/icons_model.dart';
 import '../../services/location_services/get_location_service.dart';
@@ -52,24 +54,29 @@ class EditPackageController extends GetxController {
   ];
 
   File? _otherImage;
+  List<File> allOtherImages = [];
   pickOtherImage() async {
-    var result =
-        await ImagePicker.platform.getImage(source: ImageSource.gallery);
+    var result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+    );
     if (result == null) return;
 
-    _otherImage = File(result.path);
+    _otherImage = File(result.files.first.path!);
+    for (var i in result.files) {
+      allOtherImages.add(File(i.path!));
+    }
 
     // otherImageController.selection = ;
     update();
   }
 
-  File? _coverImage;
+  File? coverImage;
   pickCoverImage() async {
     var result =
         await ImagePicker.platform.getImage(source: ImageSource.gallery);
     if (result == null) return;
 
-    _coverImage = File(result.path);
+    coverImage = File(result.path);
 
     // coverImageController.text = "Uploaded Successfully";
     update();
@@ -86,7 +93,14 @@ class EditPackageController extends GetxController {
     update();
   }
 
-  isValidInfo(context) async {
+  LocationResult? newPosition;
+
+  LocationResult? get position => _locationService.position ?? newPosition;
+
+  isValidInfo(
+    context,
+    packageId,
+  ) async {
     noOfBookigs.text = selectedPersons;
     if (packageName.text.isEmpty) {
       Get.snackbar(
@@ -182,10 +196,11 @@ class EditPackageController extends GetxController {
     } else {
       isLoading = true;
       update();
-      await _createPackageService.createPackage(
+      await _createPackageService.updatePackage(
+        packageId,
         address: location.text,
-        latitude: _locationService.position!.latLng!.latitude,
-        longitude: _locationService.position!.latLng!.longitude,
+        latitude: position!.latLng!.latitude,
+        longitude: position!.latLng!.longitude,
         packageName: packageName.text,
         startTime: startTimeController.text,
         endTime: endTimeController.text,
@@ -194,15 +209,15 @@ class EditPackageController extends GetxController {
         startPrice: startPrice.text,
         endPrice: endPrice.text,
         cuttOffTime: cuttoffTime.text,
-        otherImage: _otherImage!,
-        coverImage: _coverImage!,
+        otherImage: allOtherImages.isEmpty ? [_otherImage!] : allOtherImages,
+        coverImage: coverImage,
         noOfPersonsInPackage: noOfBookigs.text,
         dangerRating: dangerRating.toString(),
         ageSuitability: initialAge.toString(),
         typeOfTour: selectedCat,
         extraInfo: extraInfoController.text,
         description: description.text,
-        termsAndCondition: termsAndConditionFile!,
+        termsAndCondition: termsAndConditionFile,
         inclusions: List.generate(
           icons.length,
           (index) {
@@ -217,6 +232,17 @@ class EditPackageController extends GetxController {
       isLoading = false;
       update();
     }
+  }
+
+  cacelPackage(String packageId) async {
+    await FirebaseFirestore.instance
+        .collection("packages")
+        .doc(packageId)
+        .update(
+      {
+        "isLive": false,
+      },
+    );
   }
 
   selectStartDate(context) async {

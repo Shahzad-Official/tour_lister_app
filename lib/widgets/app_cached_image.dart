@@ -37,10 +37,13 @@ class AppCircularCachedImage extends StatelessWidget {
 class AppCachedImage extends StatelessWidget {
   final String picUrl;
   final double borderRadius;
+  final double? height, width;
   const AppCachedImage({
     Key? key,
     required this.picUrl,
     this.borderRadius = 15,
+    this.height,
+    this.width,
   }) : super(key: key);
 
   @override
@@ -49,6 +52,8 @@ class AppCachedImage extends StatelessWidget {
       imageUrl: picUrl,
       imageBuilder: (context, imageProvider) {
         return Container(
+          height: height,
+          width: width,
           decoration: BoxDecoration(
             color: AppColors.primarycolor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(borderRadius),

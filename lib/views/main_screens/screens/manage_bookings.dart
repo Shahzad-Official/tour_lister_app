@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/controllers/bookings_controllers/manage_bookings_controller.dart';
 import 'package:tour_lister_app/models/lister_profile/profile_model.dart';
 import 'package:tour_lister_app/services/get_user_data.dart';
@@ -63,7 +64,8 @@ class _ManageBookingsState extends State<ManageBookings> {
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return AppCircularCachedImage(
-                                  picUrl: snapshot.data!.profile!,
+                                  picUrl: snapshot.data!.profile ??
+                                      DummyData.profilePic,
                                 );
                               } else {
                                 return const Center(

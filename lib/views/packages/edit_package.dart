@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:map_address_picker/map_address_picker.dart';
+import 'package:map_address_picker/models/location_result.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/controllers/package_controllers/edit_package_controller.dart';
@@ -15,7 +19,8 @@ import '../../services/inclusions_services/get_icons.dart';
 import '../../widgets/app_input_field.dart';
 import '../../widgets/app_text.dart';
 
-class EditPackage extends StatelessWidget {
+class EditPackage extends StatefulWidget {
+  final bool isLive;
   final String picUrl,
       pkgName,
       pkgLocation,
@@ -24,7 +29,7 @@ class EditPackage extends StatelessWidget {
       startTime,
       endTime;
   final PackagesModel packageData;
-  EditPackage({
+  const EditPackage({
     Key? key,
     required this.picUrl,
     required this.endDate,
@@ -34,20 +39,77 @@ class EditPackage extends StatelessWidget {
     required this.startDate,
     required this.startTime,
     required this.packageData,
+    this.isLive = false,
   }) : super(key: key);
+
+  @override
+  State<EditPackage> createState() => _EditPackageState();
+}
+
+class _EditPackageState extends State<EditPackage> {
   final GetIcons _getIcons = GetIcons();
+  EditPackageController packageController = Get.put(EditPackageController());
+  initializeData() {
+    if (widget.packageData.packageId != null) {
+      packageController.startDate = DateTime.parse(widget.startDate);
+      packageController.endDate = DateTime.parse(widget.endDate);
+      packageController.startDateController.text =
+          CustomDateFormat.dateFormat(widget.startDate);
+      packageController.endDateController.text =
+          CustomDateFormat.dateFormat(widget.endDate);
+      packageController.startTimeController.text = widget.startTime;
+      packageController.endTimeController.text = widget.endTime;
+      packageController.packageName.text =
+          widget.packageData.packageName.toString();
+      packageController.location.text =
+          widget.packageData.location!.address.toString();
+      packageController.startPrice.text =
+          widget.packageData.startPrice.toString();
+      packageController.endPrice.text = widget.packageData.endPrice.toString();
+      packageController.cuttoffTime.text =
+          widget.packageData.cuttOffTime.toString();
+      packageController.noOfBookigs.text =
+          widget.packageData.noOfPersonsInPackage.toString();
+      packageController.selectedCat = widget.packageData.typeOfTour.toString();
+      packageController.dangerRating =
+          int.parse(widget.packageData.dangerRating.toString());
+      packageController.initialAge =
+          int.parse(widget.packageData.ageSuitability.toString());
+      packageController.termsAndConditions.text =
+          widget.packageData.termsAndConditions.toString();
+      packageController.description.text =
+          widget.packageData.description.toString();
+      packageController.extraInfoController.text =
+          widget.packageData.extraInfo ?? "";
+      packageController.newPosition = LocationResult(
+        latLng: LatLng(
+          widget.packageData.location!.latitude!,
+          widget.packageData.location!.longitude!,
+        ),
+      );
+
+      if (widget.packageData.inclusions != null) {
+        packageController.icons = List.generate(
+          widget.packageData.inclusions!.length,
+          (index) => IconsModel.fromJson(
+            {
+              "IconImage": widget.packageData.inclusions![index].iconImage,
+              "IconName": widget.packageData.inclusions![index].iconName,
+            },
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    initializeData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    EditPackageController packageController = Get.put(EditPackageController());
-    packageController.startDate = DateTime.parse(startDate);
-    packageController.endDate = DateTime.parse(endDate);
-    packageController.startDateController.text =
-        CustomDateFormat.dateFormat(startDate);
-    packageController.endDateController.text =
-        CustomDateFormat.dateFormat(endDate);
-    packageController.startTimeController.text = startTime;
-    packageController.endTimeController.text = endTime;
     return ColoredBox(
       color: AppColors.backgroundcolor,
       child: SafeArea(
@@ -88,61 +150,104 @@ class EditPackage extends StatelessWidget {
                         child: Stack(
                           alignment: AlignmentDirectional.center,
                           children: [
-                            AppCachedImage(
-                              picUrl: picUrl,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                _.pickCoverImage();
-                              },
-                              child: const Icon(
-                                Icons.camera_alt,
-                                color: AppColors.headTextColor,
-                                size: 33,
+                            packageController.coverImage != null
+                                ? Image.file(packageController.coverImage!)
+                                : AppCachedImage(
+                                    picUrl: widget.picUrl,
+                                  ),
+                            DecoratedBox(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.primarycolor,
                               ),
-                            )
+                              child: IconButton(
+                                highlightColor: AppColors.primarycolor,
+                                hoverColor: AppColors.primarycolor,
+                                splashColor: AppColors.primarycolor,
+                                onPressed: () {
+                                  _.pickCoverImage();
+                                },
+                                icon: const Icon(
+                                  Icons.camera_alt,
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
                       AppPadding.heightSpace15,
-                      ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: AppText(
-                          text: "Package Name",
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          textcolor: AppColors.headTextColor,
-                        ),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 5.0),
-                          child: AppText(
-                            text: pkgName,
-                            textcolor: Colors.black,
-                            fontSize: 17,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppText(
+                            text: "Pick Package Other Images",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textcolor: AppColors.headTextColor,
+                          ),
+                          DecoratedBox(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.primarycolor,
+                            ),
+                            child: IconButton(
+                              highlightColor: AppColors.primarycolor,
+                              hoverColor: AppColors.primarycolor,
+                              splashColor: AppColors.primarycolor,
+                              onPressed: () {
+                                _.pickOtherImage();
+                              },
+                              icon: const Icon(
+                                Icons.camera_alt,
+                                color: Color.fromARGB(255, 255, 255, 255),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      AppPadding.heightSpace10,
+                      SizedBox(
+                        height: 100,
+                        width: double.infinity,
+                        child: SingleChildScrollView(
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            spacing: 20,
+                            children: List.generate(
+                              _.allOtherImages.isEmpty
+                                  ? widget.packageData.otherImage!.length
+                                  : _.allOtherImages.length,
+                              (index) {
+                                if (_.allOtherImages.isEmpty) {
+                                  return AppCachedImage(
+                                    height: 100,
+                                    width: 100,
+                                    picUrl:
+                                        widget.packageData.otherImage![index],
+                                  );
+                                } else {
+                                  return Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: FileImage(
+                                          _.allOtherImages[index],
+                                        ),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
                           ),
                         ),
                       ),
-                      ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: AppText(
-                          text: "Package Location",
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          textcolor: AppColors.headTextColor,
-                        ),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 5.0),
-                          child: AppText(
-                            text: pkgLocation,
-                            textcolor: Colors.black,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                      AppPadding.heightSpace30,
-                      //updated to github
-                      //ma ny bh const remove krky push kya ha abhi commit
+                      AppPadding.heightSpace20,
                       AppInputField(
+                        enabled: !widget.isLive,
                         controller: _.packageName,
                         hintText: "Package Name",
                       ),
@@ -699,35 +804,40 @@ class EditPackage extends StatelessWidget {
                           children: [
                             Expanded(
                               child: AppButton(
+                                isLoading: _.isLoading,
                                 btnText: "Save",
-                                ontap: () {
-                                  Navigator.pushReplacement(
+                                ontap: () async {
+                                  await _.isValidInfo(
                                     context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MainPage(),
-                                    ),
+                                    widget.packageData.packageId,
                                   );
+                                  // Get.offAll(
+                                  //   () => MainPage(),
+                                  // );
                                 },
                               ),
                             ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Expanded(
-                              child: AppButton(
-                                btnText: "Live",
-                                ontap: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MainPage(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
+                            // const SizedBox(
+                            //   width: 20,
+                            // ),
+                            // Expanded(
+                            //   child: AppButton(
+                            //     btnText: "Live",
+                            //     ontap: () {
+                            //       Navigator.pushReplacement(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) => MainPage(),
+                            //         ),
+                            //       );
+                            //     },
+                            //   ),
+                            // ),
                           ],
                         ),
+                      ),
+                      TextFormField(
+                        initialValue: widget.packageData.toString(),
                       ),
                     ],
                   );

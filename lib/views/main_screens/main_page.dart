@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
+import 'package:tour_lister_app/constants/dummy_data.dart';
 
 import 'package:tour_lister_app/controllers/main_page_controller/main_page_controller.dart';
 import 'package:tour_lister_app/models/lister_profile/profile_model.dart';
@@ -61,7 +62,8 @@ class MainPage extends StatelessWidget {
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
                                           return AppCircularCachedImage(
-                                            picUrl: snapshot.data!.profile!,
+                                            picUrl: snapshot.data!.profile ??
+                                                DummyData.profilePic,
                                           );
                                         } else {
                                           return const Center(

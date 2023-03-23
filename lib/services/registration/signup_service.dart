@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/services/get_user_data.dart';
 
 import 'package:tour_lister_app/utils/app_snackbar.dart';
@@ -20,6 +21,7 @@ class SignupService {
     required String email,
     required String displayName,
     required String photoURL,
+    String? phoneNo,
   }) async {
     await FirebaseFirestore.instance
         .collection("users")
@@ -28,19 +30,20 @@ class SignupService {
       if (value.docs.isEmpty) {
         FirebaseFirestore.instance.collection("users").doc(uid).set({
           "email": email,
-          "role": "user",
+          "role": "lister",
           "uid": uid,
           "userName": displayName,
           "profile": photoURL,
           "dob": "10-10-2000",
-          "phoneNo": "+923000000000",
+          "phoneNo": phoneNo ?? "+923000000000",
           "isVerified": false,
           "emailVerified": true,
           "created_on": DateTime.now(),
           "disabled": false,
           "commission": "5",
         });
-        AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
+        AppSnackbar.snackBar(
+            title: "Message", message: "Successfully SignedUp");
         Get.offAll(() => MainPage());
       } else {
         await _userData.getUserData(uid);
@@ -48,12 +51,12 @@ class SignupService {
         if (_userData.userProfile.uid == null) {
           FirebaseFirestore.instance.collection("users").doc(uid).set({
             "email": email,
-            "role": "user",
+            "role": "lister",
             "uid": uid,
             "userName": displayName,
             "profile": photoURL,
             "dob": "10-10-2000",
-            "phoneNo": "+923000000000",
+            "phoneNo": phoneNo ?? "+923000000000",
             "isVerified": false,
             "emailVerified": true,
             "created_on": DateTime.now(),
@@ -61,7 +64,7 @@ class SignupService {
             "commission": "5",
           });
           AppSnackbar.snackBar(
-              title: "Message", message: "Successfully LogedIn");
+              title: "Message", message: "Successfully SignedUp");
           Get.offAll(() => MainPage());
         } else if (_userData.userProfile.uid == uid &&
             _userData.userProfile.role == "lister") {
@@ -90,8 +93,9 @@ class SignupService {
       await verifyUser(
         uid: authCredentials.user!.uid,
         email: email,
-        displayName: authCredentials.user!.displayName!,
-        photoURL: authCredentials.user!.photoURL!,
+        displayName: userName,
+        photoURL: DummyData.profilePic,
+        phoneNo: phoneNo,
       );
       await LoginService.loginUser(email: email, password: password);
     } catch (e) {
@@ -134,10 +138,11 @@ class SignupService {
           .signInWithCredential(facebookAuthCredential);
       if (user.user != null) {
         await verifyUser(
-            uid: user.user!.uid,
-            email: user.user!.email!,
-            displayName: user.user!.displayName!,
-            photoURL: user.user!.photoURL!);
+          uid: user.user!.uid,
+          email: user.user!.email!,
+          displayName: user.user!.displayName!,
+          photoURL: user.user!.photoURL!,
+        );
         AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
         Get.offAll(() => MainPage());
       } else {

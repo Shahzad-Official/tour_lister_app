@@ -1,15 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
+import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/controllers/profile_controllers/account_settings_controller.dart';
 import 'package:tour_lister_app/models/lister_profile/profile_model.dart';
 import 'package:tour_lister_app/services/get_user_data.dart';
 import 'package:tour_lister_app/views/lister_profile/lister_profile.dart';
+import 'package:tour_lister_app/views/register/get_started.dart';
 import 'package:tour_lister_app/views/settings_screens/notification_page.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
 
@@ -67,7 +71,8 @@ class ListerAccount extends StatelessWidget {
                               children: [
                                 snapshot.hasData
                                     ? AppCircularCachedImage(
-                                        picUrl: snapshot.data!.profile!,
+                                        picUrl: snapshot.data!.profile ??
+                                            DummyData.profilePic,
                                       )
                                     : const Center(
                                         child: CircularProgressIndicator(
@@ -254,6 +259,29 @@ class ListerAccount extends StatelessWidget {
                               ),
                             )
                           : const SizedBox(),
+                      const Divider(),
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        onTap: () async {
+                          await FirebaseAuth.instance.signOut();
+                          await GoogleSignIn().signOut();
+                          await FacebookAuth.instance.logOut();
+                          Get.offAll(
+                            () => GetStarted(),
+                          );
+                        },
+                        leading: const Icon(
+                          Icons.power_settings_new_rounded,
+                          color: Colors.red,
+                        ),
+                        horizontalTitleGap: 0,
+                        title: AppText(
+                          text: "LogOut",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                          textcolor: Colors.red,
+                        ),
+                      ),
                     ],
                   );
                 }),

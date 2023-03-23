@@ -137,4 +137,129 @@ class CreatePackageService {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }
   }
+
+  updatePackage(
+    String packageId, {
+    String? packageName,
+    String? address,
+    String? startTime,
+    String? endTime,
+    String? startDate,
+    String? endDate,
+    String? startPrice,
+    String? endPrice,
+    String? cuttOffTime,
+    List<File>? otherImage,
+    File? coverImage,
+    String? noOfPersonsInPackage,
+    String? dangerRating,
+    String? ageSuitability,
+    String? typeOfTour,
+    File? termsAndCondition,
+    double? latitude,
+    double? longitude,
+    String? description,
+    List? inclusions,
+    String? extraInfo,
+  }) async {
+    try {
+      await _firestore.collection("packages").doc(packageId).update(
+        {
+          "packageName": packageName,
+          "location": {
+            "address": address,
+            "latitude": latitude,
+            "longitude": longitude,
+          },
+          "inclusions": inclusions,
+          "startTime": startTime,
+          "isLive": true,
+          "endTime": endTime,
+          "startDate": startDate,
+          "endDate": endDate,
+          "startPrice": startPrice,
+          "endPrice": endPrice,
+          "cuttOffTime": cuttOffTime,
+          "noOfPersonsInPackage": noOfPersonsInPackage,
+          "dangerRating": dangerRating,
+          "ageSuitability": ageSuitability,
+          "typeOfTour": typeOfTour,
+          "description": description,
+          "extraInfo": extraInfo,
+        },
+      ).then(
+        (value) async {
+          if (coverImage != null) {
+            await _firebaseStorage
+                .ref("packages_files")
+                .child(packageId)
+                .child("thumbnail")
+                .putFile(coverImage)
+                .then(
+              (p0) async {
+                var thumbnailUrl = await p0.ref.getDownloadURL();
+                await _firestore.collection("packages").doc(packageId).set(
+                  {
+                    "thumbnailUrl": thumbnailUrl,
+                  },
+                  SetOptions(
+                    merge: true,
+                  ),
+                );
+              },
+            );
+          } else if (otherImage != null) {
+            List<String> allOtherImages = [];
+            List.generate(
+              otherImage.length,
+              (index) async {
+                await _firebaseStorage
+                    .ref("packages_files")
+                    .child(packageId)
+                    .child("otherImages")
+                    .putFile(otherImage[index])
+                    .then(
+                  (p0) async {
+                    var url = await p0.ref.getDownloadURL();
+                    allOtherImages.add(url);
+                  },
+                );
+              },
+            );
+            await _firestore.collection("packages").doc(packageId).set(
+              {
+                "otherImage": allOtherImages,
+              },
+              SetOptions(
+                merge: true,
+              ),
+            );
+          } else if (termsAndCondition != null) {
+            await _firebaseStorage
+                .ref("packages_files")
+                .child(packageId)
+                .child("termsAndConditions")
+                .putFile(termsAndCondition)
+                .then(
+              (p0) async {
+                var terms = await p0.ref.getDownloadURL();
+                await _firestore.collection("packages").doc(packageId).set(
+                  {
+                    "termsAndConditions": terms,
+                  },
+                  SetOptions(
+                    merge: true,
+                  ),
+                );
+              },
+            );
+          }
+        },
+      );
+      AppSnackbar.snackBar(
+          title: "Message", message: "Package created Successfully");
+    } catch (e) {
+      AppSnackbar.snackBar(title: "Error", message: e.toString());
+    }
+  }
 }

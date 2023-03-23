@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -126,8 +127,7 @@ class _ManagePackagesState extends State<ManagePackages>
                                                   RoundButton(
                                                     width: 150,
                                                     text: "Cancel",
-                                                    onTap: () =>
-                                                        Navigate.back(context),
+                                                    onTap: () async {},
                                                   ),
                                                   AppPadding.heightSpace20,
                                                   GetBuilder<
@@ -171,6 +171,11 @@ class _ManagePackagesState extends State<ManagePackages>
                                           Navigate.to(
                                             context,
                                             EditPackage(
+                                              isLive:
+                                                  controller.selectedTabIndex ==
+                                                          0
+                                                      ? true
+                                                      : false,
                                               packageData: controller
                                                       .newPackagesList
                                                       .isNotEmpty

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/services/profile_services/account_settings_services.dart';
 
 class AccountSettingsController extends GetxController {
@@ -14,7 +15,10 @@ class AccountSettingsController extends GetxController {
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
-    String profile = res.data()!['profile'];
+    String profile = DummyData.profilePic;
+    if (res.data() != null) {
+      profile = res.data()!["profile"];
+    }
     return profile;
   }
 

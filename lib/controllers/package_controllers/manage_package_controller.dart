@@ -28,7 +28,9 @@ class ManagePackagesController extends GetxController {
   List<String> addressList = [];
   List<PackagesModel> packageList = [];
   List<PackagesModel> newPackagesList = [];
+  int selectedTabIndex = 0;
   changeCondition(int index) {
+    selectedTabIndex = index;
     if (index == 0) {
       isLive = true;
       update();
