@@ -98,6 +98,7 @@ class EditPackageController extends GetxController {
   LocationResult? get position => _locationService.position ?? newPosition;
   List<String>? otherImageUrl;
   String? coverImageUrl;
+  String? termsFileUrl;
   isValidInfo(
     context,
     packageId, {
@@ -223,6 +224,7 @@ class EditPackageController extends GetxController {
           extraInfo: extraInfoController.text,
           description: description.text,
           termsAndCondition: termsAndConditionFile,
+          termsFileUrl: termsFileUrl,
           inclusions: List.generate(
             icons.length,
             (index) {

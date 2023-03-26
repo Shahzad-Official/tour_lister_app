@@ -57,6 +57,7 @@ class _EditPackageState extends State<EditPackage> {
     });
     if (widget.packageData.packageId != null) {
       packageController.startDate = DateTime.parse(widget.startDate);
+      packageController.termsFileUrl = widget.packageData.termsAndConditions;
       packageController.endDate = DateTime.parse(widget.endDate);
       packageController.startDateController.text =
           CustomDateFormat.dateFormat(widget.startDate);
@@ -912,6 +913,9 @@ class _EditPackageState extends State<EditPackage> {
                                                             _.packageName,
                                                         hintText:
                                                             "Package Name",
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .done,
                                                       ),
                                                       AppPadding.heightSpace30,
                                                       GetBuilder<

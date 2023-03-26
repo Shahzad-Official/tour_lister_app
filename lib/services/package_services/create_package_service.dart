@@ -288,6 +288,7 @@ class CreatePackageService {
     String? ageSuitability,
     String? typeOfTour,
     File? termsAndCondition,
+    String? termsFileUrl,
     double? latitude,
     double? longitude,
     String? description,
@@ -323,6 +324,7 @@ class CreatePackageService {
           "packageId": "",
           "otherImage": otherImageUrl,
           "thumbnailUrl": coverImageUrl,
+          "termsAndConditions": termsFileUrl,
         },
       ).then(
         (value) async {
