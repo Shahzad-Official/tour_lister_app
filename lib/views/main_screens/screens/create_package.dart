@@ -13,9 +13,31 @@ import 'package:tour_lister_app/widgets/app_cached_image.dart';
 import 'package:tour_lister_app/widgets/app_input_field.dart';
 import 'package:tour_lister_app/widgets/app_text.dart';
 
-class CreatePackage extends StatelessWidget {
-  CreatePackage({super.key});
+class CreatePackage extends StatefulWidget {
+  const CreatePackage({super.key});
+
+  @override
+  State<CreatePackage> createState() => _CreatePackageState();
+}
+
+class _CreatePackageState extends State<CreatePackage> {
+  bool isloading = false;
   final GetIcons _getIcons = GetIcons();
+  getData() async {
+    setState(() {
+      isloading = true;
+    });
+    await _getIcons.getIcons();
+    setState(() {
+      isloading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -397,15 +419,14 @@ class CreatePackage extends StatelessWidget {
                   ],
                 ),
                 AppPadding.heightSpace30,
-                FutureBuilder<List<IconsModel>>(
-                  future: _getIcons.getIcons(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
+                Builder(
+                  builder: (context) {
+                    if (isloading) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
                     } else {
-                      if (snapshot.data == null) {
+                      if (_getIcons.iconsData.isEmpty) {
                         return const Text("Data not available");
                       } else {
                         return PopupMenuButton(
@@ -423,17 +444,17 @@ class CreatePackage extends StatelessWidget {
                           ),
                           itemBuilder: (context) {
                             return List.generate(
-                              snapshot.data!.length,
+                              _getIcons.iconsData.length,
                               (index) {
                                 return PopupMenuItem(
                                   onTap: () {
                                     _.addIcon(
-                                      iconData: snapshot.data![index],
+                                      iconData: _getIcons.iconsData[index],
                                     );
                                   },
                                   child: CircleAvatar(
                                     backgroundImage: NetworkImage(
-                                      snapshot.data![index].iconImage
+                                      _getIcons.iconsData[index].iconImage
                                           .toString(),
                                     ),
                                   ),

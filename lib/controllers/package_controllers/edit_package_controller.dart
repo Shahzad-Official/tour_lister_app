@@ -96,11 +96,13 @@ class EditPackageController extends GetxController {
   LocationResult? newPosition;
 
   LocationResult? get position => _locationService.position ?? newPosition;
-
+  List<String>? otherImageUrl;
+  String? coverImageUrl;
   isValidInfo(
     context,
-    packageId,
-  ) async {
+    packageId, {
+    bool isDuplicating = false,
+  }) async {
     noOfBookigs.text = selectedPersons;
     if (packageName.text.isEmpty) {
       Get.snackbar(
@@ -196,39 +198,78 @@ class EditPackageController extends GetxController {
     } else {
       isLoading = true;
       update();
-      await _createPackageService.updatePackage(
-        packageId,
-        address: location.text,
-        latitude: position!.latLng!.latitude,
-        longitude: position!.latLng!.longitude,
-        packageName: packageName.text,
-        startTime: startTimeController.text,
-        endTime: endTimeController.text,
-        startDate: startDate.toString(),
-        endDate: endDate.toString(),
-        startPrice: startPrice.text,
-        endPrice: endPrice.text,
-        cuttOffTime: cuttoffTime.text,
-        otherImage: allOtherImages.isEmpty ? [_otherImage!] : allOtherImages,
-        coverImage: coverImage,
-        noOfPersonsInPackage: noOfBookigs.text,
-        dangerRating: dangerRating.toString(),
-        ageSuitability: initialAge.toString(),
-        typeOfTour: selectedCat,
-        extraInfo: extraInfoController.text,
-        description: description.text,
-        termsAndCondition: termsAndConditionFile,
-        inclusions: List.generate(
-          icons.length,
-          (index) {
-            return {
-              "iconName": icons[index].iconName,
-              "iconImage": icons[index].iconImage,
-              "inclusionCount": count[index],
-            };
-          },
-        ),
-      );
+
+      if (isDuplicating) {
+        await _createPackageService.duplicatePackage(
+          address: location.text,
+          latitude: position!.latLng!.latitude,
+          longitude: position!.latLng!.longitude,
+          packageName: packageName.text,
+          startTime: startTimeController.text,
+          endTime: endTimeController.text,
+          startDate: startDate.toString(),
+          endDate: endDate.toString(),
+          startPrice: startPrice.text,
+          endPrice: endPrice.text,
+          cuttOffTime: cuttoffTime.text,
+          otherImage: allOtherImages.isEmpty ? null : allOtherImages,
+          otherImageUrl: otherImageUrl,
+          coverImage: coverImage,
+          coverImageUrl: coverImageUrl,
+          noOfPersonsInPackage: noOfBookigs.text,
+          dangerRating: dangerRating.toString(),
+          ageSuitability: initialAge.toString(),
+          typeOfTour: selectedCat,
+          extraInfo: extraInfoController.text,
+          description: description.text,
+          termsAndCondition: termsAndConditionFile,
+          inclusions: List.generate(
+            icons.length,
+            (index) {
+              return {
+                "iconName": icons[index].iconName,
+                "iconImage": icons[index].iconImage,
+                "inclusionCount": count[index],
+              };
+            },
+          ),
+        );
+      } else {
+        await _createPackageService.updatePackage(
+          packageId,
+          address: location.text,
+          latitude: position!.latLng!.latitude,
+          longitude: position!.latLng!.longitude,
+          packageName: packageName.text,
+          startTime: startTimeController.text,
+          endTime: endTimeController.text,
+          startDate: startDate.toString(),
+          endDate: endDate.toString(),
+          startPrice: startPrice.text,
+          endPrice: endPrice.text,
+          cuttOffTime: cuttoffTime.text,
+          otherImage: allOtherImages.isEmpty ? null : allOtherImages,
+          otherImageUrl: otherImageUrl,
+          coverImage: coverImage,
+          noOfPersonsInPackage: noOfBookigs.text,
+          dangerRating: dangerRating.toString(),
+          ageSuitability: initialAge.toString(),
+          typeOfTour: selectedCat,
+          extraInfo: extraInfoController.text,
+          description: description.text,
+          termsAndCondition: termsAndConditionFile,
+          inclusions: List.generate(
+            icons.length,
+            (index) {
+              return {
+                "iconName": icons[index].iconName,
+                "iconImage": icons[index].iconImage,
+                "inclusionCount": count[index],
+              };
+            },
+          ),
+        );
+      }
       isLoading = false;
       update();
     }
@@ -374,6 +415,7 @@ class EditPackageController extends GetxController {
     required IconsModel iconData,
   }) {
     icons.add(iconData);
+    count.add(0);
     update();
   }
 

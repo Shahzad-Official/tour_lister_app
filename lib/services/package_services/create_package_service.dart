@@ -132,6 +132,7 @@ class CreatePackageService {
       );
       AppSnackbar.snackBar(
           title: "Message", message: "Package created Successfully");
+      Get.deleteAll();
       Get.offAll(() => MainPage());
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
@@ -150,6 +151,7 @@ class CreatePackageService {
     String? endPrice,
     String? cuttOffTime,
     List<File>? otherImage,
+    List<String>? otherImageUrl,
     File? coverImage,
     String? noOfPersonsInPackage,
     String? dangerRating,
@@ -172,6 +174,7 @@ class CreatePackageService {
             "longitude": longitude,
           },
           "inclusions": inclusions,
+          "listerId": _firebaseAuth.currentUser!.uid,
           "startTime": startTime,
           "isLive": true,
           "endTime": endTime,
@@ -186,6 +189,7 @@ class CreatePackageService {
           "typeOfTour": typeOfTour,
           "description": description,
           "extraInfo": extraInfo,
+          "otherImage": otherImageUrl,
         },
       ).then(
         (value) async {
@@ -258,6 +262,146 @@ class CreatePackageService {
       );
       AppSnackbar.snackBar(
           title: "Message", message: "Package created Successfully");
+
+      Get.offAll(() => MainPage());
+    } catch (e) {
+      AppSnackbar.snackBar(title: "Error", message: e.toString());
+    }
+  }
+
+  duplicatePackage({
+    String? packageName,
+    String? address,
+    String? startTime,
+    String? endTime,
+    String? startDate,
+    String? endDate,
+    String? startPrice,
+    String? endPrice,
+    String? cuttOffTime,
+    List<File>? otherImage,
+    List<String>? otherImageUrl,
+    File? coverImage,
+    String? coverImageUrl,
+    String? noOfPersonsInPackage,
+    String? dangerRating,
+    String? ageSuitability,
+    String? typeOfTour,
+    File? termsAndCondition,
+    double? latitude,
+    double? longitude,
+    String? description,
+    List? inclusions,
+    String? extraInfo,
+  }) async {
+    try {
+      await _firestore.collection("packages").add(
+        {
+          "packageName": packageName,
+          "created_on": DateTime.now(),
+          "location": {
+            "address": address,
+            "latitude": latitude,
+            "longitude": longitude,
+          },
+          "inclusions": inclusions,
+          "listerId": _firebaseAuth.currentUser!.uid,
+          "startTime": startTime,
+          "isLive": false,
+          "endTime": endTime,
+          "startDate": startDate,
+          "endDate": endDate,
+          "startPrice": startPrice,
+          "endPrice": endPrice,
+          "cuttOffTime": cuttOffTime,
+          "noOfPersonsInPackage": noOfPersonsInPackage,
+          "dangerRating": dangerRating,
+          "ageSuitability": ageSuitability,
+          "typeOfTour": typeOfTour,
+          "description": description,
+          "extraInfo": extraInfo,
+          "packageId": "",
+          "otherImage": otherImageUrl,
+          "thumbnailUrl": coverImageUrl,
+        },
+      ).then(
+        (value) async {
+          await _firestore.collection("packages").doc(value.id).update(
+            {
+              "packageId": value.id,
+            },
+          );
+          if (coverImage != null) {
+            await _firebaseStorage
+                .ref("packages_files")
+                .child(value.id)
+                .child("thumbnail")
+                .putFile(coverImage)
+                .then(
+              (p0) async {
+                var thumbnailUrl = await p0.ref.getDownloadURL();
+                await _firestore.collection("packages").doc(value.id).set(
+                  {
+                    "thumbnailUrl": thumbnailUrl,
+                  },
+                  SetOptions(
+                    merge: true,
+                  ),
+                );
+              },
+            );
+          } else if (otherImage != null) {
+            List<String> allOtherImages = [];
+            List.generate(
+              otherImage.length,
+              (index) async {
+                await _firebaseStorage
+                    .ref("packages_files")
+                    .child(value.id)
+                    .child("otherImages")
+                    .putFile(otherImage[index])
+                    .then(
+                  (p0) async {
+                    var url = await p0.ref.getDownloadURL();
+                    allOtherImages.add(url);
+                  },
+                );
+              },
+            );
+            await _firestore.collection("packages").doc(value.id).set(
+              {
+                "otherImage": allOtherImages,
+              },
+              SetOptions(
+                merge: true,
+              ),
+            );
+          } else if (termsAndCondition != null) {
+            await _firebaseStorage
+                .ref("packages_files")
+                .child(value.id)
+                .child("termsAndConditions")
+                .putFile(termsAndCondition)
+                .then(
+              (p0) async {
+                var terms = await p0.ref.getDownloadURL();
+                await _firestore.collection("packages").doc(value.id).set(
+                  {
+                    "termsAndConditions": terms,
+                  },
+                  SetOptions(
+                    merge: true,
+                  ),
+                );
+              },
+            );
+          }
+        },
+      );
+      AppSnackbar.snackBar(
+          title: "Message", message: "Package duplicated Successfully");
+
+      Get.offAll(() => MainPage());
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }

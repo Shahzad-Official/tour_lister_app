@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -10,7 +8,6 @@ import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/controllers/package_controllers/edit_package_controller.dart';
 import 'package:tour_lister_app/models/packages/packages_model.dart';
 import 'package:tour_lister_app/utils/date_format.dart';
-import 'package:tour_lister_app/views/main_screens/main_page.dart';
 import 'package:tour_lister_app/widgets/app_button.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
 import '../../constants/svg_icons.dart';
@@ -49,7 +46,15 @@ class EditPackage extends StatefulWidget {
 class _EditPackageState extends State<EditPackage> {
   final GetIcons _getIcons = GetIcons();
   EditPackageController packageController = Get.put(EditPackageController());
-  initializeData() {
+  bool isLoading = false;
+  initializeData() async {
+    setState(() {
+      isLoading = true;
+    });
+    await _getIcons.getIcons();
+    setState(() {
+      isLoading = false;
+    });
     if (widget.packageData.packageId != null) {
       packageController.startDate = DateTime.parse(widget.startDate);
       packageController.endDate = DateTime.parse(widget.endDate);
@@ -87,7 +92,8 @@ class _EditPackageState extends State<EditPackage> {
           widget.packageData.location!.longitude!,
         ),
       );
-
+      packageController.coverImageUrl = widget.packageData.thumbnailUrl;
+      packageController.otherImageUrl = widget.packageData.otherImage;
       if (widget.packageData.inclusions != null) {
         packageController.icons = List.generate(
           widget.packageData.inclusions!.length,
@@ -97,6 +103,11 @@ class _EditPackageState extends State<EditPackage> {
               "IconName": widget.packageData.inclusions![index].iconName,
             },
           ),
+        );
+        packageController.count = List.generate(
+          widget.packageData.inclusions!.length,
+          (index) => packageController.count[index] =
+              widget.packageData.inclusions![index].inclusionCount!,
         );
       }
     }
@@ -155,96 +166,104 @@ class _EditPackageState extends State<EditPackage> {
                                 : AppCachedImage(
                                     picUrl: widget.picUrl,
                                   ),
-                            DecoratedBox(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.primarycolor,
-                              ),
-                              child: IconButton(
-                                highlightColor: AppColors.primarycolor,
-                                hoverColor: AppColors.primarycolor,
-                                splashColor: AppColors.primarycolor,
-                                onPressed: () {
-                                  _.pickCoverImage();
-                                },
-                                icon: const Icon(
-                                  Icons.camera_alt,
-                                  color: Color.fromARGB(255, 255, 255, 255),
-                                ),
-                              ),
-                            ),
+                            widget.isLive
+                                ? const SizedBox()
+                                : DecoratedBox(
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.primarycolor,
+                                    ),
+                                    child: IconButton(
+                                      highlightColor: AppColors.primarycolor,
+                                      hoverColor: AppColors.primarycolor,
+                                      splashColor: AppColors.primarycolor,
+                                      onPressed: () {
+                                        _.pickCoverImage();
+                                      },
+                                      icon: const Icon(
+                                        Icons.camera_alt,
+                                        color:
+                                            Color.fromARGB(255, 255, 255, 255),
+                                      ),
+                                    ),
+                                  ),
                           ],
                         ),
                       ),
                       AppPadding.heightSpace15,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          AppText(
-                            text: "Pick Package Other Images",
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            textcolor: AppColors.headTextColor,
-                          ),
-                          DecoratedBox(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.primarycolor,
+                      widget.isLive
+                          ? const SizedBox()
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                AppText(
+                                  text: "Pick Package Other Images",
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  textcolor: AppColors.headTextColor,
+                                ),
+                                DecoratedBox(
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.primarycolor,
+                                  ),
+                                  child: IconButton(
+                                    highlightColor: AppColors.primarycolor,
+                                    hoverColor: AppColors.primarycolor,
+                                    splashColor: AppColors.primarycolor,
+                                    onPressed: () {
+                                      _.pickOtherImage();
+                                    },
+                                    icon: const Icon(
+                                      Icons.camera_alt,
+                                      color: Color.fromARGB(255, 255, 255, 255),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            child: IconButton(
-                              highlightColor: AppColors.primarycolor,
-                              hoverColor: AppColors.primarycolor,
-                              splashColor: AppColors.primarycolor,
-                              onPressed: () {
-                                _.pickOtherImage();
-                              },
-                              icon: const Icon(
-                                Icons.camera_alt,
-                                color: Color.fromARGB(255, 255, 255, 255),
+                      AppPadding.heightSpace10,
+                      _.allOtherImages.isEmpty &&
+                              widget.packageData.otherImage!.isEmpty
+                          ? const SizedBox()
+                          : SizedBox(
+                              height: 100,
+                              width: double.infinity,
+                              child: SingleChildScrollView(
+                                child: Wrap(
+                                  alignment: WrapAlignment.center,
+                                  spacing: 20,
+                                  children: List.generate(
+                                    _.allOtherImages.isEmpty
+                                        ? widget.packageData.otherImage!.length
+                                        : _.allOtherImages.length,
+                                    (index) {
+                                      if (_.allOtherImages.isEmpty) {
+                                        return AppCachedImage(
+                                          height: 100,
+                                          width: 100,
+                                          picUrl: widget
+                                              .packageData.otherImage![index],
+                                        );
+                                      } else {
+                                        return Container(
+                                          height: 100,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: FileImage(
+                                                _.allOtherImages[index],
+                                              ),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      AppPadding.heightSpace10,
-                      SizedBox(
-                        height: 100,
-                        width: double.infinity,
-                        child: SingleChildScrollView(
-                          child: Wrap(
-                            alignment: WrapAlignment.center,
-                            spacing: 20,
-                            children: List.generate(
-                              _.allOtherImages.isEmpty
-                                  ? widget.packageData.otherImage!.length
-                                  : _.allOtherImages.length,
-                              (index) {
-                                if (_.allOtherImages.isEmpty) {
-                                  return AppCachedImage(
-                                    height: 100,
-                                    width: 100,
-                                    picUrl:
-                                        widget.packageData.otherImage![index],
-                                  );
-                                } else {
-                                  return Container(
-                                    height: 100,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: FileImage(
-                                          _.allOtherImages[index],
-                                        ),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
                       AppPadding.heightSpace20,
                       AppInputField(
                         enabled: !widget.isLive,
@@ -254,9 +273,11 @@ class _EditPackageState extends State<EditPackage> {
                       AppPadding.heightSpace30,
                       AppInputField(
                         enabled: false,
-                        onTap: () async {
-                          await _.determineLocation(context);
-                        },
+                        onTap: widget.isLive
+                            ? null
+                            : () async {
+                                await _.determineLocation(context);
+                              },
                         controller: _.location,
                         hintText: "Location",
                         contentPadding: const EdgeInsets.only(
@@ -281,9 +302,11 @@ class _EditPackageState extends State<EditPackage> {
                         children: [
                           AppInputField(
                             controller: _.startDateController,
-                            onTap: () {
-                              _.selectStartDate(context);
-                            },
+                            onTap: widget.isLive
+                                ? null
+                                : () {
+                                    _.selectStartDate(context);
+                                  },
                             width: MediaQuery.of(context).size.width * 0.415,
                             enabled: false,
                             hintText: "Start Date",
@@ -305,9 +328,11 @@ class _EditPackageState extends State<EditPackage> {
                           ),
                           AppInputField(
                             controller: _.endDateController,
-                            onTap: () {
-                              _.selectEndDate(context);
-                            },
+                            onTap: widget.isLive
+                                ? null
+                                : () {
+                                    _.selectEndDate(context);
+                                  },
                             width: MediaQuery.of(context).size.width * 0.415,
                             enabled: false,
                             hintText: "End Date",
@@ -335,9 +360,11 @@ class _EditPackageState extends State<EditPackage> {
                         children: [
                           AppInputField(
                             controller: _.startTimeController,
-                            onTap: () {
-                              _.selectStartTime(context);
-                            },
+                            onTap: widget.isLive
+                                ? null
+                                : () {
+                                    _.selectStartTime(context);
+                                  },
                             width: MediaQuery.of(context).size.width * 0.415,
                             enabled: false,
                             hintText: "Start Time",
@@ -359,9 +386,11 @@ class _EditPackageState extends State<EditPackage> {
                           ),
                           AppInputField(
                             controller: _.endTimeController,
-                            onTap: () {
-                              _.selectEndTime(context);
-                            },
+                            onTap: widget.isLive
+                                ? null
+                                : () {
+                                    _.selectEndTime(context);
+                                  },
                             width: MediaQuery.of(context).size.width * 0.415,
                             enabled: false,
                             hintText: "End Time",
@@ -388,12 +417,14 @@ class _EditPackageState extends State<EditPackage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AppInputField(
+                            enabled: !widget.isLive,
                             controller: _.startPrice,
                             keyboardtype: TextInputType.number,
                             width: MediaQuery.of(context).size.width * 0.415,
                             hintText: "Start Price",
                           ),
                           AppInputField(
+                            enabled: !widget.isLive,
                             controller: _.endPrice,
                             keyboardtype: TextInputType.number,
                             width: MediaQuery.of(context).size.width * 0.415,
@@ -405,9 +436,11 @@ class _EditPackageState extends State<EditPackage> {
                       AppInputField(
                         controller: _.cuttoffTime,
                         enabled: false,
-                        onTap: () {
-                          _.selectTime(context);
-                        },
+                        onTap: widget.isLive
+                            ? null
+                            : () {
+                                _.selectTime(context);
+                              },
                         hintText: _.cuttoffTime.text.isEmpty
                             ? "Cutoff Time"
                             : _.cuttoffTime.text,
@@ -435,7 +468,7 @@ class _EditPackageState extends State<EditPackage> {
                         textcolor: AppColors.headTextColor,
                       ),
                       AppPadding.heightSpace10,
-                      _.selectedCat == "Family/Group"
+                      _.selectedCat == "Family/Group" && !widget.isLive
                           ? DropdownContainer(
                               currentValue: _.selectedPersons,
                               items: _.availableNoofSeats,
@@ -453,9 +486,11 @@ class _EditPackageState extends State<EditPackage> {
                       DropdownContainer(
                         currentValue: _.selectedCat,
                         items: _.catagories,
-                        onValueChange: (value) {
-                          _.changeCatagory(value);
-                        },
+                        onValueChange: widget.isLive
+                            ? null
+                            : (value) {
+                                _.changeCatagory(value);
+                              },
                       ),
                       AppPadding.heightSpace30,
                       AppText(
@@ -469,9 +504,11 @@ class _EditPackageState extends State<EditPackage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           InkWell(
-                            onTap: () {
-                              _.assignDangerRating(1);
-                            },
+                            onTap: widget.isLive
+                                ? null
+                                : () {
+                                    _.assignDangerRating(1);
+                                  },
                             child: Column(
                               children: [
                                 SvgPicture.string(
@@ -490,9 +527,11 @@ class _EditPackageState extends State<EditPackage> {
                             ),
                           ),
                           InkWell(
-                            onTap: () {
-                              _.assignDangerRating(2);
-                            },
+                            onTap: widget.isLive
+                                ? null
+                                : () {
+                                    _.assignDangerRating(2);
+                                  },
                             child: Column(
                               children: [
                                 SvgPicture.string(
@@ -511,9 +550,11 @@ class _EditPackageState extends State<EditPackage> {
                             ),
                           ),
                           InkWell(
-                            onTap: () {
-                              _.assignDangerRating(3);
-                            },
+                            onTap: widget.isLive
+                                ? null
+                                : () {
+                                    _.assignDangerRating(3);
+                                  },
                             child: Column(
                               children: [
                                 SvgPicture.string(
@@ -561,25 +602,27 @@ class _EditPackageState extends State<EditPackage> {
                             min: 1,
                             max: 16,
                             value: _.initialAge.toDouble(),
-                            onChanged: (value) {
-                              _.changeSliderValue(value);
-                            },
+                            onChanged: widget.isLive
+                                ? null
+                                : (value) {
+                                    _.changeSliderValue(value);
+                                  },
                           ),
                         ],
                       ),
                       AppPadding.heightSpace30,
-                      FutureBuilder<List<IconsModel>>(
-                        future: _getIcons.getIcons(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
+                      Builder(
+                        builder: (context) {
+                          if (isLoading) {
                             return const Center(
                               child: CircularProgressIndicator(),
                             );
                           } else {
-                            if (snapshot.data == null) {
+                            if (_getIcons.iconsData.isEmpty) {
                               return const Text("Data not available");
                             } else {
                               return PopupMenuButton(
+                                enabled: !widget.isLive,
                                 child: ListTile(
                                   title: AppText(text: "Inclusions"),
                                   trailing: const Icon(
@@ -595,17 +638,20 @@ class _EditPackageState extends State<EditPackage> {
                                 ),
                                 itemBuilder: (context) {
                                   return List.generate(
-                                    snapshot.data!.length,
+                                    _getIcons.iconsData.length,
                                     (index) {
                                       return PopupMenuItem(
-                                        onTap: () {
-                                          _.addIcon(
-                                            iconData: snapshot.data![index],
-                                          );
-                                        },
+                                        onTap: widget.isLive
+                                            ? null
+                                            : () {
+                                                _.addIcon(
+                                                  iconData: _getIcons
+                                                      .iconsData[index],
+                                                );
+                                              },
                                         child: CircleAvatar(
                                           backgroundImage: NetworkImage(
-                                            snapshot.data![index].iconImage
+                                            _getIcons.iconsData[index].iconImage
                                                 .toString(),
                                           ),
                                         ),
@@ -683,11 +729,14 @@ class _EditPackageState extends State<EditPackage> {
                                                   ),
                                                 ),
                                                 InkWell(
-                                                  onTap: () {
-                                                    _.removeIcon(
-                                                      iconData: _.icons[index],
-                                                    );
-                                                  },
+                                                  onTap: widget.isLive
+                                                      ? null
+                                                      : () {
+                                                          _.removeIcon(
+                                                            iconData:
+                                                                _.icons[index],
+                                                          );
+                                                        },
                                                   child: const CircleAvatar(
                                                     radius: 15,
                                                     backgroundColor:
@@ -710,9 +759,12 @@ class _EditPackageState extends State<EditPackage> {
                                                       .spaceBetween,
                                               children: [
                                                 InkWell(
-                                                  onTap: () {
-                                                    _.inclusionAddition(index);
-                                                  },
+                                                  onTap: widget.isLive
+                                                      ? null
+                                                      : () {
+                                                          _.inclusionAddition(
+                                                              index);
+                                                        },
                                                   child: const CircleAvatar(
                                                     radius: 15,
                                                     child: Icon(
@@ -722,10 +774,12 @@ class _EditPackageState extends State<EditPackage> {
                                                   ),
                                                 ),
                                                 InkWell(
-                                                  onTap: () {
-                                                    _.inclusionSubtraction(
-                                                        index);
-                                                  },
+                                                  onTap: widget.isLive
+                                                      ? null
+                                                      : () {
+                                                          _.inclusionSubtraction(
+                                                              index);
+                                                        },
                                                   child: const CircleAvatar(
                                                     radius: 15,
                                                     child: Icon(
@@ -754,9 +808,11 @@ class _EditPackageState extends State<EditPackage> {
                       AppInputField(
                         controller: _.termsAndConditions,
                         enabled: false,
-                        onTap: () {
-                          _.pickPDFFile();
-                        },
+                        onTap: widget.isLive
+                            ? null
+                            : () {
+                                _.pickPDFFile();
+                              },
                         hintText: "Upload file of Terms and Conditions",
                         contentPadding: const EdgeInsets.only(
                           top: 20,
@@ -778,6 +834,7 @@ class _EditPackageState extends State<EditPackage> {
                       ),
                       AppPadding.heightSpace30,
                       AppInputField(
+                        enabled: !widget.isLive,
                         controller: _.description,
                         height: 150,
                         hintText: "Package Description",
@@ -788,6 +845,7 @@ class _EditPackageState extends State<EditPackage> {
                       ),
                       AppPadding.heightSpace30,
                       AppInputField(
+                        enabled: !widget.isLive,
                         controller: _.extraInfoController,
                         height: 150,
                         hintText: "Package Extra Info",
@@ -811,34 +869,100 @@ class _EditPackageState extends State<EditPackage> {
                                     context,
                                     widget.packageData.packageId,
                                   );
-                                  // Get.offAll(
-                                  //   () => MainPage(),
-                                  // );
                                 },
                               ),
                             ),
-                            // const SizedBox(
-                            //   width: 20,
-                            // ),
-                            // Expanded(
-                            //   child: AppButton(
-                            //     btnText: "Live",
-                            //     ontap: () {
-                            //       Navigator.pushReplacement(
-                            //         context,
-                            //         MaterialPageRoute(
-                            //           builder: (context) => MainPage(),
-                            //         ),
-                            //       );
-                            //     },
-                            //   ),
-                            // ),
+                            widget.isLive
+                                ? const SizedBox()
+                                : const SizedBox(
+                                    width: 20,
+                                  ),
+                            widget.isLive
+                                ? const SizedBox()
+                                : Expanded(
+                                    child: AppButton(
+                                      isLoading: _.isLoading,
+                                      btnText: "Duplicate",
+                                      ontap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return Dialog(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(18.0),
+                                                child: SizedBox(
+                                                  height: Get.height * 0.3,
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      AppText(
+                                                        text: "Package Name",
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        textcolor: AppColors
+                                                            .headTextColor,
+                                                      ),
+                                                      AppPadding.heightSpace15,
+                                                      AppInputField(
+                                                        controller:
+                                                            _.packageName,
+                                                        hintText:
+                                                            "Package Name",
+                                                      ),
+                                                      AppPadding.heightSpace30,
+                                                      GetBuilder<
+                                                          EditPackageController>(
+                                                        init:
+                                                            EditPackageController(),
+                                                        builder: (_) {
+                                                          return AppButton(
+                                                            isLoading:
+                                                                _.isLoading,
+                                                            btnText: "Done",
+                                                            ontap: () async {
+                                                              await _
+                                                                  .isValidInfo(
+                                                                context,
+                                                                widget
+                                                                    .packageData
+                                                                    .packageId,
+                                                                isDuplicating:
+                                                                    true,
+                                                              );
+                                                            },
+                                                          );
+                                                        },
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
                           ],
                         ),
                       ),
-                      TextFormField(
-                        initialValue: widget.packageData.toString(),
-                      ),
+                      // widget.isLive
+                      //     ? const SizedBox()
+                      //     : AppButton(
+                      //         isLoading: _.isLoading,
+                      //         btnText: "Duplicate",
+                      //         ontap: () async {
+                      //           await _.isValidInfo(
+                      //             context,
+                      //             widget.packageData.packageId,
+                      //             isLive: widget.isLive,
+                      //           );
+                      //         },
+                      //       ),
                     ],
                   );
                 },

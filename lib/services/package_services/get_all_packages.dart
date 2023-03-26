@@ -1,21 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:tour_lister_app/models/packages/packages_model.dart';
 
 class GetAllPackages {
   List<PackagesModel> allPackages = [];
-  Future<List<PackagesModel>> getAllPackages({
-    bool isLive = true,
-  }) async {
+  Future<List<PackagesModel>> getAllPackages() async {
     allPackages.clear();
     await FirebaseFirestore.instance
         .collection("packages")
         .where("listerId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-        .where(
-          "isLive",
-          isEqualTo: isLive,
-        )
         .orderBy("created_on")
         .get()
         .then(
