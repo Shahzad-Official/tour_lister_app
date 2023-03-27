@@ -232,6 +232,17 @@ class _CreatePackageState extends State<CreatePackage> {
                 ),
                 AppPadding.heightSpace30,
                 AppInputField(
+                  controller: _.description,
+                  height: 150,
+                  hintText: "Package Description",
+                  maxLength: 200,
+                  maxLines: 10,
+                  keyboardtype: TextInputType.multiline,
+                  textInputAction: TextInputAction.done,
+                ),
+
+                AppPadding.heightSpace30,
+                AppInputField(
                   controller: _.coverImageController,
                   enabled: false,
                   onTap: () {
@@ -684,16 +695,7 @@ class _CreatePackageState extends State<CreatePackage> {
                   ),
                 ),
                 AppPadding.heightSpace30,
-                AppInputField(
-                  controller: _.description,
-                  height: 150,
-                  hintText: "Package Description",
-                  maxLength: 200,
-                  maxLines: 10,
-                  keyboardtype: TextInputType.multiline,
-                  textInputAction: TextInputAction.done,
-                ),
-                AppPadding.heightSpace30,
+
                 AppInputField(
                   controller: _.extraInfoController,
                   height: 150,
