@@ -440,33 +440,98 @@ class _CreatePackageState extends State<CreatePackage> {
                       if (_getIcons.iconsData.isEmpty) {
                         return const Text("Data not available");
                       } else {
-                        return PopupMenuButton(
-                          child: ListTile(
-                            title: AppText(text: "Inclusions"),
-                            trailing: const Icon(
-                              Icons.keyboard_arrow_down_rounded,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: BorderSide(
-                                color: AppColors.headTextColor.withOpacity(0.7),
-                              ),
-                            ),
-                          ),
-                          itemBuilder: (context) {
-                            return List.generate(
-                              _getIcons.iconsData.length,
-                              (index) {
-                                return PopupMenuItem(
-                                  onTap: () {
-                                    _.addIcon(
-                                      iconData: _getIcons.iconsData[index],
-                                    );
-                                  },
-                                  child: CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                      _getIcons.iconsData[index].iconImage
-                                          .toString(),
+                        return AppInputField(
+                          hintText: "Inclusion",
+                          enabled: false,
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  icon: Align(
+                                    alignment: Alignment.topRight,
+                                    child: IconButton(
+                                      onPressed: () => Get.back(),
+                                      icon: const Icon(Icons.close),
+                                    ),
+                                  ),
+                                  content: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    height: Get.height * 0.7,
+                                    width: Get.width * 0.8,
+                                    child: Center(
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            AppText(
+                                              text: "Inclusions",
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            AppPadding.heightSpace20,
+                                            GridView.builder(
+                                              itemCount:
+                                                  _getIcons.iconsData.length,
+                                              shrinkWrap: true,
+                                              gridDelegate:
+                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 3,
+                                                mainAxisSpacing: 20,
+                                                crossAxisSpacing: 20,
+                                                childAspectRatio: 0.7,
+                                              ),
+                                              itemBuilder: (context, index) {
+                                                return InkWell(
+                                                  onTap: () {
+                                                    _.addIcon(
+                                                      iconData: _getIcons
+                                                          .iconsData[index],
+                                                    );
+                                                    Get.back();
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      color: AppColors
+                                                          .primarycolor
+                                                          .withOpacity(0.4),
+                                                    ),
+                                                    child: Column(
+                                                      children: [
+                                                        AppPadding
+                                                            .heightSpace10,
+                                                        AppCachedImage(
+                                                          height: 50,
+                                                          width: 50,
+                                                          picUrl: _getIcons
+                                                              .iconsData[index]
+                                                              .iconImage!,
+                                                        ),
+                                                        AppPadding
+                                                            .heightSpace10,
+                                                        AppText(
+                                                          text: _getIcons
+                                                              .iconsData[index]
+                                                              .iconName
+                                                              .toString(),
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 );
@@ -474,6 +539,40 @@ class _CreatePackageState extends State<CreatePackage> {
                             );
                           },
                         );
+                        // return PopupMenuButton(
+                        //   child: ListTile(
+                        //     title: AppText(text: "Inclusions"),
+                        //     trailing: const Icon(
+                        //       Icons.keyboard_arrow_down_rounded,
+                        //     ),
+                        //     shape: RoundedRectangleBorder(
+                        //       borderRadius: BorderRadius.circular(10),
+                        //       side: BorderSide(
+                        //         color: AppColors.headTextColor.withOpacity(0.7),
+                        //       ),
+                        //     ),
+                        //   ),
+                        //   itemBuilder: (context) {
+                        //     return List.generate(
+                        //       _getIcons.iconsData.length,
+                        //       (index) {
+                        //         return PopupMenuItem(
+                        //           onTap: () {
+                        //             _.addIcon(
+                        //               iconData: _getIcons.iconsData[index],
+                        //             );
+                        //           },
+                        //           child: CircleAvatar(
+                        //             backgroundImage: NetworkImage(
+                        //               _getIcons.iconsData[index].iconImage
+                        //                   .toString(),
+                        //             ),
+                        //           ),
+                        //         );
+                        //       },
+                        //     );
+                        //   },
+                        // );
                       }
                     }
                   },
