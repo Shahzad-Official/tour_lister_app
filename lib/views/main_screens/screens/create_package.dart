@@ -291,7 +291,20 @@ class _CreatePackageState extends State<CreatePackage> {
                 ),
                 AppPadding.heightSpace30,
                 AppText(
-                  text: "Total No of Bookings",
+                  text: "No of Packages Available",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  textcolor: AppColors.headTextColor,
+                ),
+                AppPadding.heightSpace10,
+                AppInputField(
+                  controller: _.noOfPackages,
+                  keyboardtype: TextInputType.number,
+                  hintText: "No of Packages Available",
+                ),
+                AppPadding.heightSpace30,
+                AppText(
+                  text: "Persons per Package",
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                   textcolor: AppColors.headTextColor,
@@ -539,40 +552,6 @@ class _CreatePackageState extends State<CreatePackage> {
                             );
                           },
                         );
-                        // return PopupMenuButton(
-                        //   child: ListTile(
-                        //     title: AppText(text: "Inclusions"),
-                        //     trailing: const Icon(
-                        //       Icons.keyboard_arrow_down_rounded,
-                        //     ),
-                        //     shape: RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.circular(10),
-                        //       side: BorderSide(
-                        //         color: AppColors.headTextColor.withOpacity(0.7),
-                        //       ),
-                        //     ),
-                        //   ),
-                        //   itemBuilder: (context) {
-                        //     return List.generate(
-                        //       _getIcons.iconsData.length,
-                        //       (index) {
-                        //         return PopupMenuItem(
-                        //           onTap: () {
-                        //             _.addIcon(
-                        //               iconData: _getIcons.iconsData[index],
-                        //             );
-                        //           },
-                        //           child: CircleAvatar(
-                        //             backgroundImage: NetworkImage(
-                        //               _getIcons.iconsData[index].iconImage
-                        //                   .toString(),
-                        //             ),
-                        //           ),
-                        //         );
-                        //       },
-                        //     );
-                        //   },
-                        // );
                       }
                     }
                   },

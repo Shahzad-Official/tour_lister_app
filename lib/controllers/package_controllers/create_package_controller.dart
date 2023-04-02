@@ -34,6 +34,8 @@ class CreatePackageController extends GetxController {
   TextEditingController endDateController = TextEditingController();
   TextEditingController extraInfoController = TextEditingController();
   TextEditingController description = TextEditingController();
+  TextEditingController noOfPackages = TextEditingController();
+
   File? termsAndConditionFile;
   int toursStayDays = 0;
   int dangerRating = 1;
@@ -44,10 +46,12 @@ class CreatePackageController extends GetxController {
   int initialAge = 1;
   String selectedCat = "Family/Group";
   String selectedPersons = "3";
-  List<String> get availableNoofSeats => List.generate(
-        17,
-        (index) => (3 + index).toString(),
-      );
+  List<String> get availableNoofSeats => [
+        "3-5",
+        "6-10",
+        "11-15",
+        "16-20",
+      ];
   List<String> catagories = [
     "Individual",
     "Couples",
@@ -161,10 +165,10 @@ class CreatePackageController extends GetxController {
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
-    } else if (otherImageController.text.isEmpty) {
+    } else if (description.text.isEmpty) {
       Get.snackbar(
         "Error",
-        "Upload your Package other image",
+        "Please provide Description for package",
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
@@ -175,10 +179,24 @@ class CreatePackageController extends GetxController {
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
+    } else if (otherImageController.text.isEmpty) {
+      Get.snackbar(
+        "Error",
+        "Upload your Package other image",
+        colorText: Colors.white,
+        backgroundColor: AppColors.primarycolor,
+      );
+    } else if (noOfPackages.text.isEmpty) {
+      Get.snackbar(
+        "Error",
+        "Enter Available No of packages",
+        colorText: Colors.white,
+        backgroundColor: AppColors.primarycolor,
+      );
     } else if (noOfBookigs.text.isEmpty) {
       Get.snackbar(
         "Error",
-        "Enter Your Package's Allowed NoOfBookings",
+        "Enter No of persons per package",
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
@@ -186,13 +204,6 @@ class CreatePackageController extends GetxController {
       Get.snackbar(
         "Error",
         "Please Select Terms And Conditions File",
-        colorText: Colors.white,
-        backgroundColor: AppColors.primarycolor,
-      );
-    } else if (description.text.isEmpty) {
-      Get.snackbar(
-        "Error",
-        "Please provide Description for package",
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
