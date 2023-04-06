@@ -32,6 +32,7 @@ class EditPackageController extends GetxController {
   TextEditingController endDateController = TextEditingController();
   TextEditingController extraInfoController = TextEditingController();
   TextEditingController description = TextEditingController();
+  TextEditingController noOfPackages = TextEditingController();
 
   File? termsAndConditionFile;
   int toursStayDays = 0;
@@ -42,11 +43,13 @@ class EditPackageController extends GetxController {
   TimeOfDay? endTime;
   int initialAge = 1;
   String selectedCat = "Family/Group";
-  String selectedPersons = "3";
-  List<String> get availableNoofSeats => List.generate(
-        17,
-        (index) => (3 + index).toString(),
-      );
+  String selectedPersons = "3-5";
+  List<String> get availableNoofSeats => [
+        "3-5",
+        "6-10",
+        "11-15",
+        "16-20",
+      ];
   List<String> catagories = [
     "Individual",
     "Couples",
@@ -175,10 +178,17 @@ class EditPackageController extends GetxController {
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
+    } else if (noOfPackages.text.isEmpty) {
+      Get.snackbar(
+        "Error",
+        "Enter Available No of packages",
+        colorText: Colors.white,
+        backgroundColor: AppColors.primarycolor,
+      );
     } else if (noOfBookigs.text.isEmpty) {
       Get.snackbar(
         "Error",
-        "Enter Your Package's Allowed NoOfBookings",
+        "Enter No of persons per package",
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
@@ -202,6 +212,7 @@ class EditPackageController extends GetxController {
 
       if (isDuplicating) {
         await _createPackageService.duplicatePackage(
+          availablePackages: noOfPackages.text,
           address: location.text,
           latitude: position!.latLng!.latitude,
           longitude: position!.latLng!.longitude,
@@ -238,6 +249,7 @@ class EditPackageController extends GetxController {
         );
       } else {
         await _createPackageService.updatePackage(
+          availablePackages: noOfPackages.text,
           packageId,
           address: location.text,
           latitude: position!.latLng!.latitude,
@@ -430,7 +442,7 @@ class EditPackageController extends GetxController {
 
   List<IconsModel> icons = [];
 
-  List<int> count = List.generate(20, (index) => 0);
+  List<int> count = List.generate(200, (index) => 1);
 
   inclusionAddition(
     int index,
@@ -453,10 +465,5 @@ class EditPackageController extends GetxController {
 
   loadData() async {
     await getAllPackages.getAllPackages();
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
   }
 }

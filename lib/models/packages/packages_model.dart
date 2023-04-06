@@ -136,32 +136,35 @@ class PackagesModel {
   String? status;
   String? extraInfo;
   String? thumbnailUrl;
+  String? availablePackages;
 
-  PackagesModel(
-      {this.startPrice,
-      this.otherImage,
-      this.endDate,
-      this.typeOfTour,
-      this.cuttOffTime,
-      this.ageSuitability,
-      this.packageId,
-      this.description,
-      this.endPrice,
-      this.termsAndConditions,
-      this.isLive,
-      this.noOfPersonsInPackage,
-      this.createdOn,
-      this.startTime,
-      this.location,
-      this.listerId,
-      this.dangerRating,
-      this.packageName,
-      this.endTime,
-      this.startDate,
-      this.inclusions,
-      this.status,
-      this.extraInfo,
-      this.thumbnailUrl});
+  PackagesModel({
+    this.startPrice,
+    this.otherImage,
+    this.endDate,
+    this.typeOfTour,
+    this.cuttOffTime,
+    this.ageSuitability,
+    this.packageId,
+    this.description,
+    this.endPrice,
+    this.termsAndConditions,
+    this.isLive,
+    this.noOfPersonsInPackage,
+    this.createdOn,
+    this.startTime,
+    this.location,
+    this.listerId,
+    this.dangerRating,
+    this.packageName,
+    this.endTime,
+    this.startDate,
+    this.inclusions,
+    this.status,
+    this.extraInfo,
+    this.thumbnailUrl,
+    this.availablePackages,
+  });
 
   PackagesModel.fromJson(Map<String, dynamic> json) {
     startPrice = json['startPrice'];
@@ -195,6 +198,7 @@ class PackagesModel {
     status = json['status'];
     extraInfo = json['extraInfo'];
     thumbnailUrl = json['thumbnailUrl'];
+    availablePackages = json['availablePackages'];
   }
 
   Map<String, dynamic> toJson() {

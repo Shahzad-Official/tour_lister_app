@@ -34,6 +34,7 @@ class CreatePackageService {
     required String description,
     required List inclusions,
     String? extraInfo,
+    required String availablePackages,
   }) async {
     try {
       await _firestore.collection("packages").add(
@@ -62,6 +63,7 @@ class CreatePackageService {
           "typeOfTour": typeOfTour,
           "description": description,
           "extraInfo": extraInfo,
+          "availablePackages": availablePackages,
         },
       ).then(
         (value) async {
@@ -163,6 +165,7 @@ class CreatePackageService {
     String? description,
     List? inclusions,
     String? extraInfo,
+    required String availablePackages,
   }) async {
     try {
       await _firestore.collection("packages").doc(packageId).update(
@@ -190,6 +193,7 @@ class CreatePackageService {
           "description": description,
           "extraInfo": extraInfo,
           "otherImage": otherImageUrl,
+          "availablePackages": availablePackages,
         },
       ).then(
         (value) async {
@@ -294,6 +298,7 @@ class CreatePackageService {
     String? description,
     List? inclusions,
     String? extraInfo,
+    required String availablePackages,
   }) async {
     try {
       await _firestore.collection("packages").add(
@@ -325,6 +330,7 @@ class CreatePackageService {
           "otherImage": otherImageUrl,
           "thumbnailUrl": coverImageUrl,
           "termsAndConditions": termsFileUrl,
+          "availablePackages": availablePackages,
         },
       ).then(
         (value) async {

@@ -45,7 +45,7 @@ class CreatePackageController extends GetxController {
   TimeOfDay? endTime;
   int initialAge = 1;
   String selectedCat = "Family/Group";
-  String selectedPersons = "3";
+  String selectedPersons = "3-5";
   List<String> get availableNoofSeats => [
         "3-5",
         "6-10",
@@ -211,6 +211,7 @@ class CreatePackageController extends GetxController {
       isLoading = true;
       update();
       await _createPackageService.createPackage(
+        availablePackages: noOfPackages.text,
         address: location.text,
         latitude: _locationService.position!.latLng!.latitude,
         longitude: _locationService.position!.latLng!.longitude,
@@ -388,7 +389,7 @@ class CreatePackageController extends GetxController {
 
   List<IconsModel> icons = [];
 
-  List<int> count = List.generate(20, (index) => 0);
+  List<int> count = List.generate(200, (index) => 1);
 
   inclusionAddition(
     int index,
@@ -411,10 +412,5 @@ class CreatePackageController extends GetxController {
 
   loadData() async {
     await getAllPackages.getAllPackages();
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
   }
 }
