@@ -25,20 +25,18 @@ class GetAllPackages {
     return allPackages;
   }
 
-  Stream<List<PackagesModel>> getPackagesList() {
-    var list = FirebaseFirestore.instance
-        .collection('packages')
-        .where("listerId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-        .snapshots()
-        .map(
-          (snapShot) => snapShot.docs
-              .map(
-                (document) => PackagesModel.fromJson(
-                  document.data(),
-                ),
-              )
-              .toList(),
+  PackagesModel packageData = PackagesModel();
+  Future<PackagesModel> getPackageData(tourId) async {
+    await FirebaseFirestore.instance
+        .collection("packages")
+        .doc(tourId)
+        .get()
+        .then(
+          (value) => packageData = PackagesModel.fromJson(
+            value.data()!,
+          ),
         );
-    return list;
+
+    return packageData;
   }
 }

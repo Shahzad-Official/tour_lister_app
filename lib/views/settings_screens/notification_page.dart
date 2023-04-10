@@ -7,6 +7,7 @@ import 'package:tour_lister_app/widgets/app_button.dart';
 import '../../constants/svg_icons.dart';
 import '../../widgets/app_text.dart';
 
+// ignore: must_be_immutable
 class NotificationPage extends StatefulWidget {
   List<bool>? isRead;
   NotificationPage({
@@ -92,6 +93,7 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 }
 
+// ignore: must_be_immutable
 class NotificationDetails extends StatelessWidget {
   String title, details;
   NotificationDetails({

@@ -4,6 +4,7 @@ import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/widgets/app_text.dart';
 
+// ignore: must_be_immutable
 class AppBottomSheet extends StatelessWidget {
   int currentIndex;
   void Function(int index)? onIndexChanged;

@@ -56,7 +56,6 @@ class EditPackageController extends GetxController {
     "Family/Group",
   ];
 
-  File? _otherImage;
   List<File> allOtherImages = [];
   pickOtherImage() async {
     var result = await FilePicker.platform.pickFiles(
@@ -64,7 +63,6 @@ class EditPackageController extends GetxController {
     );
     if (result == null) return;
 
-    _otherImage = File(result.files.first.path!);
     for (var i in result.files) {
       allOtherImages.add(File(i.path!));
     }
@@ -76,6 +74,7 @@ class EditPackageController extends GetxController {
   File? coverImage;
   pickCoverImage() async {
     var result =
+        // ignore: invalid_use_of_visible_for_testing_member
         await ImagePicker.platform.getImage(source: ImageSource.gallery);
     if (result == null) return;
 

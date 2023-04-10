@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/models/icons_model.dart';
 import 'package:tour_lister_app/services/location_services/get_location_service.dart';
 import 'package:tour_lister_app/services/package_services/create_package_service.dart';
@@ -61,6 +60,7 @@ class CreatePackageController extends GetxController {
   File? _otherImage;
   pickOtherImage() async {
     var result =
+        // ignore: invalid_use_of_visible_for_testing_member
         await ImagePicker.platform.getImage(source: ImageSource.gallery);
     if (result == null) return;
 
@@ -73,6 +73,7 @@ class CreatePackageController extends GetxController {
   File? _coverImage;
   pickCoverImage() async {
     var result =
+        // ignore: invalid_use_of_visible_for_testing_member
         await ImagePicker.platform.getImage(source: ImageSource.gallery);
     if (result == null) return;
 

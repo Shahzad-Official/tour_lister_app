@@ -5,7 +5,6 @@ import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/controllers/package_controllers/create_package_controller.dart';
-import 'package:tour_lister_app/models/icons_model.dart';
 import 'package:tour_lister_app/services/inclusions_services/get_icons.dart';
 
 import 'package:tour_lister_app/widgets/app_button.dart';

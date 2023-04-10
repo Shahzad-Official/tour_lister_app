@@ -87,6 +87,7 @@ class AppInputField extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class DropdownContainer extends StatelessWidget {
   Object? currentValue;
   List<String> items;
@@ -155,6 +156,7 @@ class DropdownContainer extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class PhoneField extends StatelessWidget {
   final TextEditingController controller;
   String countryCode;

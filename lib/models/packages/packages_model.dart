@@ -181,9 +181,8 @@ class PackagesModel {
     noOfPersonsInPackage = json['noOfPersonsInPackage'];
     createdOn = json['created_on'];
     startTime = json['startTime'];
-    location = json['location'] != null
-        ? new Location.fromJson(json['location'])
-        : null;
+    location =
+        json['location'] != null ? Location.fromJson(json['location']) : null;
     listerId = json['listerId'];
     dangerRating = json['dangerRating'];
     packageName = json['packageName'];
@@ -192,7 +191,7 @@ class PackagesModel {
     if (json['inclusions'] != null) {
       inclusions = <Inclusions>[];
       json['inclusions'].forEach((v) {
-        inclusions!.add(new Inclusions.fromJson(v));
+        inclusions!.add(Inclusions.fromJson(v));
       });
     }
     status = json['status'];
@@ -202,35 +201,35 @@ class PackagesModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['startPrice'] = this.startPrice;
-    data['otherImage'] = this.otherImage;
-    data['endDate'] = this.endDate;
-    data['typeOfTour'] = this.typeOfTour;
-    data['cuttOffTime'] = this.cuttOffTime;
-    data['ageSuitability'] = this.ageSuitability;
-    data['packageId'] = this.packageId;
-    data['description'] = this.description;
-    data['endPrice'] = this.endPrice;
-    data['termsAndConditions'] = this.termsAndConditions;
-    data['isLive'] = this.isLive;
-    data['noOfPersonsInPackage'] = this.noOfPersonsInPackage;
-    data['created_on'] = this.createdOn;
-    data['startTime'] = this.startTime;
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
+    final Map<String, dynamic> data = {};
+    data['startPrice'] = startPrice;
+    data['otherImage'] = otherImage;
+    data['endDate'] = endDate;
+    data['typeOfTour'] = typeOfTour;
+    data['cuttOffTime'] = cuttOffTime;
+    data['ageSuitability'] = ageSuitability;
+    data['packageId'] = packageId;
+    data['description'] = description;
+    data['endPrice'] = endPrice;
+    data['termsAndConditions'] = termsAndConditions;
+    data['isLive'] = isLive;
+    data['noOfPersonsInPackage'] = noOfPersonsInPackage;
+    data['created_on'] = createdOn;
+    data['startTime'] = startTime;
+    if (location != null) {
+      data['location'] = location!.toJson();
     }
-    data['listerId'] = this.listerId;
-    data['dangerRating'] = this.dangerRating;
-    data['packageName'] = this.packageName;
-    data['endTime'] = this.endTime;
-    data['startDate'] = this.startDate;
-    if (this.inclusions != null) {
-      data['inclusions'] = this.inclusions!.map((v) => v.toJson()).toList();
+    data['listerId'] = listerId;
+    data['dangerRating'] = dangerRating;
+    data['packageName'] = packageName;
+    data['endTime'] = endTime;
+    data['startDate'] = startDate;
+    if (inclusions != null) {
+      data['inclusions'] = inclusions!.map((v) => v.toJson()).toList();
     }
-    data['status'] = this.status;
-    data['extraInfo'] = this.extraInfo;
-    data['thumbnailUrl'] = this.thumbnailUrl;
+    data['status'] = status;
+    data['extraInfo'] = extraInfo;
+    data['thumbnailUrl'] = thumbnailUrl;
     return data;
   }
 }
@@ -249,10 +248,10 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['address'] = this.address;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
+    final Map<String, dynamic> data = {};
+    data['address'] = address;
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
     return data;
   }
 }
@@ -271,10 +270,10 @@ class Inclusions {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['iconImage'] = this.iconImage;
-    data['iconName'] = this.iconName;
-    data['inclusionCount'] = this.inclusionCount;
+    final Map<String, dynamic> data = {};
+    data['iconImage'] = iconImage;
+    data['iconName'] = iconName;
+    data['inclusionCount'] = inclusionCount;
     return data;
   }
 }

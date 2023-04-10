@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -6,7 +5,6 @@ import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/controllers/package_controllers/manage_package_controller.dart';
-import 'package:tour_lister_app/models/packages/packages_model.dart';
 import 'package:tour_lister_app/services/package_services/get_all_packages.dart';
 import 'package:tour_lister_app/services/registration/login_service.dart';
 import 'package:tour_lister_app/utils/app_navigation.dart';

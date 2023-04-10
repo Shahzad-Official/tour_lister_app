@@ -5,9 +5,9 @@ import 'package:tour_lister_app/widgets/app_cached_image.dart';
 import 'package:tour_lister_app/widgets/app_text.dart';
 
 class AppTile extends StatelessWidget {
-  String picUrl, titleText;
-  void Function()? onView, onRemove;
-  AppTile({
+  final String picUrl, titleText;
+  final void Function()? onView, onRemove;
+  const AppTile({
     Key? key,
     this.picUrl = DummyData.profilePic,
     required this.titleText,
@@ -34,10 +34,13 @@ class AppTile extends StatelessWidget {
                   const SizedBox(
                     width: 25,
                   ),
-                  AppText(
-                    text: titleText,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
+                  Expanded(
+                    child: AppText(
+                      overflow: TextOverflow.ellipsis,
+                      text: titleText,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),

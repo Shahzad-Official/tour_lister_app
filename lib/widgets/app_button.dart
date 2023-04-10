@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/widgets/app_text.dart';
 
+// ignore: must_be_immutable
 class AppButton extends StatelessWidget {
   String btnText;
   bool isLoading;

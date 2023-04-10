@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tour_lister_app/models/lister_profile/profile_model.dart';
 import 'package:tour_lister_app/utils/app_navigation.dart';
 import 'package:tour_lister_app/views/chat_views/chat_screen.dart';
-import 'package:tour_lister_app/widgets/app_button.dart';
 
 import '../../constants/app_colors.dart';
 import '../../constants/app_paddings.dart';
@@ -12,15 +12,10 @@ import '../../widgets/app_cached_image.dart';
 import '../../widgets/app_text.dart';
 
 class UserDetails extends StatelessWidget {
-  String? profileUrl, email, phoneNo, gender, dOB, name;
-  UserDetails({
+  final ProfileModel userData;
+  const UserDetails({
     Key? key,
-    this.dOB,
-    this.email,
-    this.gender,
-    this.phoneNo,
-    this.profileUrl,
-    this.name,
+    required this.userData,
   }) : super(key: key);
 
   @override
@@ -65,7 +60,7 @@ class UserDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       AppText(
-                        text: name ?? "Pawan",
+                        text: userData.userName ?? "Pawan",
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                         textcolor: const Color(0xff232332),
@@ -76,7 +71,7 @@ class UserDetails extends StatelessWidget {
                     width: 20,
                   ),
                   AppCircularCachedImage(
-                    picUrl: profileUrl ?? DummyData.profilePic,
+                    picUrl: userData.profile ?? DummyData.profilePic,
                   ),
                 ],
               ),
@@ -91,7 +86,7 @@ class UserDetails extends StatelessWidget {
               ),
               AppPadding.heightSpace10,
               AppText(
-                text: email ?? DummyData.usersData['email'],
+                text: userData.email ?? DummyData.usersData['email'],
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -106,7 +101,7 @@ class UserDetails extends StatelessWidget {
               ),
               AppPadding.heightSpace10,
               AppText(
-                text: phoneNo ?? DummyData.usersData['phoneNo'],
+                text: userData.phoneNo ?? DummyData.usersData['phoneNo'],
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -121,22 +116,49 @@ class UserDetails extends StatelessWidget {
               ),
               AppPadding.heightSpace10,
               AppText(
-                text: dOB ?? DummyData.usersData['DOB'],
+                text: userData.dob ?? DummyData.usersData['DOB'],
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
               AppPadding.heightSpace10,
               const Divider(),
               AppPadding.heightSpace10,
-              RoundButton(
-                onTap: () {
-                  Navigate.to(
-                    context,
-                    const ChatScreen(),
-                  );
-                },
-                fontSize: 25,
-                text: "Chat",
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: SizedBox(
+        width: 160,
+        child: FloatingActionButton(
+          elevation: 15,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          onPressed: () {
+            Navigate.to(
+              context,
+              ChatScreen(
+                receiverId: userData.uid!,
+              ),
+            );
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.string(
+                SvgIcons.chat,
+                height: 30,
+                width: 30,
+                color: Colors.white,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              AppText(
+                text: "Chat Now",
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                textcolor: Colors.white,
               ),
             ],
           ),

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
-import 'package:tour_lister_app/models/packages/packages_model.dart';
+import 'package:tour_lister_app/models/booking_model.dart';
+import 'package:tour_lister_app/services/get_user_data.dart';
 import 'package:tour_lister_app/views/users_in_package/user_details.dart';
 import 'package:tour_lister_app/widgets/app_tile.dart';
 
@@ -11,14 +12,37 @@ import '../../constants/svg_icons.dart';
 import '../../widgets/app_cached_image.dart';
 import '../../widgets/app_text.dart';
 
-class UsersInPackage extends StatelessWidget {
-  String tourName;
-  List<Users> users;
-  UsersInPackage({
+class UsersInPackage extends StatefulWidget {
+  final BookingModel bookingDetails;
+  const UsersInPackage({
     Key? key,
-    this.tourName = "Sight visit",
-    required this.users,
+    required this.bookingDetails,
   }) : super(key: key);
+
+  @override
+  State<UsersInPackage> createState() => _UsersInPackageState();
+}
+
+class _UsersInPackageState extends State<UsersInPackage> {
+  GetUserData userData = GetUserData();
+  bool isLoading = false;
+  getUserData() async {
+    setState(() {
+      isLoading = true;
+    });
+    await userData.getUserData(
+      widget.bookingDetails.userId!,
+    );
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    getUserData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +67,7 @@ class UsersInPackage extends StatelessWidget {
                 ),
               ),
               title: AppText(
-                text: "Package : $tourName",
+                text: "Package : ${widget.bookingDetails.eventName}",
                 fontWeight: FontWeight.w600,
                 fontSize: 23,
                 textcolor: Colors.black,
@@ -70,31 +94,31 @@ class UsersInPackage extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                   AppPadding.heightSpace10,
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: users.length,
-                    itemBuilder: (context, index) {
-                      return AppTile(
-                        picUrl: users[index].pic!,
-                        onView: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => UserDetails(
-                                name: users[index].name,
-                                dOB: users[index].dOB,
-                                email: users[index].email,
-                                phoneNo: users[index].phoneNo,
-                                profileUrl: users[index].pic,
-                              ),
-                            ),
-                          );
-                        },
-                        titleText: users[index].name!,
-                      );
-                    },
-                  ),
+                  isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: 1,
+                          itemBuilder: (context, index) {
+                            return AppTile(
+                              picUrl: userData.userProfile.profile!,
+                              onView: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UserDetails(
+                                      userData: userData.userProfile,
+                                    ),
+                                  ),
+                                );
+                              },
+                              titleText: userData.userProfile.userName!,
+                            );
+                          },
+                        ),
                 ],
               ),
             ),

@@ -13,8 +13,8 @@ class MainPageController extends GetxController {
       Get.put(CreatePackageController());
 
   List<Widget> mainScreens = [
-    CreatePackage(),
-    ManagePackages(),
+    const CreatePackage(),
+    const ManagePackages(),
     const ManageBookings(),
     ListerAccount(),
   ];

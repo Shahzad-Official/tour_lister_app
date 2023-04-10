@@ -19,6 +19,7 @@ import 'package:tour_lister_app/widgets/app_cached_image.dart';
 
 import '../../widgets/app_text.dart';
 
+// ignore: must_be_immutable
 class ListerAccount extends StatelessWidget {
   bool? isVerified;
   ListerAccount({
@@ -267,7 +268,7 @@ class ListerAccount extends StatelessWidget {
                           await GoogleSignIn().signOut();
                           await FacebookAuth.instance.logOut();
                           Get.offAll(
-                            () => GetStarted(),
+                            () => const GetStarted(),
                           );
                         },
                         leading: const Icon(

@@ -8,6 +8,7 @@ import 'package:tour_lister_app/widgets/app_button.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
 import 'package:tour_lister_app/widgets/app_text.dart';
 
+// ignore: must_be_immutable
 class SinglePackageContainer extends StatelessWidget {
   String? picUrl;
   String startDate, endDate, eventName, location;

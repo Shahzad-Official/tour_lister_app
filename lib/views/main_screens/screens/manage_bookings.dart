@@ -4,10 +4,9 @@ import 'package:get/get.dart';
 import 'package:tour_lister_app/constants/dummy_data.dart';
 import 'package:tour_lister_app/controllers/bookings_controllers/manage_bookings_controller.dart';
 import 'package:tour_lister_app/models/lister_profile/profile_model.dart';
+import 'package:tour_lister_app/services/booking_services/get_all_bookings.dart';
 import 'package:tour_lister_app/services/get_user_data.dart';
 import 'package:tour_lister_app/views/bookings/ongoing_bookings/ongoing_bookings.dart';
-
-import 'package:tour_lister_app/widgets/app_button.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_paddings.dart';
@@ -26,9 +25,31 @@ class ManageBookings extends StatefulWidget {
 }
 
 class _ManageBookingsState extends State<ManageBookings> {
-  TextEditingController textEditingController = TextEditingController();
-  GetAllPackages getAllPackages = GetAllPackages();
   final GetUserData _userData = GetUserData();
+  final GetAllBookings _bookingServices = GetAllBookings();
+  final ManageBookingsController _bookingsController =
+      Get.put(ManageBookingsController());
+  GetAllPackages getpackageData = GetAllPackages();
+  bool isLoading = false;
+  getData() async {
+    setState(() {
+      isLoading = true;
+    });
+    await _bookingServices.getAllBookings();
+    _bookingsController.searchBooking(
+      allBooking: _bookingServices.allBookings,
+    );
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ManageBookingsController>(
@@ -36,7 +57,7 @@ class _ManageBookingsState extends State<ManageBookings> {
         builder: (controller) {
           return Scaffold(
             appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(170),
+              preferredSize: const Size.fromHeight(100),
               child: Container(
                 color: AppColors.backgroundcolor,
                 padding: const EdgeInsets.only(
@@ -59,59 +80,61 @@ class _ManageBookingsState extends State<ManageBookings> {
                           textcolor: Colors.black,
                         ),
                         FutureBuilder<ProfileModel>(
-                            future: _userData.getUserData(
-                                FirebaseAuth.instance.currentUser!.uid),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return AppCircularCachedImage(
-                                  picUrl: snapshot.data!.profile ??
-                                      DummyData.profilePic,
-                                );
-                              } else {
-                                return const Center(
-                                  child: CircularProgressIndicator(
-                                    color: AppColors.primarycolor,
-                                  ),
-                                );
-                              }
-                            }),
-                      ],
-                    ),
-                    AppPadding.heightSpace30,
-                    AppPadding.heightSpace10,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        RoundButton(
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          onTap: () {
-                            controller.changeIndex(0);
+                          future: _userData.getUserData(
+                              FirebaseAuth.instance.currentUser!.uid),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return AppCircularCachedImage(
+                                picRadius: 25,
+                                picUrl: snapshot.data!.profile ??
+                                    DummyData.profilePic,
+                              );
+                            } else {
+                              return const Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.primarycolor,
+                                ),
+                              );
+                            }
                           },
-                          text: "Ongoing Bookings",
-                          buttonColor: controller.currentIndex == 0
-                              ? AppColors.primarycolor
-                              : AppColors.backgroundcolor,
-                          textColor: controller.currentIndex == 0
-                              ? AppColors.backgroundcolor
-                              : AppColors.primarycolor,
-                          fontSize: 13,
-                        ),
-                        RoundButton(
-                          width: MediaQuery.of(context).size.width * 0.42,
-                          onTap: () {
-                            controller.changeIndex(1);
-                          },
-                          text: "Completed Bookings",
-                          buttonColor: controller.currentIndex == 1
-                              ? AppColors.primarycolor
-                              : AppColors.backgroundcolor,
-                          textColor: controller.currentIndex == 1
-                              ? AppColors.backgroundcolor
-                              : AppColors.primarycolor,
-                          fontSize: 13,
                         ),
                       ],
                     ),
+                    // AppPadding.heightSpace30,
+                    // AppPadding.heightSpace10,
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     RoundButton(
+                    //       width: MediaQuery.of(context).size.width * 0.4,
+                    //       onTap: () {
+                    //         controller.changeIndex(0);
+                    //       },
+                    //       text: "Ongoing Bookings",
+                    //       buttonColor: controller.currentIndex == 0
+                    //           ? AppColors.primarycolor
+                    //           : AppColors.backgroundcolor,
+                    //       textColor: controller.currentIndex == 0
+                    //           ? AppColors.backgroundcolor
+                    //           : AppColors.primarycolor,
+                    //       fontSize: 13,
+                    //     ),
+                    //     RoundButton(
+                    //       width: MediaQuery.of(context).size.width * 0.42,
+                    //       onTap: () {
+                    //         controller.changeIndex(1);
+                    //       },
+                    //       text: "Completed Bookings",
+                    //       buttonColor: controller.currentIndex == 1
+                    //           ? AppColors.primarycolor
+                    //           : AppColors.backgroundcolor,
+                    //       textColor: controller.currentIndex == 1
+                    //           ? AppColors.backgroundcolor
+                    //           : AppColors.primarycolor,
+                    //       fontSize: 13,
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
@@ -123,7 +146,9 @@ class _ManageBookingsState extends State<ManageBookings> {
                   children: [
                     AppPadding.heightSpace10,
                     controller.currentIndex == 0
-                        ? OngoingBookings()
+                        ? OngoingBookings(
+                            allBookings: controller.allBookings,
+                          )
                         : CompletedBookings(),
                   ],
                 ),
