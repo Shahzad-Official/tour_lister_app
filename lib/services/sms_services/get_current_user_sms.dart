@@ -1,21 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tour_lister_app/models/messages_model.dart';
 
 class GetCurrentUserSms {
-  Stream<List<MessagesModel>> getAllMessages(receiverId) {
+  Stream<List<MessagesModel>> getAllMessages({
+    required String receiverId,
+    required String bookingId,
+  }) {
     var list = FirebaseFirestore.instance
+        .collection("booking")
+        .doc(bookingId)
         .collection('messages')
+        .orderBy("sendTime")
         .snapshots()
-        .map((snapShot) {
-      return snapShot.docs
-          .map(
-            (document) => MessagesModel.fromJson(
-              document.data(),
-            ),
-          )
-          .toList();
-    });
+        .map(
+          (snapShot) => snapShot.docs
+              .map(
+                (document) => MessagesModel.fromJson(
+                  document.data(),
+                ),
+              )
+              .toList(),
+        );
 
     return list;
   }

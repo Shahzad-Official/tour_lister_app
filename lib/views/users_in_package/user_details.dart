@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tour_lister_app/models/booking_model.dart';
 import 'package:tour_lister_app/models/lister_profile/profile_model.dart';
 import 'package:tour_lister_app/utils/app_navigation.dart';
 import 'package:tour_lister_app/views/chat_views/chat_screen.dart';
@@ -13,9 +14,11 @@ import '../../widgets/app_text.dart';
 
 class UserDetails extends StatelessWidget {
   final ProfileModel userData;
+  final BookingModel bookindData;
   const UserDetails({
     Key? key,
     required this.userData,
+    required this.bookindData,
   }) : super(key: key);
 
   @override
@@ -130,6 +133,7 @@ class UserDetails extends StatelessWidget {
       floatingActionButton: SizedBox(
         width: 160,
         child: FloatingActionButton(
+          backgroundColor: AppColors.primarycolor,
           elevation: 15,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
@@ -138,6 +142,7 @@ class UserDetails extends StatelessWidget {
             Navigate.to(
               context,
               ChatScreen(
+                bookingId: bookindData.bookingId!,
                 receiverId: userData.uid!,
               ),
             );

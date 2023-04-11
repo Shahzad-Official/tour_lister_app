@@ -15,10 +15,11 @@ import '../../widgets/app_text.dart';
 
 class ChatScreen extends StatefulWidget {
   final String receiverId;
-
+  final String bookingId;
   const ChatScreen({
     super.key,
     required this.receiverId,
+    required this.bookingId,
   });
 
   @override
@@ -79,7 +80,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   padding: const EdgeInsets.only(top: 8.0, bottom: 65),
                   child: SingleChildScrollView(
                     child: StreamBuilder<List<MessagesModel>>(
-                      stream: _currentUserSms.getAllMessages(widget.receiverId),
+                      stream: _currentUserSms.getAllMessages(
+                        bookingId: widget.bookingId,
+                        receiverId: widget.receiverId,
+                      ),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return Column(
@@ -118,7 +122,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 MessageBar(
                   onSend: (msg) async {
-                    await controller.sendMessage(msg, widget.receiverId);
+                    await controller.sendMessage(
+                      msg,
+                      widget.receiverId,
+                      widget.bookingId,
+                    );
                   },
                 ),
               ],

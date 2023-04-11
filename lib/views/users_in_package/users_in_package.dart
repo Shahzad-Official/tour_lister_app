@@ -110,6 +110,7 @@ class _UsersInPackageState extends State<UsersInPackage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => UserDetails(
+                                      bookindData: widget.bookingDetails,
                                       userData: userData.userProfile,
                                     ),
                                   ),
