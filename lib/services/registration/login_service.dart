@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -59,6 +60,7 @@ class LoginService {
       AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
       Get.offAll(() => MainPage());
     } catch (e) {
+      debugPrint(e.toString());
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }
   }
@@ -77,6 +79,7 @@ class LoginService {
       var userId = user.user!.uid;
       doesContainId(userId);
     } catch (e) {
+      debugPrint(e.toString());
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }
   }
@@ -92,6 +95,7 @@ class LoginService {
       var userId = user.user!.uid;
       doesContainId(userId);
     } catch (e) {
+      debugPrint(e.toString());
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }
   }
