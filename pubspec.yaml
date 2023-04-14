@@ -56,9 +56,7 @@ dependencies:
   map_address_picker: ^0.3.5
   numberpicker: ^2.1.1
   shared_preferences: any
-  flutter_stripe: ^9.0.0+1
-  cloud_functions: ^4.1.0
-  http: any
+  
 
 dev_dependencies:
   # The "flutter_lints" package below contains a set of recommended lints to
