@@ -453,7 +453,7 @@ class _CreatePackageState extends State<CreatePackage> {
                         return const Text("Data not available");
                       } else {
                         return AppInputField(
-                          hintText: "Inclusion",
+                          hintText: "Add Inclusion",
                           enabled: false,
                           onTap: () {
                             showDialog(

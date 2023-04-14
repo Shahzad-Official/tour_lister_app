@@ -22,7 +22,7 @@ class CreatePackageService {
     required String startPrice,
     required String endPrice,
     required String cuttOffTime,
-    required File otherImage,
+    required List<File> otherImage,
     required File coverImage,
     required String noOfPersonsInPackage,
     required String dangerRating,
@@ -91,26 +91,27 @@ class CreatePackageService {
               );
             },
           );
-
-          await _firebaseStorage
-              .ref("packages_files")
-              .child(value.id)
-              .child("otherImages")
-              .putFile(otherImage)
-              .then(
-            (p0) async {
-              var otherImage = await p0.ref.getDownloadURL();
-              await _firestore.collection("packages").doc(value.id).set(
-                {
-                  "otherImage": [
-                    otherImage,
-                  ],
-                },
-                SetOptions(
-                  merge: true,
-                ),
-              );
+          List<String> otherImagesUrl = [];
+          for (int i = 0; i < otherImage.length; i++) {
+            await _firebaseStorage
+                .ref("packages_files")
+                .child(value.id)
+                .child("otherImages$i")
+                .putFile(otherImage[i])
+                .then(
+              (p0) async {
+                var url = await p0.ref.getDownloadURL();
+                otherImagesUrl.add(url);
+              },
+            );
+          }
+          await _firestore.collection("packages").doc(value.id).set(
+            {
+              "otherImage": otherImagesUrl,
             },
+            SetOptions(
+              merge: true,
+            ),
           );
           await _firebaseStorage
               .ref("packages_files")
@@ -224,7 +225,7 @@ class CreatePackageService {
                 await _firebaseStorage
                     .ref("packages_files")
                     .child(packageId)
-                    .child("otherImages")
+                    .child("otherImages$index")
                     .putFile(otherImage[index])
                     .then(
                   (p0) async {
@@ -366,7 +367,7 @@ class CreatePackageService {
                 await _firebaseStorage
                     .ref("packages_files")
                     .child(value.id)
-                    .child("otherImages")
+                    .child("otherImages$index")
                     .putFile(otherImage[index])
                     .then(
                   (p0) async {

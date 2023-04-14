@@ -9,37 +9,51 @@ class DeletePackageService {
   deletePackage(String packageId) async {
     String filesPath = "$packageId/";
     try {
+      // await FirebaseStorage.instance
+      //     .ref("packages_files")
+      //     .child(filesPath)
+      //     .child("thumbnail")
+      //     .delete()
+      //     .then(
+      //   (value) async {
+      //     await FirebaseStorage.instance
+      //         .ref("packages_files")
+      //         .child(filesPath)
+      //         .child("otherImages")
+      //         .delete()
+      //         .then(
+      //       (value) async {
+      //         await FirebaseStorage.instance
+      //             .ref("packages_files")
+      //             .child(filesPath)
+      //             .child("termsAndConditions")
+      //             .delete()
+      //             .then(
+      //           (value) async {
+
+      //           },
+      //         );
+      //       },
+      //     );
+      //   },
+      // );
       await FirebaseStorage.instance
           .ref("packages_files")
           .child(filesPath)
-          .child("thumbnail")
-          .delete()
+          .listAll()
           .then(
-        (value) async {
-          await FirebaseStorage.instance
-              .ref("packages_files")
-              .child(filesPath)
-              .child("otherImages")
-              .delete()
-              .then(
-            (value) async {
-              await FirebaseStorage.instance
-                  .ref("packages_files")
-                  .child(filesPath)
-                  .child("termsAndConditions")
-                  .delete()
-                  .then(
-                (value) async {
-                  await FirebaseFirestore.instance
-                      .collection("packages")
-                      .doc(packageId)
-                      .delete();
-                },
-              );
-            },
-          );
+        (value) {
+          for (var i in value.items) {
+            FirebaseStorage.instance.ref(i.fullPath).delete();
+          }
         },
-      );
+      ).then((value) async {
+        await FirebaseFirestore.instance
+            .collection("packages")
+            .doc(packageId)
+            .delete();
+      });
+
       AppSnackbar.snackBar(
           title: "Error", message: "Package Deleted Successfully!");
       Get.deleteAll();

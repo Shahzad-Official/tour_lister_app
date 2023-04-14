@@ -57,14 +57,24 @@ class CreatePackageController extends GetxController {
     "Family/Group",
   ];
 
-  File? _otherImage;
+  List<File> otherImage = [];
   pickOtherImage() async {
     var result =
         // ignore: invalid_use_of_visible_for_testing_member
-        await ImagePicker.platform.getImage(source: ImageSource.gallery);
+        await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.image,
+    );
     if (result == null) return;
 
-    _otherImage = File(result.path);
+    List.generate(
+      result.files.length,
+      (index) => otherImage.add(
+        File(
+          result.files[index].path.toString(),
+        ),
+      ),
+    );
 
     otherImageController.text = "Uploaded Successfully";
     update();
@@ -224,7 +234,7 @@ class CreatePackageController extends GetxController {
         startPrice: startPrice.text,
         endPrice: endPrice.text,
         cuttOffTime: cuttoffTime.text,
-        otherImage: _otherImage!,
+        otherImage: otherImage,
         coverImage: _coverImage!,
         noOfPersonsInPackage: noOfBookigs.text,
         dangerRating: dangerRating.toString(),

@@ -1,7 +1,6 @@
-package com.flutter.stripe.example
+package com.example.tour_lister_app
 
 import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity: FlutterFragmentActivity() {
+class MainActivity: FlutterActivity() {
 }

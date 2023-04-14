@@ -7,6 +7,7 @@ import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/controllers/package_controllers/edit_package_controller.dart';
 import 'package:tour_lister_app/models/packages/packages_model.dart';
+import 'package:tour_lister_app/services/booking_services/get_all_bookings.dart';
 import 'package:tour_lister_app/utils/date_format.dart';
 import 'package:tour_lister_app/widgets/app_button.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
@@ -16,8 +17,9 @@ import '../../services/inclusions_services/get_icons.dart';
 import '../../widgets/app_input_field.dart';
 import '../../widgets/app_text.dart';
 
+// ignore: must_be_immutable
 class EditPackage extends StatefulWidget {
-  final bool isLive;
+  bool isLive;
   final String picUrl,
       pkgName,
       pkgLocation,
@@ -26,7 +28,7 @@ class EditPackage extends StatefulWidget {
       startTime,
       endTime;
   final PackagesModel packageData;
-  const EditPackage({
+  EditPackage({
     Key? key,
     required this.picUrl,
     required this.endDate,
@@ -46,12 +48,24 @@ class EditPackage extends StatefulWidget {
 class _EditPackageState extends State<EditPackage> {
   final GetIcons _getIcons = GetIcons();
   EditPackageController packageController = Get.put(EditPackageController());
+  final GetAllBookings _getAllBookings = GetAllBookings();
   bool isLoading = false;
   initializeData() async {
     setState(() {
       isLoading = true;
     });
     await _getIcons.getIcons();
+    await _getAllBookings.getAllBookings();
+    if (_getAllBookings.allBookings
+        .any((element) => element.tourId == widget.packageData.packageId)) {
+      setState(() {
+        widget.isLive = true;
+      });
+    } else {
+      setState(() {
+        widget.isLive = false;
+      });
+    }
     setState(() {
       isLoading = false;
     });
@@ -483,6 +497,7 @@ class _EditPackageState extends State<EditPackage> {
                       ),
                       AppPadding.heightSpace10,
                       AppInputField(
+                        enabled: !widget.isLive,
                         controller: _.noOfPackages,
                         keyboardtype: TextInputType.number,
                         hintText: "No of Packages Available",
@@ -648,7 +663,7 @@ class _EditPackageState extends State<EditPackage> {
                               return const Text("Data not available");
                             } else {
                               return AppInputField(
-                                hintText: "Inclusion",
+                                hintText: "Add Inclusion",
                                 enabled: false,
                                 onTap: widget.isLive
                                     ? null

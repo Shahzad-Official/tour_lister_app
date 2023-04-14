@@ -106,7 +106,6 @@ class EditPackageController extends GetxController {
     packageId, {
     bool isDuplicating = false,
   }) async {
-    noOfBookigs.text = selectedPersons;
     if (packageName.text.isEmpty) {
       Get.snackbar(
         "Error",
