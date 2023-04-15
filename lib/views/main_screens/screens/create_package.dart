@@ -49,9 +49,28 @@ class _CreatePackageState extends State<CreatePackage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                AppText(
+                  text: "Package Name",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  textcolor: AppColors.headTextColor,
+                ),
+                AppPadding.heightSpace10,
                 AppInputField(
                   controller: _.packageName,
                   hintText: "Package Name",
+                ),
+                AppPadding.heightSpace30,
+                AppText(
+                  text: "Package Category",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  textcolor: AppColors.headTextColor,
+                ),
+                AppPadding.heightSpace10,
+                AppInputField(
+                  controller: _.packageName,
+                  hintText: "Package Category",
                 ),
                 AppPadding.heightSpace30,
                 AppInputField(
@@ -303,6 +322,21 @@ class _CreatePackageState extends State<CreatePackage> {
                 ),
                 AppPadding.heightSpace30,
                 AppText(
+                  text: "Package Type",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  textcolor: AppColors.headTextColor,
+                ),
+                AppPadding.heightSpace10,
+                DropdownContainer(
+                  currentValue: _.selectedCat,
+                  items: _.catagories,
+                  onValueChange: (value) {
+                    _.changeCatagory(value);
+                  },
+                ),
+                AppPadding.heightSpace30,
+                AppText(
                   text: "Persons per Package",
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
@@ -324,14 +358,6 @@ class _CreatePackageState extends State<CreatePackage> {
                         keyboardtype: TextInputType.number,
                       ),
                 AppPadding.heightSpace30,
-                DropdownContainer(
-                  currentValue: _.selectedCat,
-                  items: _.catagories,
-                  onValueChange: (value) {
-                    _.changeCatagory(value);
-                  },
-                ),
-                AppPadding.heightSpace30,
                 AppText(
                   text: "Danger Rating",
                   fontSize: 15,
@@ -346,21 +372,24 @@ class _CreatePackageState extends State<CreatePackage> {
                       onTap: () {
                         _.assignDangerRating(1);
                       },
-                      child: Column(
-                        children: [
-                          SvgPicture.string(
-                            _.dangerRating == 1
-                                ? SvgIcons.starFilled
-                                : SvgIcons.star,
-                            width: 25,
-                          ),
-                          AppText(
-                            text: "Easy Going",
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            textcolor: AppColors.headTextColor,
-                          ),
-                        ],
+                      child: Tooltip(
+                        message: "testing",
+                        child: Column(
+                          children: [
+                            SvgPicture.string(
+                              _.dangerRating == 1
+                                  ? SvgIcons.starFilled
+                                  : SvgIcons.star,
+                              width: 25,
+                            ),
+                            AppText(
+                              text: "Easy Going",
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              textcolor: AppColors.headTextColor,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     InkWell(

@@ -47,9 +47,9 @@ class CreatePackageController extends GetxController {
   String selectedPersons = "3-5";
   List<String> get availableNoofSeats => [
         "3-5",
-        "6-10",
-        "11-15",
-        "16-20",
+        " 3-10",
+        " 3-15",
+        "3-20",
       ];
   List<String> catagories = [
     "Individual",
@@ -190,14 +190,16 @@ class CreatePackageController extends GetxController {
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
-    } else if (otherImageController.text.isEmpty) {
-      Get.snackbar(
-        "Error",
-        "Upload your Package other image",
-        colorText: Colors.white,
-        backgroundColor: AppColors.primarycolor,
-      );
-    } else if (noOfPackages.text.isEmpty) {
+    }
+    // else if (otherImageController.text.isEmpty) {
+    //   Get.snackbar(
+    //     "Error",
+    //     "Upload your Package other image",
+    //     colorText: Colors.white,
+    //     backgroundColor: AppColors.primarycolor,
+    //   );
+    // }
+    else if (noOfPackages.text.isEmpty) {
       Get.snackbar(
         "Error",
         "Enter Available No of packages",
@@ -297,9 +299,12 @@ class CreatePackageController extends GetxController {
     showDurationPicker(
       context: context,
       initialTime: const Duration(minutes: 10),
+      baseUnit: BaseUnit.minute,
+      snapToMins: 10.0,
     ).then(
       (value) {
         Duration duration = value!;
+
         String sDuration =
             "${duration.inHours} H:${duration.inMinutes.remainder(60)} M";
         cuttoffTime.text = sDuration;

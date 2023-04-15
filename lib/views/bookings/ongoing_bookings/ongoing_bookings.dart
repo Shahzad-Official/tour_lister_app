@@ -29,11 +29,6 @@ class OngoingBookings extends StatelessWidget {
     return GetBuilder<ManageBookingsController>(
       init: ManageBookingsController(),
       builder: (_) {
-        if (allBookings.isEmpty) {
-          return Center(
-            child: AppText(text: "NO bookings yet"),
-          );
-        }
         return Column(
           children: [
             AppPadding.heightSpace30,
