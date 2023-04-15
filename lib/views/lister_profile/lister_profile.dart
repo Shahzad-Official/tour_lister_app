@@ -142,7 +142,7 @@ class ListerProfile extends StatelessWidget {
               const Divider(),
               AppPadding.heightSpace20,
               AppText(
-                text: "Date of Birth",
+                text: "Date of Joining",
                 textcolor: AppColors.headTextColor,
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
