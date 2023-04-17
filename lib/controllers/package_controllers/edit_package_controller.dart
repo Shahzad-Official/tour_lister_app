@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:duration_picker/duration_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -43,13 +42,7 @@ class EditPackageController extends GetxController {
   TimeOfDay? endTime;
   int initialAge = 1;
   String selectedCat = "Family/Group";
-  String selectedPersons = "3-5";
-  List<String> get availableNoofSeats => [
-        "3-5",
-        "6-10",
-        "11-15",
-        "16-20",
-      ];
+
   List<String> catagories = [
     "Individual",
     "Couples",
@@ -333,17 +326,20 @@ class EditPackageController extends GetxController {
   }
 
   selectTime(context) {
-    showDurationPicker(
+    showTimePicker(
       context: context,
-      initialTime: const Duration(minutes: 10),
-    ).then(
-      (value) {
-        Duration duration = value!;
-        String sDuration =
-            "${duration.inHours} H:${duration.inMinutes.remainder(60)} M";
-        cuttoffTime.text = sDuration;
+      initialEntryMode: TimePickerEntryMode.inputOnly,
+      initialTime: const TimeOfDay(hour: 00, minute: 10),
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
       },
-    );
+    ).then((value) {
+      String sDuration = "${value!.hour} H:${value.minute} M";
+      cuttoffTime.text = sDuration;
+    });
   }
 
   selectStartTime(context) async {
@@ -411,15 +407,8 @@ class EditPackageController extends GetxController {
     } else if (selectedCat == "Couples") {
       noOfBookigs.text = "2";
     } else {
-      noOfBookigs.text = selectedPersons;
+      noOfBookigs.text = "";
     }
-    update();
-  }
-
-  changeNoOfSeats(value) {
-    selectedPersons = value;
-    noOfBookigs.text = selectedPersons;
-
     update();
   }
 

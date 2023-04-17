@@ -20,9 +20,11 @@ class AppInputField extends StatelessWidget {
   final int? maxLength;
   final void Function(String query)? onChanged;
   final String? Function(String? text)? validator;
+  final TextAlign textAlign;
   const AppInputField({
     Key? key,
     required this.hintText,
+    this.textAlign = TextAlign.start,
     this.controller,
     this.keyboardtype,
     this.obscureText = false,
@@ -59,6 +61,7 @@ class AppInputField extends StatelessWidget {
           ],
         ),
         child: TextFormField(
+          textAlign: textAlign,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: onChanged,
           maxLength: maxLength,

@@ -12,6 +12,8 @@ import 'package:tour_lister_app/widgets/app_cached_image.dart';
 import 'package:tour_lister_app/widgets/app_input_field.dart';
 import 'package:tour_lister_app/widgets/app_text.dart';
 
+import '../../../utils/tool_tip_shap.dart';
+
 class CreatePackage extends StatefulWidget {
   const CreatePackage({super.key});
 
@@ -69,10 +71,17 @@ class _CreatePackageState extends State<CreatePackage> {
                 ),
                 AppPadding.heightSpace10,
                 AppInputField(
-                  controller: _.packageName,
+                  controller: _.packageCat,
                   hintText: "Package Category",
                 ),
                 AppPadding.heightSpace30,
+                AppText(
+                  text: "Location",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  textcolor: AppColors.headTextColor,
+                ),
+                AppPadding.heightSpace10,
                 AppInputField(
                   enabled: false,
                   onTap: () async {
@@ -100,107 +109,77 @@ class _CreatePackageState extends State<CreatePackage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AppInputField(
-                      controller: _.startDateController,
-                      onTap: () {
-                        _.selectStartDate(context);
-                      },
-                      width: MediaQuery.of(context).size.width * 0.415,
-                      enabled: false,
-                      hintText: "Start Date",
-                      contentPadding: const EdgeInsets.only(
-                        top: 20,
-                        left: 15,
-                      ),
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 20,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText(
+                          text: "Start Date",
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          textcolor: AppColors.headTextColor,
                         ),
-                        child: SvgPicture.string(
-                          SvgIcons.calendarFilled,
-                          width: 30,
-                          color: Colors.grey,
+                        AppPadding.heightSpace10,
+                        AppInputField(
+                          controller: _.startDateController,
+                          onTap: () {
+                            _.selectStartDate(context);
+                          },
+                          width: MediaQuery.of(context).size.width * 0.415,
+                          enabled: false,
+                          hintText: "Start Date",
+                          contentPadding: const EdgeInsets.only(
+                            top: 20,
+                            left: 15,
+                          ),
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 20,
+                            ),
+                            child: SvgPicture.string(
+                              SvgIcons.calendarFilled,
+                              width: 30,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                    AppInputField(
-                      controller: _.endDateController,
-                      onTap: () {
-                        _.selectEndDate(context);
-                      },
-                      width: MediaQuery.of(context).size.width * 0.415,
-                      enabled: false,
-                      hintText: "End Date",
-                      contentPadding: const EdgeInsets.only(
-                        top: 20,
-                        left: 15,
-                      ),
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 20,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText(
+                          text: "End Date",
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          textcolor: AppColors.headTextColor,
                         ),
-                        child: SvgPicture.string(
-                          SvgIcons.calendarFilled,
-                          width: 30,
-                          color: Colors.grey,
+                        AppPadding.heightSpace10,
+                        AppInputField(
+                          controller: _.endDateController,
+                          onTap: () {
+                            _.selectEndDate(context);
+                          },
+                          width: MediaQuery.of(context).size.width * 0.415,
+                          enabled: false,
+                          hintText: "End Date",
+                          contentPadding: const EdgeInsets.only(
+                            top: 20,
+                            left: 15,
+                          ),
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 20,
+                            ),
+                            child: SvgPicture.string(
+                              SvgIcons.calendarFilled,
+                              width: 30,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-                AppPadding.heightSpace30,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppInputField(
-                      controller: _.startTimeController,
-                      onTap: () {
-                        _.selectStartTime(context);
-                      },
-                      width: MediaQuery.of(context).size.width * 0.415,
-                      enabled: false,
-                      hintText: "Start Time",
-                      contentPadding: const EdgeInsets.only(
-                        top: 20,
-                        left: 15,
-                      ),
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 20,
-                        ),
-                        child: SvgPicture.string(
-                          SvgIcons.clock,
-                          width: 30,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    AppInputField(
-                      controller: _.endTimeController,
-                      onTap: () {
-                        _.selectEndTime(context);
-                      },
-                      width: MediaQuery.of(context).size.width * 0.415,
-                      enabled: false,
-                      hintText: "End Time",
-                      contentPadding: const EdgeInsets.only(
-                        top: 20,
-                        left: 15,
-                      ),
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 20,
-                        ),
-                        child: SvgPicture.string(
-                          SvgIcons.clock,
-                          width: 30,
-                          color: Colors.grey,
-                        ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
@@ -208,21 +187,130 @@ class _CreatePackageState extends State<CreatePackage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AppInputField(
-                      controller: _.startPrice,
-                      keyboardtype: TextInputType.number,
-                      width: MediaQuery.of(context).size.width * 0.415,
-                      hintText: "Start Price",
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText(
+                          text: "Start Time",
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          textcolor: AppColors.headTextColor,
+                        ),
+                        AppPadding.heightSpace10,
+                        AppInputField(
+                          controller: _.startTimeController,
+                          onTap: () {
+                            _.selectStartTime(context);
+                          },
+                          width: MediaQuery.of(context).size.width * 0.415,
+                          enabled: false,
+                          hintText: "Start Time",
+                          contentPadding: const EdgeInsets.only(
+                            top: 20,
+                            left: 15,
+                          ),
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 20,
+                            ),
+                            child: SvgPicture.string(
+                              SvgIcons.clock,
+                              width: 30,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    AppInputField(
-                      controller: _.endPrice,
-                      keyboardtype: TextInputType.number,
-                      width: MediaQuery.of(context).size.width * 0.415,
-                      hintText: "Final Price",
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText(
+                          text: "End Time",
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          textcolor: AppColors.headTextColor,
+                        ),
+                        AppPadding.heightSpace10,
+                        AppInputField(
+                          controller: _.endTimeController,
+                          onTap: () {
+                            _.selectEndTime(context);
+                          },
+                          width: MediaQuery.of(context).size.width * 0.415,
+                          enabled: false,
+                          hintText: "End Time",
+                          contentPadding: const EdgeInsets.only(
+                            top: 20,
+                            left: 15,
+                          ),
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 20,
+                            ),
+                            child: SvgPicture.string(
+                              SvgIcons.clock,
+                              width: 30,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
                 AppPadding.heightSpace30,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText(
+                          text: "Start Price",
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          textcolor: AppColors.headTextColor,
+                        ),
+                        AppPadding.heightSpace10,
+                        AppInputField(
+                          controller: _.startPrice,
+                          keyboardtype: TextInputType.number,
+                          width: MediaQuery.of(context).size.width * 0.415,
+                          hintText: "Start Price",
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText(
+                          text: "Final Price",
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          textcolor: AppColors.headTextColor,
+                        ),
+                        AppPadding.heightSpace10,
+                        AppInputField(
+                          controller: _.endPrice,
+                          keyboardtype: TextInputType.number,
+                          width: MediaQuery.of(context).size.width * 0.415,
+                          hintText: "Final Price",
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                AppPadding.heightSpace30,
+                AppText(
+                  text: "Cutoff Time",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  textcolor: AppColors.headTextColor,
+                ),
+                AppPadding.heightSpace10,
                 AppInputField(
                   controller: _.cuttoffTime,
                   enabled: false,
@@ -249,6 +337,13 @@ class _CreatePackageState extends State<CreatePackage> {
                   ),
                 ),
                 AppPadding.heightSpace30,
+                AppText(
+                  text: "Package Description",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  textcolor: AppColors.headTextColor,
+                ),
+                AppPadding.heightSpace10,
                 AppInputField(
                   controller: _.description,
                   height: 150,
@@ -258,8 +353,14 @@ class _CreatePackageState extends State<CreatePackage> {
                   keyboardtype: TextInputType.multiline,
                   textInputAction: TextInputAction.done,
                 ),
-
                 AppPadding.heightSpace30,
+                AppText(
+                  text: "Upload Cover Image",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  textcolor: AppColors.headTextColor,
+                ),
+                AppPadding.heightSpace10,
                 AppInputField(
                   controller: _.coverImageController,
                   enabled: false,
@@ -284,6 +385,13 @@ class _CreatePackageState extends State<CreatePackage> {
                   ),
                 ),
                 AppPadding.heightSpace30,
+                AppText(
+                  text: "Upload Other Image",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  textcolor: AppColors.headTextColor,
+                ),
+                AppPadding.heightSpace10,
                 AppInputField(
                   controller: _.otherImageController,
                   enabled: false,
@@ -343,20 +451,28 @@ class _CreatePackageState extends State<CreatePackage> {
                   textcolor: AppColors.headTextColor,
                 ),
                 AppPadding.heightSpace10,
-                _.selectedCat == "Family/Group"
-                    ? DropdownContainer(
-                        currentValue: _.selectedPersons,
-                        items: _.availableNoofSeats,
-                        onValueChange: (value) {
-                          _.changeNoOfSeats(value);
-                        },
-                      )
-                    : AppInputField(
-                        enabled: false,
+                Row(
+                  children: [
+                    _.selectedCat == "Family/Group"
+                        ? const Expanded(
+                            child: AppInputField(
+                              textAlign: TextAlign.center,
+                              enabled: false,
+                              hintText: "3 -",
+                            ),
+                          )
+                        : const SizedBox(),
+                    Expanded(
+                      flex: 4,
+                      child: AppInputField(
+                        enabled: _.selectedCat == "Family/Group" ? true : false,
                         controller: _.noOfBookigs,
                         hintText: "Total no of bookings allowed",
                         keyboardtype: TextInputType.number,
                       ),
+                    ),
+                  ],
+                ),
                 AppPadding.heightSpace30,
                 AppText(
                   text: "Danger Rating",
@@ -372,24 +488,43 @@ class _CreatePackageState extends State<CreatePackage> {
                       onTap: () {
                         _.assignDangerRating(1);
                       },
-                      child: Tooltip(
-                        message: "testing",
-                        child: Column(
-                          children: [
-                            SvgPicture.string(
-                              _.dangerRating == 1
-                                  ? SvgIcons.starFilled
-                                  : SvgIcons.star,
-                              width: 25,
+                      child: Column(
+                        children: [
+                          SvgPicture.string(
+                            _.dangerRating == 1
+                                ? SvgIcons.starFilled
+                                : SvgIcons.star,
+                            width: 25,
+                          ),
+                          AppText(
+                            text: "Easy Going",
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            textcolor: AppColors.headTextColor,
+                          ),
+                          AppPadding.heightSpace10,
+                          Tooltip(
+                            decoration: const ShapeDecoration(
+                              color: Colors.blue,
+                              shape: TooltipShapeBorder(
+                                radius: 5,
+                                arrowWidth: 10,
+                              ),
                             ),
-                            AppText(
-                              text: "Easy Going",
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              textcolor: AppColors.headTextColor,
+                            triggerMode: TooltipTriggerMode.tap,
+                            onTriggered: () {},
+                            message: "testing",
+                            child: const CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.grey,
+                              child: Icon(
+                                Icons.question_mark_rounded,
+                                size: 10,
+                                color: Colors.white,
+                              ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                     InkWell(
@@ -409,6 +544,28 @@ class _CreatePackageState extends State<CreatePackage> {
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
                             textcolor: AppColors.headTextColor,
+                          ),
+                          AppPadding.heightSpace10,
+                          Tooltip(
+                            decoration: const ShapeDecoration(
+                              color: Colors.blue,
+                              shape: TooltipShapeBorder(
+                                radius: 5,
+                                arrowWidth: 10,
+                              ),
+                            ),
+                            triggerMode: TooltipTriggerMode.tap,
+                            onTriggered: () {},
+                            message: "testing",
+                            child: const CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.grey,
+                              child: Icon(
+                                Icons.question_mark_rounded,
+                                size: 10,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -430,6 +587,28 @@ class _CreatePackageState extends State<CreatePackage> {
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
                             textcolor: AppColors.headTextColor,
+                          ),
+                          AppPadding.heightSpace10,
+                          Tooltip(
+                            decoration: const ShapeDecoration(
+                              color: Colors.blue,
+                              shape: TooltipShapeBorder(
+                                radius: 5,
+                                arrowWidth: 10,
+                              ),
+                            ),
+                            triggerMode: TooltipTriggerMode.tap,
+                            onTriggered: () {},
+                            message: "testing",
+                            child: const CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.grey,
+                              child: Icon(
+                                Icons.question_mark_rounded,
+                                size: 10,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -471,6 +650,13 @@ class _CreatePackageState extends State<CreatePackage> {
                   ],
                 ),
                 AppPadding.heightSpace30,
+                AppText(
+                  text: "Add Inclusion",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  textcolor: AppColors.headTextColor,
+                ),
+                AppPadding.heightSpace10,
                 Builder(
                   builder: (context) {
                     if (isloading) {
@@ -522,7 +708,7 @@ class _CreatePackageState extends State<CreatePackage> {
                                                 crossAxisCount: 3,
                                                 mainAxisSpacing: 20,
                                                 crossAxisSpacing: 20,
-                                                childAspectRatio: 0.7,
+                                                childAspectRatio: 0.8,
                                               ),
                                               itemBuilder: (context, index) {
                                                 return InkWell(
@@ -543,9 +729,10 @@ class _CreatePackageState extends State<CreatePackage> {
                                                           .withOpacity(0.4),
                                                     ),
                                                     child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
-                                                        AppPadding
-                                                            .heightSpace10,
                                                         AppCachedImage(
                                                           height: 50,
                                                           width: 50,
@@ -553,17 +740,17 @@ class _CreatePackageState extends State<CreatePackage> {
                                                               .iconsData[index]
                                                               .iconImage!,
                                                         ),
-                                                        AppPadding
-                                                            .heightSpace10,
-                                                        AppText(
-                                                          text: _getIcons
-                                                              .iconsData[index]
-                                                              .iconName
-                                                              .toString(),
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
+                                                        // AppPadding
+                                                        //     .heightSpace10,
+                                                        // AppText(
+                                                        //   text: _getIcons
+                                                        //       .iconsData[index]
+                                                        //       .iconName
+                                                        //       .toString(),
+                                                        //   fontSize: 15,
+                                                        //   fontWeight:
+                                                        //       FontWeight.w500,
+                                                        // ),
                                                       ],
                                                     ),
                                                   ),
@@ -708,73 +895,14 @@ class _CreatePackageState extends State<CreatePackage> {
                           ),
                         ],
                       ),
-                // AppPadding.heightSpace30,
-                // Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     AppPadding.heightSpace30,
-                //     AppText(
-                //       text: "Food Served to Each Person",
-                //       fontSize: 15,
-                //       fontWeight: FontWeight.w600,
-                //       textcolor: AppColors.headTextColor,
-                //     ),
-                //     AppPadding.heightSpace30,
-                //     GetBuilder<FoodServicesController>(
-                //         init: FoodServicesController(),
-                //         builder: (controller) {
-                //           return Row(
-                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //             children: List.generate(controller.foodIcons.length,
-                //                 (index) {
-                //               return Container(
-                //                 padding: const EdgeInsets.all(10),
-                //                 decoration: BoxDecoration(
-                //                   borderRadius: BorderRadius.circular(10),
-                //                   color: AppColors.backgroundcolor,
-                //                   boxShadow: [
-                //                     BoxShadow(
-                //                       color: Colors.black.withOpacity(0.2),
-                //                       offset: const Offset(2, 2),
-                //                       spreadRadius: 1,
-                //                       blurRadius: 10,
-                //                     ),
-                //                   ],
-                //                 ),
-                //                 child: Column(
-                //                   children: [
-                //                     SvgPicture.string(
-                //                       controller.foodIcons[index],
-                //                       width: 30,
-                //                       color: AppColors.headTextColor,
-                //                     ),
-                //                     NumberPicker(
-                //                       itemHeight: 40,
-                //                       itemWidth: 70,
-                //                       minValue: 1,
-                //                       maxValue: 5,
-                //                       value:
-                //                           controller.foodServedTimesList[index],
-                //                       onChanged: (value) {
-                //                         controller.changeFoodServesValues(
-                //                             value, index);
-                //                       },
-                //                       decoration: BoxDecoration(
-                //                         border: Border.all(
-                //                           color: AppColors.primarycolor,
-                //                         ),
-                //                         borderRadius: BorderRadius.circular(10),
-                //                       ),
-                //                     ),
-                //                   ],
-                //                 ),
-                //               );
-                //             }),
-                //           );
-                //         })
-                //   ],
-                // ),
                 AppPadding.heightSpace30,
+                AppText(
+                  text: "Upload file of Terms and Conditions",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  textcolor: AppColors.headTextColor,
+                ),
+                AppPadding.heightSpace10,
                 AppInputField(
                   controller: _.termsAndConditions,
                   enabled: false,
@@ -801,7 +929,13 @@ class _CreatePackageState extends State<CreatePackage> {
                   ),
                 ),
                 AppPadding.heightSpace30,
-
+                AppText(
+                  text: "Package Extra Info",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  textcolor: AppColors.headTextColor,
+                ),
+                AppPadding.heightSpace10,
                 AppInputField(
                   controller: _.extraInfoController,
                   height: 150,

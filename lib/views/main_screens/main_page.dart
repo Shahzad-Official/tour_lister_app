@@ -19,7 +19,7 @@ class MainPage extends StatelessWidget {
   final GetLocationService locationController = Get.put(GetLocationService());
   MainPage({
     Key? key,
-    this.currentIndex = 1,
+    this.currentIndex = 0,
   }) : super(key: key);
   final GetUserData _userData = GetUserData();
 

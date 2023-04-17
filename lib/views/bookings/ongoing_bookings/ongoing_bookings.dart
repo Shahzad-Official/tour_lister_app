@@ -8,7 +8,6 @@ import 'package:tour_lister_app/services/package_services/get_all_packages.dart'
 import 'package:tour_lister_app/utils/date_format.dart';
 import 'package:tour_lister_app/views/users_in_package/users_in_package.dart';
 import 'package:tour_lister_app/widgets/app_button.dart';
-import 'package:tour_lister_app/widgets/app_text.dart';
 import 'package:tour_lister_app/widgets/rating_bar/package_rating_bar.dart';
 
 import '../../../constants/app_paddings.dart';

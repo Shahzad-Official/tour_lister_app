@@ -129,14 +129,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  duration_picker:
-    dependency: "direct main"
-    description:
-      name: duration_picker
-      sha256: "052b34dac04c29f3849bb3817a26c5aebe9e5f0697c3a374be87db2b84d75753"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.1"
   facebook_auth_desktop:
     dependency: transitive
     description:
@@ -664,6 +656,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.5"
+  just_the_tooltip:
+    dependency: "direct main"
+    description:
+      name: just_the_tooltip
+      sha256: "7a081133d57285bfb41b331f411006d57b433d7b35772e6155745f6a7a09cb82"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.12"
   lints:
     dependency: transitive
     description:

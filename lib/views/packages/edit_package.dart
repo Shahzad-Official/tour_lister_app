@@ -56,6 +56,7 @@ class _EditPackageState extends State<EditPackage> {
     });
     await _getIcons.getIcons();
     await _getAllBookings.getAllBookings();
+
     if (_getAllBookings.allBookings
         .any((element) => element.tourId == widget.packageData.packageId)) {
       setState(() {
@@ -66,6 +67,7 @@ class _EditPackageState extends State<EditPackage> {
         widget.isLive = false;
       });
     }
+
     setState(() {
       isLoading = false;
     });
@@ -89,7 +91,7 @@ class _EditPackageState extends State<EditPackage> {
       packageController.cuttoffTime.text =
           widget.packageData.cuttOffTime.toString();
       packageController.noOfBookigs.text =
-          widget.packageData.noOfPersonsInPackage.toString();
+          widget.packageData.noOfPersonsInPackage.toString().split("-").last;
       packageController.selectedCat = widget.packageData.typeOfTour.toString();
       packageController.dangerRating =
           int.parse(widget.packageData.dangerRating.toString());
@@ -281,13 +283,27 @@ class _EditPackageState extends State<EditPackage> {
                                 ),
                               ),
                             ),
-                      AppPadding.heightSpace20,
+                      AppPadding.heightSpace30,
+                      AppText(
+                        text: "Package Name",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        textcolor: AppColors.headTextColor,
+                      ),
+                      AppPadding.heightSpace10,
                       AppInputField(
                         enabled: !widget.isLive,
                         controller: _.packageName,
                         hintText: "Package Name",
                       ),
                       AppPadding.heightSpace30,
+                      AppText(
+                        text: "Location",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        textcolor: AppColors.headTextColor,
+                      ),
+                      AppPadding.heightSpace10,
                       AppInputField(
                         enabled: false,
                         onTap: widget.isLive
@@ -317,115 +333,83 @@ class _EditPackageState extends State<EditPackage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          AppInputField(
-                            controller: _.startDateController,
-                            onTap: widget.isLive
-                                ? null
-                                : () {
-                                    _.selectStartDate(context);
-                                  },
-                            width: MediaQuery.of(context).size.width * 0.415,
-                            enabled: false,
-                            hintText: "Start Date",
-                            contentPadding: const EdgeInsets.only(
-                              top: 20,
-                              left: 15,
-                            ),
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 20,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppText(
+                                text: "Start Date",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                textcolor: AppColors.headTextColor,
                               ),
-                              child: SvgPicture.string(
-                                SvgIcons.calendarFilled,
-                                width: 30,
-                                color: Colors.grey,
+                              AppPadding.heightSpace10,
+                              AppInputField(
+                                controller: _.startDateController,
+                                onTap: widget.isLive
+                                    ? null
+                                    : () {
+                                        _.selectStartDate(context);
+                                      },
+                                width:
+                                    MediaQuery.of(context).size.width * 0.415,
+                                enabled: false,
+                                hintText: "Start Date",
+                                contentPadding: const EdgeInsets.only(
+                                  top: 20,
+                                  left: 15,
+                                ),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                    vertical: 20,
+                                  ),
+                                  child: SvgPicture.string(
+                                    SvgIcons.calendarFilled,
+                                    width: 30,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                          AppInputField(
-                            controller: _.endDateController,
-                            onTap: widget.isLive
-                                ? null
-                                : () {
-                                    _.selectEndDate(context);
-                                  },
-                            width: MediaQuery.of(context).size.width * 0.415,
-                            enabled: false,
-                            hintText: "End Date",
-                            contentPadding: const EdgeInsets.only(
-                              top: 20,
-                              left: 15,
-                            ),
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 20,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppText(
+                                text: "End Date",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                textcolor: AppColors.headTextColor,
                               ),
-                              child: SvgPicture.string(
-                                SvgIcons.calendarFilled,
-                                width: 30,
-                                color: Colors.grey,
+                              AppPadding.heightSpace10,
+                              AppInputField(
+                                controller: _.endDateController,
+                                onTap: widget.isLive
+                                    ? null
+                                    : () {
+                                        _.selectEndDate(context);
+                                      },
+                                width:
+                                    MediaQuery.of(context).size.width * 0.415,
+                                enabled: false,
+                                hintText: "End Date",
+                                contentPadding: const EdgeInsets.only(
+                                  top: 20,
+                                  left: 15,
+                                ),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                    vertical: 20,
+                                  ),
+                                  child: SvgPicture.string(
+                                    SvgIcons.calendarFilled,
+                                    width: 30,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      AppPadding.heightSpace30,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          AppInputField(
-                            controller: _.startTimeController,
-                            onTap: widget.isLive
-                                ? null
-                                : () {
-                                    _.selectStartTime(context);
-                                  },
-                            width: MediaQuery.of(context).size.width * 0.415,
-                            enabled: false,
-                            hintText: "Start Time",
-                            contentPadding: const EdgeInsets.only(
-                              top: 20,
-                              left: 15,
-                            ),
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 20,
-                              ),
-                              child: SvgPicture.string(
-                                SvgIcons.clock,
-                                width: 30,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                          AppInputField(
-                            controller: _.endTimeController,
-                            onTap: widget.isLive
-                                ? null
-                                : () {
-                                    _.selectEndTime(context);
-                                  },
-                            width: MediaQuery.of(context).size.width * 0.415,
-                            enabled: false,
-                            hintText: "End Time",
-                            contentPadding: const EdgeInsets.only(
-                              top: 20,
-                              left: 15,
-                            ),
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 20,
-                              ),
-                              child: SvgPicture.string(
-                                SvgIcons.clock,
-                                width: 30,
-                                color: Colors.grey,
-                              ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
@@ -433,23 +417,140 @@ class _EditPackageState extends State<EditPackage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          AppInputField(
-                            enabled: !widget.isLive,
-                            controller: _.startPrice,
-                            keyboardtype: TextInputType.number,
-                            width: MediaQuery.of(context).size.width * 0.415,
-                            hintText: "Start Price",
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppText(
+                                text: "Start Time",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                textcolor: AppColors.headTextColor,
+                              ),
+                              AppPadding.heightSpace10,
+                              AppInputField(
+                                controller: _.startTimeController,
+                                onTap: widget.isLive
+                                    ? null
+                                    : () {
+                                        _.selectStartTime(context);
+                                      },
+                                width:
+                                    MediaQuery.of(context).size.width * 0.415,
+                                enabled: false,
+                                hintText: "Start Time",
+                                contentPadding: const EdgeInsets.only(
+                                  top: 20,
+                                  left: 15,
+                                ),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                    vertical: 20,
+                                  ),
+                                  child: SvgPicture.string(
+                                    SvgIcons.clock,
+                                    width: 30,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          AppInputField(
-                            enabled: !widget.isLive,
-                            controller: _.endPrice,
-                            keyboardtype: TextInputType.number,
-                            width: MediaQuery.of(context).size.width * 0.415,
-                            hintText: "Final Price",
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppText(
+                                text: "End Time",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                textcolor: AppColors.headTextColor,
+                              ),
+                              AppPadding.heightSpace10,
+                              AppInputField(
+                                controller: _.endTimeController,
+                                onTap: widget.isLive
+                                    ? null
+                                    : () {
+                                        _.selectEndTime(context);
+                                      },
+                                width:
+                                    MediaQuery.of(context).size.width * 0.415,
+                                enabled: false,
+                                hintText: "End Time",
+                                contentPadding: const EdgeInsets.only(
+                                  top: 20,
+                                  left: 15,
+                                ),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                    vertical: 20,
+                                  ),
+                                  child: SvgPicture.string(
+                                    SvgIcons.clock,
+                                    width: 30,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                       AppPadding.heightSpace30,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppText(
+                                text: "Start Price",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                textcolor: AppColors.headTextColor,
+                              ),
+                              AppPadding.heightSpace10,
+                              AppInputField(
+                                enabled: !widget.isLive,
+                                controller: _.startPrice,
+                                keyboardtype: TextInputType.number,
+                                width:
+                                    MediaQuery.of(context).size.width * 0.415,
+                                hintText: "Start Price",
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppText(
+                                text: "Final Price",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                textcolor: AppColors.headTextColor,
+                              ),
+                              AppPadding.heightSpace10,
+                              AppInputField(
+                                enabled: !widget.isLive,
+                                controller: _.endPrice,
+                                keyboardtype: TextInputType.number,
+                                width:
+                                    MediaQuery.of(context).size.width * 0.415,
+                                hintText: "Final Price",
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      AppPadding.heightSpace30,
+                      AppText(
+                        text: "Cutoff Time",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        textcolor: AppColors.headTextColor,
+                      ),
+                      AppPadding.heightSpace10,
                       AppInputField(
                         controller: _.cuttoffTime,
                         enabled: false,
@@ -478,6 +579,13 @@ class _EditPackageState extends State<EditPackage> {
                         ),
                       ),
                       AppPadding.heightSpace30,
+                      AppText(
+                        text: "Package Description",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        textcolor: AppColors.headTextColor,
+                      ),
+                      AppPadding.heightSpace10,
                       AppInputField(
                         enabled: !widget.isLive,
                         controller: _.description,
@@ -509,20 +617,31 @@ class _EditPackageState extends State<EditPackage> {
                         textcolor: AppColors.headTextColor,
                       ),
                       AppPadding.heightSpace10,
-                      _.selectedCat == "Family/Group" && !widget.isLive
-                          ? DropdownContainer(
-                              currentValue: _.selectedPersons,
-                              items: _.availableNoofSeats,
-                              onValueChange: (value) {
-                                _.changeNoOfSeats(value);
-                              },
-                            )
-                          : AppInputField(
-                              enabled: false,
+                      Row(
+                        children: [
+                          _.selectedCat == "Family/Group"
+                              ? const Expanded(
+                                  child: AppInputField(
+                                    textAlign: TextAlign.center,
+                                    enabled: false,
+                                    hintText: "3 -",
+                                  ),
+                                )
+                              : const SizedBox(),
+                          Expanded(
+                            flex: 4,
+                            child: AppInputField(
+                              enabled: _.selectedCat == "Family/Group" ||
+                                      !widget.isLive
+                                  ? true
+                                  : false,
                               controller: _.noOfBookigs,
                               hintText: "Total no of bookings allowed",
                               keyboardtype: TextInputType.number,
                             ),
+                          ),
+                        ],
+                      ),
                       AppPadding.heightSpace30,
                       DropdownContainer(
                         currentValue: _.selectedCat,
@@ -652,6 +771,13 @@ class _EditPackageState extends State<EditPackage> {
                         ],
                       ),
                       AppPadding.heightSpace30,
+                      AppText(
+                        text: "Add Inclusion",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        textcolor: AppColors.headTextColor,
+                      ),
+                      AppPadding.heightSpace10,
                       Builder(
                         builder: (context) {
                           if (isLoading) {
@@ -923,6 +1049,13 @@ class _EditPackageState extends State<EditPackage> {
                               ],
                             ),
                       AppPadding.heightSpace30,
+                      AppText(
+                        text: "Upload file of Terms and Conditions",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        textcolor: AppColors.headTextColor,
+                      ),
+                      AppPadding.heightSpace10,
                       AppInputField(
                         controller: _.termsAndConditions,
                         enabled: false,
@@ -951,7 +1084,13 @@ class _EditPackageState extends State<EditPackage> {
                         ),
                       ),
                       AppPadding.heightSpace30,
-
+                      AppText(
+                        text: "Package Extra Info",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        textcolor: AppColors.headTextColor,
+                      ),
+                      AppPadding.heightSpace10,
                       AppInputField(
                         enabled: !widget.isLive,
                         controller: _.extraInfoController,
@@ -1061,19 +1200,6 @@ class _EditPackageState extends State<EditPackage> {
                           ],
                         ),
                       ),
-                      // widget.isLive
-                      //     ? const SizedBox()
-                      //     : AppButton(
-                      //         isLoading: _.isLoading,
-                      //         btnText: "Duplicate",
-                      //         ontap: () async {
-                      //           await _.isValidInfo(
-                      //             context,
-                      //             widget.packageData.packageId,
-                      //             isLive: widget.isLive,
-                      //           );
-                      //         },
-                      //       ),
                     ],
                   );
                 },

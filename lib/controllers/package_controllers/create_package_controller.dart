@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:duration_picker/duration_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,6 +17,7 @@ class CreatePackageController extends GetxController {
   final GetLocationService _locationService = GetLocationService();
   GetAllPackages getAllPackages = GetAllPackages();
   TextEditingController packageName = TextEditingController();
+  TextEditingController packageCat = TextEditingController();
   TextEditingController location = TextEditingController();
   TextEditingController cuttoffTime = TextEditingController();
   TextEditingController startPrice = TextEditingController();
@@ -43,14 +42,8 @@ class CreatePackageController extends GetxController {
   TimeOfDay? startTime;
   TimeOfDay? endTime;
   int initialAge = 1;
-  String selectedCat = "Family/Group";
-  String selectedPersons = "3-5";
-  List<String> get availableNoofSeats => [
-        "3-5",
-        " 3-10",
-        " 3-15",
-        "3-20",
-      ];
+  String selectedCat = "Individual";
+
   List<String> catagories = [
     "Individual",
     "Couples",
@@ -105,7 +98,6 @@ class CreatePackageController extends GetxController {
   }
 
   isValidInfo(context) async {
-    noOfBookigs.text = selectedPersons;
     if (packageName.text.isEmpty) {
       Get.snackbar(
         "Error",
@@ -238,7 +230,9 @@ class CreatePackageController extends GetxController {
         cuttOffTime: cuttoffTime.text,
         otherImage: otherImage,
         coverImage: _coverImage!,
-        noOfPersonsInPackage: noOfBookigs.text,
+        noOfPersonsInPackage: selectedCat == "Family/Group"
+            ? "3-${noOfBookigs.text}"
+            : noOfBookigs.text,
         dangerRating: dangerRating.toString(),
         ageSuitability: initialAge.toString(),
         typeOfTour: selectedCat,
@@ -282,8 +276,16 @@ class CreatePackageController extends GetxController {
     } else {
       var selectedDate = await showDatePicker(
         context: context,
-        initialDate: startDate!.add(const Duration(days: 1)),
-        firstDate: startDate!.add(const Duration(days: 1)),
+        initialDate: startDate!.add(
+          const Duration(
+            days: 1,
+          ),
+        ),
+        firstDate: startDate!.add(
+          const Duration(
+            days: 1,
+          ),
+        ),
         lastDate: DateTime(2025),
       );
       if (selectedDate != null) {
@@ -296,20 +298,20 @@ class CreatePackageController extends GetxController {
   }
 
   selectTime(context) {
-    showDurationPicker(
+    showTimePicker(
       context: context,
-      initialTime: const Duration(minutes: 10),
-      baseUnit: BaseUnit.minute,
-      snapToMins: 10.0,
-    ).then(
-      (value) {
-        Duration duration = value!;
-
-        String sDuration =
-            "${duration.inHours} H:${duration.inMinutes.remainder(60)} M";
-        cuttoffTime.text = sDuration;
+      initialEntryMode: TimePickerEntryMode.inputOnly,
+      initialTime: const TimeOfDay(hour: 00, minute: 10),
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
       },
-    );
+    ).then((value) {
+      String sDuration = "${value!.hour} H:${value.minute} M";
+      cuttoffTime.text = sDuration;
+    });
   }
 
   selectStartTime(context) async {
@@ -377,15 +379,8 @@ class CreatePackageController extends GetxController {
     } else if (selectedCat == "Couples") {
       noOfBookigs.text = "2";
     } else {
-      noOfBookigs.text = selectedPersons;
+      noOfBookigs.text = "";
     }
-    update();
-  }
-
-  changeNoOfSeats(value) {
-    selectedPersons = value;
-    noOfBookigs.text = selectedPersons;
-
     update();
   }
 
@@ -426,7 +421,15 @@ class CreatePackageController extends GetxController {
     }
   }
 
-  loadData() async {
-    await getAllPackages.getAllPackages();
+  @override
+  void onInit() {
+    if (selectedCat == "Individual") {
+      noOfBookigs.text = "1";
+    } else if (selectedCat == "Couples") {
+      noOfBookigs.text = "2";
+    } else {
+      noOfBookigs.text = "";
+    }
+    super.onInit();
   }
 }
