@@ -14,6 +14,7 @@ import 'package:tour_lister_app/widgets/app_cached_image.dart';
 import '../../constants/svg_icons.dart';
 import '../../models/icons_model.dart';
 import '../../services/inclusions_services/get_icons.dart';
+import '../../utils/tool_tip_shap.dart';
 import '../../widgets/app_input_field.dart';
 import '../../widgets/app_text.dart';
 
@@ -501,54 +502,139 @@ class _EditPackageState extends State<EditPackage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppText(
-                                text: "Start Price",
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                                textcolor: AppColors.headTextColor,
-                              ),
-                              AppPadding.heightSpace10,
-                              AppInputField(
-                                enabled: !widget.isLive,
-                                controller: _.startPrice,
-                                keyboardtype: TextInputType.number,
-                                width:
-                                    MediaQuery.of(context).size.width * 0.415,
-                                hintText: "Start Price",
-                              ),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    AppText(
+                                      text: "Start Price",
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      textcolor: AppColors.headTextColor,
+                                    ),
+                                    Tooltip(
+                                      decoration: const ShapeDecoration(
+                                        color: Colors.blue,
+                                        shape: TooltipShapeBorder(
+                                          radius: 5,
+                                          arrowWidth: 10,
+                                        ),
+                                      ),
+                                      triggerMode: TooltipTriggerMode.tap,
+                                      onTriggered: () {},
+                                      message: "testing",
+                                      child: const CircleAvatar(
+                                        radius: 10,
+                                        backgroundColor: Colors.grey,
+                                        child: Icon(
+                                          Icons.question_mark_rounded,
+                                          size: 10,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                AppPadding.heightSpace10,
+                                AppInputField(
+                                  enabled: !widget.isLive,
+                                  controller: _.startPrice,
+                                  keyboardtype: TextInputType.number,
+                                  hintText: "Start Price",
+                                ),
+                              ],
+                            ),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppText(
-                                text: "Final Price",
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                                textcolor: AppColors.headTextColor,
-                              ),
-                              AppPadding.heightSpace10,
-                              AppInputField(
-                                enabled: !widget.isLive,
-                                controller: _.endPrice,
-                                keyboardtype: TextInputType.number,
-                                width:
-                                    MediaQuery.of(context).size.width * 0.415,
-                                hintText: "Final Price",
-                              ),
-                            ],
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.1,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    AppText(
+                                      text: "Final Price",
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      textcolor: AppColors.headTextColor,
+                                    ),
+                                    Tooltip(
+                                      decoration: const ShapeDecoration(
+                                        color: Colors.blue,
+                                        shape: TooltipShapeBorder(
+                                          radius: 5,
+                                          arrowWidth: 10,
+                                        ),
+                                      ),
+                                      triggerMode: TooltipTriggerMode.tap,
+                                      onTriggered: () {},
+                                      message: "testing",
+                                      child: const CircleAvatar(
+                                        radius: 10,
+                                        backgroundColor: Colors.grey,
+                                        child: Icon(
+                                          Icons.question_mark_rounded,
+                                          size: 10,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                AppPadding.heightSpace10,
+                                AppInputField(
+                                  enabled: !widget.isLive,
+                                  controller: _.endPrice,
+                                  keyboardtype: TextInputType.number,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.415,
+                                  hintText: "Final Price",
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                       AppPadding.heightSpace30,
-                      AppText(
-                        text: "Cutoff Time",
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        textcolor: AppColors.headTextColor,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppText(
+                            text: "CutOff Time ",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textcolor: AppColors.headTextColor,
+                          ),
+                          Tooltip(
+                            decoration: const ShapeDecoration(
+                              color: Colors.blue,
+                              shape: TooltipShapeBorder(
+                                radius: 5,
+                                arrowWidth: 10,
+                              ),
+                            ),
+                            triggerMode: TooltipTriggerMode.tap,
+                            onTriggered: () {},
+                            message: "testing",
+                            child: const CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.grey,
+                              child: Icon(
+                                Icons.question_mark_rounded,
+                                size: 10,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       AppPadding.heightSpace10,
                       AppInputField(
@@ -579,11 +665,37 @@ class _EditPackageState extends State<EditPackage> {
                         ),
                       ),
                       AppPadding.heightSpace30,
-                      AppText(
-                        text: "Package Description",
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        textcolor: AppColors.headTextColor,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppText(
+                            text: "Package Description",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textcolor: AppColors.headTextColor,
+                          ),
+                          Tooltip(
+                            decoration: const ShapeDecoration(
+                              color: Colors.blue,
+                              shape: TooltipShapeBorder(
+                                radius: 5,
+                                arrowWidth: 10,
+                              ),
+                            ),
+                            triggerMode: TooltipTriggerMode.tap,
+                            onTriggered: () {},
+                            message: "testing",
+                            child: const CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.grey,
+                              child: Icon(
+                                Icons.question_mark_rounded,
+                                size: 10,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       AppPadding.heightSpace10,
                       AppInputField(
@@ -597,11 +709,37 @@ class _EditPackageState extends State<EditPackage> {
                         textInputAction: TextInputAction.done,
                       ),
                       AppPadding.heightSpace30,
-                      AppText(
-                        text: "No of Packages Available",
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        textcolor: AppColors.headTextColor,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppText(
+                            text: "No of packages Available",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textcolor: AppColors.headTextColor,
+                          ),
+                          Tooltip(
+                            decoration: const ShapeDecoration(
+                              color: Colors.blue,
+                              shape: TooltipShapeBorder(
+                                radius: 5,
+                                arrowWidth: 10,
+                              ),
+                            ),
+                            triggerMode: TooltipTriggerMode.tap,
+                            onTriggered: () {},
+                            message: "testing",
+                            child: const CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.grey,
+                              child: Icon(
+                                Icons.question_mark_rounded,
+                                size: 10,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       AppPadding.heightSpace10,
                       AppInputField(
@@ -610,11 +748,38 @@ class _EditPackageState extends State<EditPackage> {
                         keyboardtype: TextInputType.number,
                         hintText: "No of Packages Available",
                       ),
-                      AppText(
-                        text: "Total No of Bookings",
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        textcolor: AppColors.headTextColor,
+                      AppPadding.heightSpace30,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppText(
+                            text: "Persons per package",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textcolor: AppColors.headTextColor,
+                          ),
+                          Tooltip(
+                            decoration: const ShapeDecoration(
+                              color: Colors.blue,
+                              shape: TooltipShapeBorder(
+                                radius: 5,
+                                arrowWidth: 10,
+                              ),
+                            ),
+                            triggerMode: TooltipTriggerMode.tap,
+                            onTriggered: () {},
+                            message: "testing",
+                            child: const CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.grey,
+                              child: Icon(
+                                Icons.question_mark_rounded,
+                                size: 10,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       AppPadding.heightSpace10,
                       Row(
@@ -643,6 +808,39 @@ class _EditPackageState extends State<EditPackage> {
                         ],
                       ),
                       AppPadding.heightSpace30,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppText(
+                            text: "Package Type",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textcolor: AppColors.headTextColor,
+                          ),
+                          Tooltip(
+                            decoration: const ShapeDecoration(
+                              color: Colors.blue,
+                              shape: TooltipShapeBorder(
+                                radius: 5,
+                                arrowWidth: 10,
+                              ),
+                            ),
+                            triggerMode: TooltipTriggerMode.tap,
+                            onTriggered: () {},
+                            message: "testing",
+                            child: const CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.grey,
+                              child: Icon(
+                                Icons.question_mark_rounded,
+                                size: 10,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      AppPadding.heightSpace10,
                       DropdownContainer(
                         currentValue: _.selectedCat,
                         items: _.catagories,
@@ -683,6 +881,28 @@ class _EditPackageState extends State<EditPackage> {
                                   fontWeight: FontWeight.w600,
                                   textcolor: AppColors.headTextColor,
                                 ),
+                                AppPadding.heightSpace15,
+                                Tooltip(
+                                  decoration: const ShapeDecoration(
+                                    color: Colors.blue,
+                                    shape: TooltipShapeBorder(
+                                      radius: 5,
+                                      arrowWidth: 10,
+                                    ),
+                                  ),
+                                  triggerMode: TooltipTriggerMode.tap,
+                                  onTriggered: () {},
+                                  message: "testing",
+                                  child: const CircleAvatar(
+                                    radius: 10,
+                                    backgroundColor: Colors.grey,
+                                    child: Icon(
+                                      Icons.question_mark_rounded,
+                                      size: 10,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -705,6 +925,28 @@ class _EditPackageState extends State<EditPackage> {
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
                                   textcolor: AppColors.headTextColor,
+                                ),
+                                AppPadding.heightSpace15,
+                                Tooltip(
+                                  decoration: const ShapeDecoration(
+                                    color: Colors.blue,
+                                    shape: TooltipShapeBorder(
+                                      radius: 5,
+                                      arrowWidth: 10,
+                                    ),
+                                  ),
+                                  triggerMode: TooltipTriggerMode.tap,
+                                  onTriggered: () {},
+                                  message: "testing",
+                                  child: const CircleAvatar(
+                                    radius: 10,
+                                    backgroundColor: Colors.grey,
+                                    child: Icon(
+                                      Icons.question_mark_rounded,
+                                      size: 10,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -729,17 +971,65 @@ class _EditPackageState extends State<EditPackage> {
                                   fontWeight: FontWeight.w600,
                                   textcolor: AppColors.headTextColor,
                                 ),
+                                AppPadding.heightSpace15,
+                                Tooltip(
+                                  decoration: const ShapeDecoration(
+                                    color: Colors.blue,
+                                    shape: TooltipShapeBorder(
+                                      radius: 5,
+                                      arrowWidth: 10,
+                                    ),
+                                  ),
+                                  triggerMode: TooltipTriggerMode.tap,
+                                  onTriggered: () {},
+                                  message: "testing",
+                                  child: const CircleAvatar(
+                                    radius: 10,
+                                    backgroundColor: Colors.grey,
+                                    child: Icon(
+                                      Icons.question_mark_rounded,
+                                      size: 10,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                         ],
                       ),
                       AppPadding.heightSpace30,
-                      AppText(
-                        text: "Age Suitability",
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        textcolor: AppColors.headTextColor,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppText(
+                            text: "Age Suitability",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textcolor: AppColors.headTextColor,
+                          ),
+                          Tooltip(
+                            decoration: const ShapeDecoration(
+                              color: Colors.blue,
+                              shape: TooltipShapeBorder(
+                                radius: 5,
+                                arrowWidth: 10,
+                              ),
+                            ),
+                            triggerMode: TooltipTriggerMode.tap,
+                            onTriggered: () {},
+                            message: "testing",
+                            child: const CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.grey,
+                              child: Icon(
+                                Icons.question_mark_rounded,
+                                size: 10,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       AppPadding.heightSpace30,
                       Column(
@@ -771,11 +1061,37 @@ class _EditPackageState extends State<EditPackage> {
                         ],
                       ),
                       AppPadding.heightSpace30,
-                      AppText(
-                        text: "Add Inclusion",
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        textcolor: AppColors.headTextColor,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppText(
+                            text: "Add Inclusions",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textcolor: AppColors.headTextColor,
+                          ),
+                          Tooltip(
+                            decoration: const ShapeDecoration(
+                              color: Colors.blue,
+                              shape: TooltipShapeBorder(
+                                radius: 5,
+                                arrowWidth: 10,
+                              ),
+                            ),
+                            triggerMode: TooltipTriggerMode.tap,
+                            onTriggered: () {},
+                            message: "testing",
+                            child: const CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.grey,
+                              child: Icon(
+                                Icons.question_mark_rounded,
+                                size: 10,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       AppPadding.heightSpace10,
                       Builder(
@@ -861,34 +1177,16 @@ class _EditPackageState extends State<EditPackage> {
                                                                       .withOpacity(
                                                                           0.4),
                                                                 ),
-                                                                child: Column(
-                                                                  children: [
-                                                                    AppPadding
-                                                                        .heightSpace10,
-                                                                    AppCachedImage(
-                                                                      height:
-                                                                          50,
-                                                                      width: 50,
-                                                                      picUrl: _getIcons
-                                                                          .iconsData[
-                                                                              index]
-                                                                          .iconImage!,
-                                                                    ),
-                                                                    AppPadding
-                                                                        .heightSpace10,
-                                                                    AppText(
-                                                                      text: _getIcons
-                                                                          .iconsData[
-                                                                              index]
-                                                                          .iconName
-                                                                          .toString(),
-                                                                      fontSize:
-                                                                          15,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                    ),
-                                                                  ],
+                                                                child: Center(
+                                                                  child:
+                                                                      AppCachedImage(
+                                                                    height: 50,
+                                                                    width: 50,
+                                                                    picUrl: _getIcons
+                                                                        .iconsData[
+                                                                            index]
+                                                                        .iconImage!,
+                                                                  ),
                                                                 ),
                                                               ),
                                                             );
@@ -963,11 +1261,11 @@ class _EditPackageState extends State<EditPackage> {
                                                                 .toString(),
                                                           ),
                                                         ),
-                                                        AppText(
-                                                          text: _.icons[index]
-                                                              .iconName
-                                                              .toString(),
-                                                        ),
+                                                        // AppText(
+                                                        //   text: _.icons[index]
+                                                        //       .iconName
+                                                        //       .toString(),
+                                                        // ),
                                                       ],
                                                     ),
                                                   ),
@@ -1084,11 +1382,37 @@ class _EditPackageState extends State<EditPackage> {
                         ),
                       ),
                       AppPadding.heightSpace30,
-                      AppText(
-                        text: "Package Extra Info",
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        textcolor: AppColors.headTextColor,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppText(
+                            text: "Package Extra Info",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textcolor: AppColors.headTextColor,
+                          ),
+                          Tooltip(
+                            decoration: const ShapeDecoration(
+                              color: Colors.blue,
+                              shape: TooltipShapeBorder(
+                                radius: 5,
+                                arrowWidth: 10,
+                              ),
+                            ),
+                            triggerMode: TooltipTriggerMode.tap,
+                            onTriggered: () {},
+                            message: "testing",
+                            child: const CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.grey,
+                              child: Icon(
+                                Icons.question_mark_rounded,
+                                size: 10,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       AppPadding.heightSpace10,
                       AppInputField(

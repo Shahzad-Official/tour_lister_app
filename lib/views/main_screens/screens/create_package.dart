@@ -109,155 +109,82 @@ class _CreatePackageState extends State<CreatePackage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppText(
-                          text: "Start Date",
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          textcolor: AppColors.headTextColor,
-                        ),
-                        AppPadding.heightSpace10,
-                        AppInputField(
-                          controller: _.startDateController,
-                          onTap: () {
-                            _.selectStartDate(context);
-                          },
-                          width: MediaQuery.of(context).size.width * 0.415,
-                          enabled: false,
-                          hintText: "Start Date",
-                          contentPadding: const EdgeInsets.only(
-                            top: 20,
-                            left: 15,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppText(
+                            text: "Start Date",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textcolor: AppColors.headTextColor,
                           ),
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                              vertical: 20,
+                          AppPadding.heightSpace10,
+                          AppInputField(
+                            controller: _.startDateController,
+                            onTap: () {
+                              _.selectStartDate(context);
+                            },
+                            enabled: false,
+                            hintText: "Start Date",
+                            contentPadding: const EdgeInsets.only(
+                              top: 20,
+                              left: 15,
                             ),
-                            child: SvgPicture.string(
-                              SvgIcons.calendarFilled,
-                              width: 30,
-                              color: Colors.grey,
+                            suffixIcon: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                                vertical: 20,
+                              ),
+                              child: SvgPicture.string(
+                                SvgIcons.calendarFilled,
+                                width: 30,
+                                color: Colors.grey,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppText(
-                          text: "End Date",
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          textcolor: AppColors.headTextColor,
-                        ),
-                        AppPadding.heightSpace10,
-                        AppInputField(
-                          controller: _.endDateController,
-                          onTap: () {
-                            _.selectEndDate(context);
-                          },
-                          width: MediaQuery.of(context).size.width * 0.415,
-                          enabled: false,
-                          hintText: "End Date",
-                          contentPadding: const EdgeInsets.only(
-                            top: 20,
-                            left: 15,
-                          ),
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                              vertical: 20,
-                            ),
-                            child: SvgPicture.string(
-                              SvgIcons.calendarFilled,
-                              width: 30,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ],
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.1,
                     ),
-                  ],
-                ),
-                AppPadding.heightSpace30,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppText(
-                          text: "Start Time",
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          textcolor: AppColors.headTextColor,
-                        ),
-                        AppPadding.heightSpace10,
-                        AppInputField(
-                          controller: _.startTimeController,
-                          onTap: () {
-                            _.selectStartTime(context);
-                          },
-                          width: MediaQuery.of(context).size.width * 0.415,
-                          enabled: false,
-                          hintText: "Start Time",
-                          contentPadding: const EdgeInsets.only(
-                            top: 20,
-                            left: 15,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppText(
+                            text: "End Date",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textcolor: AppColors.headTextColor,
                           ),
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                              vertical: 20,
+                          AppPadding.heightSpace10,
+                          AppInputField(
+                            controller: _.endDateController,
+                            onTap: () {
+                              _.selectEndDate(context);
+                            },
+                            enabled: false,
+                            hintText: "End Date",
+                            contentPadding: const EdgeInsets.only(
+                              top: 20,
+                              left: 15,
                             ),
-                            child: SvgPicture.string(
-                              SvgIcons.clock,
-                              width: 30,
-                              color: Colors.grey,
+                            suffixIcon: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                                vertical: 20,
+                              ),
+                              child: SvgPicture.string(
+                                SvgIcons.calendarFilled,
+                                width: 30,
+                                color: Colors.grey,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppText(
-                          text: "End Time",
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          textcolor: AppColors.headTextColor,
-                        ),
-                        AppPadding.heightSpace10,
-                        AppInputField(
-                          controller: _.endTimeController,
-                          onTap: () {
-                            _.selectEndTime(context);
-                          },
-                          width: MediaQuery.of(context).size.width * 0.415,
-                          enabled: false,
-                          hintText: "End Time",
-                          contentPadding: const EdgeInsets.only(
-                            top: 20,
-                            left: 15,
-                          ),
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                              vertical: 20,
-                            ),
-                            child: SvgPicture.string(
-                              SvgIcons.clock,
-                              width: 30,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -265,50 +192,216 @@ class _CreatePackageState extends State<CreatePackage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppText(
-                          text: "Start Price",
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          textcolor: AppColors.headTextColor,
-                        ),
-                        AppPadding.heightSpace10,
-                        AppInputField(
-                          controller: _.startPrice,
-                          keyboardtype: TextInputType.number,
-                          width: MediaQuery.of(context).size.width * 0.415,
-                          hintText: "Start Price",
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppText(
+                            text: "Start Time",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textcolor: AppColors.headTextColor,
+                          ),
+                          AppPadding.heightSpace10,
+                          AppInputField(
+                            controller: _.startTimeController,
+                            onTap: () {
+                              _.selectStartTime(context);
+                            },
+                            enabled: false,
+                            hintText: "Start Time",
+                            contentPadding: const EdgeInsets.only(
+                              top: 20,
+                              left: 15,
+                            ),
+                            suffixIcon: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                                vertical: 20,
+                              ),
+                              child: SvgPicture.string(
+                                SvgIcons.clock,
+                                width: 30,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppText(
-                          text: "Final Price",
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          textcolor: AppColors.headTextColor,
-                        ),
-                        AppPadding.heightSpace10,
-                        AppInputField(
-                          controller: _.endPrice,
-                          keyboardtype: TextInputType.number,
-                          width: MediaQuery.of(context).size.width * 0.415,
-                          hintText: "Final Price",
-                        ),
-                      ],
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.1,
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppText(
+                            text: "End Time",
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            textcolor: AppColors.headTextColor,
+                          ),
+                          AppPadding.heightSpace10,
+                          AppInputField(
+                            controller: _.endTimeController,
+                            onTap: () {
+                              _.selectEndTime(context);
+                            },
+                            enabled: false,
+                            hintText: "End Time",
+                            contentPadding: const EdgeInsets.only(
+                              top: 20,
+                              left: 15,
+                            ),
+                            suffixIcon: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                                vertical: 20,
+                              ),
+                              child: SvgPicture.string(
+                                SvgIcons.clock,
+                                width: 30,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
                 AppPadding.heightSpace30,
-                AppText(
-                  text: "Cutoff Time",
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  textcolor: AppColors.headTextColor,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AppText(
+                                text: "Start Price",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                textcolor: AppColors.headTextColor,
+                              ),
+                              Tooltip(
+                                decoration: const ShapeDecoration(
+                                  color: Colors.blue,
+                                  shape: TooltipShapeBorder(
+                                    radius: 5,
+                                    arrowWidth: 10,
+                                  ),
+                                ),
+                                triggerMode: TooltipTriggerMode.tap,
+                                onTriggered: () {},
+                                message: "testing",
+                                child: const CircleAvatar(
+                                  radius: 10,
+                                  backgroundColor: Colors.grey,
+                                  child: Icon(
+                                    Icons.question_mark_rounded,
+                                    size: 10,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          AppPadding.heightSpace10,
+                          AppInputField(
+                            controller: _.startPrice,
+                            keyboardtype: TextInputType.number,
+                            hintText: "Start Price",
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.1,
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AppText(
+                                text: "Final Price",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                textcolor: AppColors.headTextColor,
+                              ),
+                              Tooltip(
+                                decoration: const ShapeDecoration(
+                                  color: Colors.blue,
+                                  shape: TooltipShapeBorder(
+                                    radius: 5,
+                                    arrowWidth: 10,
+                                  ),
+                                ),
+                                triggerMode: TooltipTriggerMode.tap,
+                                onTriggered: () {},
+                                message: "testing",
+                                child: const CircleAvatar(
+                                  radius: 10,
+                                  backgroundColor: Colors.grey,
+                                  child: Icon(
+                                    Icons.question_mark_rounded,
+                                    size: 10,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          AppPadding.heightSpace10,
+                          AppInputField(
+                            controller: _.endPrice,
+                            keyboardtype: TextInputType.number,
+                            hintText: "Final Price",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                AppPadding.heightSpace30,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppText(
+                      text: "Cutoff Time",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      textcolor: AppColors.headTextColor,
+                    ),
+                    Tooltip(
+                      decoration: const ShapeDecoration(
+                        color: Colors.blue,
+                        shape: TooltipShapeBorder(
+                          radius: 5,
+                          arrowWidth: 10,
+                        ),
+                      ),
+                      triggerMode: TooltipTriggerMode.tap,
+                      onTriggered: () {},
+                      message: "testing",
+                      child: const CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Colors.grey,
+                        child: Icon(
+                          Icons.question_mark_rounded,
+                          size: 10,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 AppPadding.heightSpace10,
                 AppInputField(
@@ -337,11 +430,37 @@ class _CreatePackageState extends State<CreatePackage> {
                   ),
                 ),
                 AppPadding.heightSpace30,
-                AppText(
-                  text: "Package Description",
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  textcolor: AppColors.headTextColor,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppText(
+                      text: "Package Description",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      textcolor: AppColors.headTextColor,
+                    ),
+                    Tooltip(
+                      decoration: const ShapeDecoration(
+                        color: Colors.blue,
+                        shape: TooltipShapeBorder(
+                          radius: 5,
+                          arrowWidth: 10,
+                        ),
+                      ),
+                      triggerMode: TooltipTriggerMode.tap,
+                      onTriggered: () {},
+                      message: "testing",
+                      child: const CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Colors.grey,
+                        child: Icon(
+                          Icons.question_mark_rounded,
+                          size: 10,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 AppPadding.heightSpace10,
                 AppInputField(
@@ -416,11 +535,37 @@ class _CreatePackageState extends State<CreatePackage> {
                   ),
                 ),
                 AppPadding.heightSpace30,
-                AppText(
-                  text: "No of Packages Available",
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  textcolor: AppColors.headTextColor,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppText(
+                      text: "No of Packages Available",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      textcolor: AppColors.headTextColor,
+                    ),
+                    Tooltip(
+                      decoration: const ShapeDecoration(
+                        color: Colors.blue,
+                        shape: TooltipShapeBorder(
+                          radius: 5,
+                          arrowWidth: 10,
+                        ),
+                      ),
+                      triggerMode: TooltipTriggerMode.tap,
+                      onTriggered: () {},
+                      message: "testing",
+                      child: const CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Colors.grey,
+                        child: Icon(
+                          Icons.question_mark_rounded,
+                          size: 10,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 AppPadding.heightSpace10,
                 AppInputField(
@@ -429,11 +574,37 @@ class _CreatePackageState extends State<CreatePackage> {
                   hintText: "No of Packages Available",
                 ),
                 AppPadding.heightSpace30,
-                AppText(
-                  text: "Package Type",
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  textcolor: AppColors.headTextColor,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppText(
+                      text: "Package Type",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      textcolor: AppColors.headTextColor,
+                    ),
+                    Tooltip(
+                      decoration: const ShapeDecoration(
+                        color: Colors.blue,
+                        shape: TooltipShapeBorder(
+                          radius: 5,
+                          arrowWidth: 10,
+                        ),
+                      ),
+                      triggerMode: TooltipTriggerMode.tap,
+                      onTriggered: () {},
+                      message: "testing",
+                      child: const CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Colors.grey,
+                        child: Icon(
+                          Icons.question_mark_rounded,
+                          size: 10,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 AppPadding.heightSpace10,
                 DropdownContainer(
@@ -444,11 +615,37 @@ class _CreatePackageState extends State<CreatePackage> {
                   },
                 ),
                 AppPadding.heightSpace30,
-                AppText(
-                  text: "Persons per Package",
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  textcolor: AppColors.headTextColor,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppText(
+                      text: "Person per Package",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      textcolor: AppColors.headTextColor,
+                    ),
+                    Tooltip(
+                      decoration: const ShapeDecoration(
+                        color: Colors.blue,
+                        shape: TooltipShapeBorder(
+                          radius: 5,
+                          arrowWidth: 10,
+                        ),
+                      ),
+                      triggerMode: TooltipTriggerMode.tap,
+                      onTriggered: () {},
+                      message: "testing",
+                      child: const CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Colors.grey,
+                        child: Icon(
+                          Icons.question_mark_rounded,
+                          size: 10,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 AppPadding.heightSpace10,
                 Row(
@@ -616,11 +813,37 @@ class _CreatePackageState extends State<CreatePackage> {
                   ],
                 ),
                 AppPadding.heightSpace30,
-                AppText(
-                  text: "Age Suitability",
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  textcolor: AppColors.headTextColor,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppText(
+                      text: "Age Suitability",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      textcolor: AppColors.headTextColor,
+                    ),
+                    Tooltip(
+                      decoration: const ShapeDecoration(
+                        color: Colors.blue,
+                        shape: TooltipShapeBorder(
+                          radius: 5,
+                          arrowWidth: 10,
+                        ),
+                      ),
+                      triggerMode: TooltipTriggerMode.tap,
+                      onTriggered: () {},
+                      message: "testing",
+                      child: const CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Colors.grey,
+                        child: Icon(
+                          Icons.question_mark_rounded,
+                          size: 10,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 AppPadding.heightSpace30,
                 Column(
@@ -650,11 +873,37 @@ class _CreatePackageState extends State<CreatePackage> {
                   ],
                 ),
                 AppPadding.heightSpace30,
-                AppText(
-                  text: "Add Inclusion",
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  textcolor: AppColors.headTextColor,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppText(
+                      text: "Add Inclusions",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      textcolor: AppColors.headTextColor,
+                    ),
+                    Tooltip(
+                      decoration: const ShapeDecoration(
+                        color: Colors.blue,
+                        shape: TooltipShapeBorder(
+                          radius: 5,
+                          arrowWidth: 10,
+                        ),
+                      ),
+                      triggerMode: TooltipTriggerMode.tap,
+                      onTriggered: () {},
+                      message: "testing",
+                      child: const CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Colors.grey,
+                        child: Icon(
+                          Icons.question_mark_rounded,
+                          size: 10,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 AppPadding.heightSpace10,
                 Builder(
@@ -820,11 +1069,11 @@ class _CreatePackageState extends State<CreatePackage> {
                                                           .toString(),
                                                     ),
                                                   ),
-                                                  AppText(
-                                                    text: _
-                                                        .icons[index].iconName
-                                                        .toString(),
-                                                  ),
+                                                  // AppText(
+                                                  //   text: _
+                                                  //       .icons[index].iconName
+                                                  //       .toString(),
+                                                  // ),
                                                 ],
                                               ),
                                             ),
@@ -929,11 +1178,37 @@ class _CreatePackageState extends State<CreatePackage> {
                   ),
                 ),
                 AppPadding.heightSpace30,
-                AppText(
-                  text: "Package Extra Info",
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  textcolor: AppColors.headTextColor,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppText(
+                      text: "Package Extra Info",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      textcolor: AppColors.headTextColor,
+                    ),
+                    Tooltip(
+                      decoration: const ShapeDecoration(
+                        color: Colors.blue,
+                        shape: TooltipShapeBorder(
+                          radius: 5,
+                          arrowWidth: 10,
+                        ),
+                      ),
+                      triggerMode: TooltipTriggerMode.tap,
+                      onTriggered: () {},
+                      message: "testing",
+                      child: const CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Colors.grey,
+                        child: Icon(
+                          Icons.question_mark_rounded,
+                          size: 10,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 AppPadding.heightSpace10,
                 AppInputField(
