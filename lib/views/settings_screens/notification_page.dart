@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
+import 'package:tour_lister_app/models/notification_model.dart';
 import 'package:tour_lister_app/services/booking_services/get_all_bookings.dart';
 import 'package:tour_lister_app/services/get_user_data.dart';
+import 'package:tour_lister_app/services/package_services/get_all_packages.dart';
 import 'package:tour_lister_app/views/main_screens/main_page.dart';
 import 'package:tour_lister_app/widgets/app_button.dart';
 
@@ -22,7 +25,6 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  final GetUserData _getUserData = GetUserData();
   final GetAllBookings _getAllBookings = GetAllBookings();
   bool isLoading = false;
   getData() async {
@@ -30,6 +32,7 @@ class _NotificationPageState extends State<NotificationPage> {
       isLoading = true;
     });
     await _getAllBookings.getNotifications();
+
     setState(() {
       isLoading = false;
     });
@@ -92,73 +95,49 @@ class _NotificationPageState extends State<NotificationPage> {
                                   ? Colors.transparent
                                   : AppColors.primarycolor.withOpacity(0.2),
                             ),
-                            child: FutureBuilder(
-                              future: _getUserData.getUserData(_getAllBookings
-                                  .allNotifications[index].userId!),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return InkWell(
-                                    onTap: () async {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              NotificationDetails(
-                                            title: _getAllBookings
-                                                .allNotifications[index].message
-                                                .toString(),
-                                            details:
-                                                "${snapshot.data!.userName!} ${_getAllBookings.allNotifications[index].message.toString()}",
-                                          ),
-                                        ),
-                                      );
-                                      await _getAllBookings.seenNotification(
-                                        _getAllBookings
-                                            .allNotifications[index].id!,
-                                      );
-                                    },
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Icon(
-                                            Icons.notifications_none_outlined,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 30,
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            AppText(
-                                              text: _getAllBookings
-                                                  .allNotifications[index]
-                                                  .message
-                                                  .toString(),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ],
-                                        )
-                                      ],
+                            child: InkWell(
+                              onTap: () async {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => NotificationDetails(
+                                      notificationData: _getAllBookings
+                                          .allNotifications[index],
                                     ),
-                                  );
-                                } else {
-                                  return Center(
-                                    child: AppText(
-                                      text: "Loading...",
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  );
-                                }
+                                  ),
+                                );
+                                await _getAllBookings.seenNotification(
+                                  _getAllBookings.allNotifications[index].id!,
+                                );
                               },
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Icon(
+                                      Icons.notifications_none_outlined,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      AppText(
+                                        text: _getAllBookings
+                                            .allNotifications[index].message
+                                            .toString(),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         );
@@ -173,13 +152,37 @@ class _NotificationPageState extends State<NotificationPage> {
 }
 
 // ignore: must_be_immutable
-class NotificationDetails extends StatelessWidget {
-  String title, details;
+class NotificationDetails extends StatefulWidget {
+  NotificationModel notificationData;
   NotificationDetails({
     Key? key,
-    required this.details,
-    required this.title,
+    required this.notificationData,
   }) : super(key: key);
+
+  @override
+  State<NotificationDetails> createState() => _NotificationDetailsState();
+}
+
+class _NotificationDetailsState extends State<NotificationDetails> {
+  bool isLoading = false;
+  final GetUserData _getUserData = GetUserData();
+  final GetAllPackages _packageData = GetAllPackages();
+  getData() async {
+    setState(() {
+      isLoading = true;
+    });
+    await _getUserData.getUserData(widget.notificationData.userId!);
+    await _packageData.getPackageData(widget.notificationData.tourId);
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -210,35 +213,84 @@ class NotificationDetails extends StatelessWidget {
               textcolor: Colors.black,
             ),
           ),
-          body: Padding(
-            padding: AppPadding.defaultPadding,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppText(
-                  text: title,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                ),
-                AppPadding.heightSpace30,
-                AppText(
-                  text: details,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-                const Spacer(),
-                AppButton(
-                  btnText: "OK",
-                  ontap: (() => Get.offAll(
-                        () => MainPage(
-                          currentIndex: 3,
+          body: isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Padding(
+                  padding: AppPadding.defaultPadding,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppText(
+                        text: widget.notificationData.message!,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      AppPadding.heightSpace30,
+                      ListTile(
+                        title: AppText(
+                          text: "Package Name",
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
                         ),
-                      )),
+                        trailing: AppText(
+                          text: _packageData.packageData.packageName.toString(),
+                        ),
+                      ),
+                      ListTile(
+                        title: AppText(
+                          text: "Package Price",
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        trailing: AppText(
+                          text: "\$${_packageData.packageData.endPrice}",
+                        ),
+                      ),
+                      ListTile(
+                        title: AppText(
+                          text: "User Name",
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        trailing: AppText(
+                          text: _getUserData.userProfile.userName.toString(),
+                        ),
+                      ),
+                      ListTile(
+                        title: AppText(
+                          text: "User Email",
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        trailing: AppText(
+                          text: _getUserData.userProfile.email.toString(),
+                        ),
+                      ),
+                      ListTile(
+                        title: AppText(
+                          text: "User Phone#",
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        trailing: AppText(
+                          text: _getUserData.userProfile.phoneNo.toString(),
+                        ),
+                      ),
+                      const Spacer(),
+                      AppButton(
+                        btnText: "OK",
+                        ontap: (() => Get.offAll(
+                              () => MainPage(
+                                currentIndex: 3,
+                              ),
+                            )),
+                      ),
+                      AppPadding.heightSpace30,
+                    ],
+                  ),
                 ),
-                AppPadding.heightSpace30,
-              ],
-            ),
-          ),
         ),
       ),
     );
