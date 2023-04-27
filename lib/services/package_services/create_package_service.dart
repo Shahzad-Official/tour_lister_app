@@ -267,7 +267,7 @@ class CreatePackageService {
       );
       AppSnackbar.snackBar(
           title: "Message", message: "Package created Successfully");
-
+      Get.deleteAll();
       Get.offAll(() => MainPage());
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
@@ -409,7 +409,7 @@ class CreatePackageService {
       );
       AppSnackbar.snackBar(
           title: "Message", message: "Package duplicated Successfully");
-
+      Get.deleteAll();
       Get.offAll(() => MainPage());
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
