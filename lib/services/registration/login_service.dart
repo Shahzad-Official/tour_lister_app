@@ -35,7 +35,9 @@ class LoginService {
           Get.offAll(() => const SignUp());
         } else if (_userData.userProfile.uid == uId &&
             _userData.userProfile.role == "user") {
-          AppSnackbar.snackBar(title: "Error", message: "User Already Exists.");
+          AppSnackbar.snackBar(
+              title: "Error",
+              message: "This account is registered on User App.");
           _googleSignIn.signOut();
           Get.offAll(() => const Login());
           return true;
