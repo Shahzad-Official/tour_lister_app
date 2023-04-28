@@ -37,7 +37,7 @@ class LoginService {
             _userData.userProfile.role == "user") {
           AppSnackbar.snackBar(
               title: "Error",
-              message: "This account is registered on User App.");
+              message: "This account is already registered on User App!");
           _googleSignIn.signOut();
           Get.offAll(() => const Login());
           return true;
