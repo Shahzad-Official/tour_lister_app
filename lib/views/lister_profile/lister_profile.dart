@@ -98,6 +98,7 @@ class ListerProfile extends StatelessWidget {
                                   child: SvgPicture.string(
                                     SvgIcons.verified,
                                     width: 20,
+                                    // ignore: deprecated_member_use
                                     color: AppColors.primarycolor,
                                   ),
                                 ),

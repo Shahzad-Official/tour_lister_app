@@ -154,6 +154,7 @@ class UserDetails extends StatelessWidget {
                 SvgIcons.chat,
                 height: 30,
                 width: 30,
+                // ignore: deprecated_member_use
                 color: Colors.white,
               ),
               const SizedBox(

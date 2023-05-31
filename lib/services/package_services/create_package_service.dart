@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:tour_lister_app/utils/app_snackbar.dart';
 
@@ -12,8 +13,21 @@ class CreatePackageService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+  List<String> allCats = [];
+  getAllCats() async {
+    allCats.clear();
+    await _firestore.collection("category").get().then((value) {
+      for (var i in value.docs) {
+        allCats.add(i['name']);
+      }
+    }).catchError((err) {
+      debugPrint("Categories getting error=> $err");
+    });
+  }
+
   createPackage({
     required String packageName,
+    required String category,
     required String address,
     required String startTime,
     required String endTime,
@@ -43,6 +57,7 @@ class CreatePackageService {
           "created_on": DateTime.now(),
           "listerId": _firebaseAuth.currentUser!.uid,
           "packageName": packageName,
+          "category": category,
           "location": {
             "address": address,
             "latitude": latitude,
@@ -73,12 +88,7 @@ class CreatePackageService {
             },
           );
 
-          await _firebaseStorage
-              .ref("packages_files")
-              .child(value.id)
-              .child("thumbnail")
-              .putFile(coverImage)
-              .then(
+          await _firebaseStorage.ref("packages_files").child(value.id).child("thumbnail").putFile(coverImage).then(
             (p0) async {
               var thumbnailUrl = await p0.ref.getDownloadURL();
               await _firestore.collection("packages").doc(value.id).set(
@@ -93,12 +103,7 @@ class CreatePackageService {
           );
           List<String> otherImagesUrl = [];
           for (int i = 0; i < otherImage.length; i++) {
-            await _firebaseStorage
-                .ref("packages_files")
-                .child(value.id)
-                .child("otherImages$i")
-                .putFile(otherImage[i])
-                .then(
+            await _firebaseStorage.ref("packages_files").child(value.id).child("otherImages$i").putFile(otherImage[i]).then(
               (p0) async {
                 var url = await p0.ref.getDownloadURL();
                 otherImagesUrl.add(url);
@@ -113,12 +118,7 @@ class CreatePackageService {
               merge: true,
             ),
           );
-          await _firebaseStorage
-              .ref("packages_files")
-              .child(value.id)
-              .child("termsAndConditions")
-              .putFile(termsAndCondition)
-              .then(
+          await _firebaseStorage.ref("packages_files").child(value.id).child("termsAndConditions").putFile(termsAndCondition).then(
             (p0) async {
               var terms = await p0.ref.getDownloadURL();
               await _firestore.collection("packages").doc(value.id).set(
@@ -133,8 +133,7 @@ class CreatePackageService {
           );
         },
       );
-      AppSnackbar.snackBar(
-          title: "Message", message: "Package created Successfully");
+      AppSnackbar.snackBar(title: "Message", message: "Package created Successfully");
       Get.deleteAll();
       Get.offAll(() => MainPage());
     } catch (e) {
@@ -145,6 +144,7 @@ class CreatePackageService {
   updatePackage(
     String packageId, {
     String? packageName,
+    String? category,
     String? address,
     String? startTime,
     String? endTime,
@@ -172,6 +172,7 @@ class CreatePackageService {
       await _firestore.collection("packages").doc(packageId).update(
         {
           "packageName": packageName,
+          "category": category,
           "location": {
             "address": address,
             "latitude": latitude,
@@ -199,12 +200,7 @@ class CreatePackageService {
       ).then(
         (value) async {
           if (coverImage != null) {
-            await _firebaseStorage
-                .ref("packages_files")
-                .child(packageId)
-                .child("thumbnail")
-                .putFile(coverImage)
-                .then(
+            await _firebaseStorage.ref("packages_files").child(packageId).child("thumbnail").putFile(coverImage).then(
               (p0) async {
                 var thumbnailUrl = await p0.ref.getDownloadURL();
                 await _firestore.collection("packages").doc(packageId).set(
@@ -222,12 +218,7 @@ class CreatePackageService {
             List.generate(
               otherImage.length,
               (index) async {
-                await _firebaseStorage
-                    .ref("packages_files")
-                    .child(packageId)
-                    .child("otherImages$index")
-                    .putFile(otherImage[index])
-                    .then(
+                await _firebaseStorage.ref("packages_files").child(packageId).child("otherImages$index").putFile(otherImage[index]).then(
                   (p0) async {
                     var url = await p0.ref.getDownloadURL();
                     allOtherImages.add(url);
@@ -244,12 +235,7 @@ class CreatePackageService {
               ),
             );
           } else if (termsAndCondition != null) {
-            await _firebaseStorage
-                .ref("packages_files")
-                .child(packageId)
-                .child("termsAndConditions")
-                .putFile(termsAndCondition)
-                .then(
+            await _firebaseStorage.ref("packages_files").child(packageId).child("termsAndConditions").putFile(termsAndCondition).then(
               (p0) async {
                 var terms = await p0.ref.getDownloadURL();
                 await _firestore.collection("packages").doc(packageId).set(
@@ -265,8 +251,7 @@ class CreatePackageService {
           }
         },
       );
-      AppSnackbar.snackBar(
-          title: "Message", message: "Package created Successfully");
+      AppSnackbar.snackBar(title: "Message", message: "Package created Successfully");
       Get.deleteAll();
       Get.offAll(() => MainPage());
     } catch (e) {
@@ -276,6 +261,7 @@ class CreatePackageService {
 
   duplicatePackage({
     String? packageName,
+    String? category,
     String? address,
     String? startTime,
     String? endTime,
@@ -305,6 +291,7 @@ class CreatePackageService {
       await _firestore.collection("packages").add(
         {
           "packageName": packageName,
+          "category": category,
           "created_on": DateTime.now(),
           "location": {
             "address": address,
@@ -341,12 +328,7 @@ class CreatePackageService {
             },
           );
           if (coverImage != null) {
-            await _firebaseStorage
-                .ref("packages_files")
-                .child(value.id)
-                .child("thumbnail")
-                .putFile(coverImage)
-                .then(
+            await _firebaseStorage.ref("packages_files").child(value.id).child("thumbnail").putFile(coverImage).then(
               (p0) async {
                 var thumbnailUrl = await p0.ref.getDownloadURL();
                 await _firestore.collection("packages").doc(value.id).set(
@@ -364,12 +346,7 @@ class CreatePackageService {
             List.generate(
               otherImage.length,
               (index) async {
-                await _firebaseStorage
-                    .ref("packages_files")
-                    .child(value.id)
-                    .child("otherImages$index")
-                    .putFile(otherImage[index])
-                    .then(
+                await _firebaseStorage.ref("packages_files").child(value.id).child("otherImages$index").putFile(otherImage[index]).then(
                   (p0) async {
                     var url = await p0.ref.getDownloadURL();
                     allOtherImages.add(url);
@@ -386,12 +363,7 @@ class CreatePackageService {
               ),
             );
           } else if (termsAndCondition != null) {
-            await _firebaseStorage
-                .ref("packages_files")
-                .child(value.id)
-                .child("termsAndConditions")
-                .putFile(termsAndCondition)
-                .then(
+            await _firebaseStorage.ref("packages_files").child(value.id).child("termsAndConditions").putFile(termsAndCondition).then(
               (p0) async {
                 var terms = await p0.ref.getDownloadURL();
                 await _firestore.collection("packages").doc(value.id).set(
@@ -407,8 +379,7 @@ class CreatePackageService {
           }
         },
       );
-      AppSnackbar.snackBar(
-          title: "Message", message: "Package duplicated Successfully");
+      AppSnackbar.snackBar(title: "Message", message: "Package duplicated Successfully");
       Get.deleteAll();
       Get.offAll(() => MainPage());
     } catch (e) {

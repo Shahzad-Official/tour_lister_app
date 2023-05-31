@@ -87,8 +87,7 @@ class _ListerAccountState extends State<ListerAccount> {
                             children: [
                               snapshot.hasData
                                   ? AppCircularCachedImage(
-                                      picUrl: snapshot.data!.profile ??
-                                          DummyData.profilePic,
+                                      picUrl: snapshot.data!.profile ?? DummyData.profilePic,
                                     )
                                   : const Center(
                                       child: CircularProgressIndicator(
@@ -103,6 +102,7 @@ class _ListerAccountState extends State<ListerAccount> {
                                         child: SvgPicture.string(
                                           SvgIcons.verified,
                                           width: 20,
+                                          // ignore: deprecated_member_use
                                           color: AppColors.primarycolor,
                                         ),
                                       ),
@@ -232,8 +232,7 @@ class _ListerAccountState extends State<ListerAccount> {
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       onTap: () async {
-                        await _userData.getUserData(
-                            FirebaseAuth.instance.currentUser!.uid);
+                        await _userData.getUserData(FirebaseAuth.instance.currentUser!.uid);
                       },
                       leading: AppText(
                         text: "Link Stripe Account",

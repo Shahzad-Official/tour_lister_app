@@ -87,10 +87,9 @@ class _SignUpState extends State<SignUp> {
                               vertical: _.isObsecure ? 20 : 15,
                             ),
                             child: SvgPicture.string(
-                              _.isObsecure
-                                  ? SvgIcons.closeEye
-                                  : SvgIcons.openEye,
+                              _.isObsecure ? SvgIcons.closeEye : SvgIcons.openEye,
                               width: 30,
+                              // ignore: deprecated_member_use
                               color: Colors.grey,
                             ),
                           ),
@@ -114,10 +113,9 @@ class _SignUpState extends State<SignUp> {
                               vertical: _.isObsecure ? 20 : 15,
                             ),
                             child: SvgPicture.string(
-                              _.isObsecure
-                                  ? SvgIcons.closeEye
-                                  : SvgIcons.openEye,
+                              _.isObsecure ? SvgIcons.closeEye : SvgIcons.openEye,
                               width: 30,
+                              // ignore: deprecated_member_use
                               color: Colors.grey,
                             ),
                           ),
@@ -151,8 +149,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                               content: AppText(
                                 overflow: TextOverflow.visible,
-                                text: DummyData.eventsData[0]
-                                    ['termsAndConditions'],
+                                text: DummyData.eventsData[0]['termsAndConditions'],
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -188,7 +185,9 @@ class _SignUpState extends State<SignUp> {
                   setState(() {});
                   await signupController.isValidUser();
                   isLoading = false;
-                  setState(() {});
+                  if (mounted) {
+                    setState(() {});
+                  }
                 },
               ),
               AppPadding.heightSpace30,

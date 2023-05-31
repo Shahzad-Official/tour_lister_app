@@ -14,6 +14,7 @@ import 'package:tour_lister_app/widgets/app_cached_image.dart';
 import '../../constants/svg_icons.dart';
 import '../../models/icons_model.dart';
 import '../../services/inclusions_services/get_icons.dart';
+import '../../services/package_services/create_package_service.dart';
 import '../../utils/tool_tip_shap.dart';
 import '../../widgets/app_input_field.dart';
 import '../../widgets/app_text.dart';
@@ -21,13 +22,7 @@ import '../../widgets/app_text.dart';
 // ignore: must_be_immutable
 class EditPackage extends StatefulWidget {
   bool isLive;
-  final String picUrl,
-      pkgName,
-      pkgLocation,
-      startDate,
-      endDate,
-      startTime,
-      endTime;
+  final String picUrl, pkgName, pkgLocation, startDate, endDate, startTime, endTime;
   final PackagesModel packageData;
   EditPackage({
     Key? key,
@@ -47,6 +42,7 @@ class EditPackage extends StatefulWidget {
 }
 
 class _EditPackageState extends State<EditPackage> {
+  final CreatePackageService _service = CreatePackageService();
   final GetIcons _getIcons = GetIcons();
   EditPackageController packageController = Get.put(EditPackageController());
   final GetAllBookings _getAllBookings = GetAllBookings();
@@ -57,9 +53,8 @@ class _EditPackageState extends State<EditPackage> {
     });
     await _getIcons.getIcons();
     await _getAllBookings.getAllBookings();
-
-    if (_getAllBookings.allBookings
-        .any((element) => element.tourId == widget.packageData.packageId)) {
+    await _service.getAllCats();
+    if (_getAllBookings.allBookings.any((element) => element.tourId == widget.packageData.packageId)) {
       setState(() {
         widget.isLive = true;
       });
@@ -73,37 +68,26 @@ class _EditPackageState extends State<EditPackage> {
       isLoading = false;
     });
     if (widget.packageData.packageId != null) {
+      packageController.packageCat.text = widget.packageData.category.toString();
       packageController.startDate = DateTime.parse(widget.startDate);
       packageController.termsFileUrl = widget.packageData.termsAndConditions;
       packageController.endDate = DateTime.parse(widget.endDate);
-      packageController.startDateController.text =
-          CustomDateFormat.dateFormat(widget.startDate);
-      packageController.endDateController.text =
-          CustomDateFormat.dateFormat(widget.endDate);
+      packageController.startDateController.text = CustomDateFormat.dateFormat(widget.startDate);
+      packageController.endDateController.text = CustomDateFormat.dateFormat(widget.endDate);
       packageController.startTimeController.text = widget.startTime;
       packageController.endTimeController.text = widget.endTime;
-      packageController.packageName.text =
-          widget.packageData.packageName.toString();
-      packageController.location.text =
-          widget.packageData.location!.address.toString();
-      packageController.startPrice.text =
-          widget.packageData.startPrice.toString();
+      packageController.packageName.text = widget.packageData.packageName.toString();
+      packageController.location.text = widget.packageData.location!.address.toString();
+      packageController.startPrice.text = widget.packageData.startPrice.toString();
       packageController.endPrice.text = widget.packageData.endPrice.toString();
-      packageController.cuttoffTime.text =
-          widget.packageData.cuttOffTime.toString();
-      packageController.noOfBookigs.text =
-          widget.packageData.noOfPersonsInPackage.toString().split("-").last;
+      packageController.cuttoffTime.text = widget.packageData.cuttOffTime.toString();
+      packageController.noOfBookigs.text = widget.packageData.noOfPersonsInPackage.toString().split("-").last;
       packageController.selectedCat = widget.packageData.typeOfTour.toString();
-      packageController.dangerRating =
-          int.parse(widget.packageData.dangerRating.toString());
-      packageController.initialAge =
-          int.parse(widget.packageData.ageSuitability.toString());
-      packageController.termsAndConditions.text =
-          widget.packageData.termsAndConditions.toString();
-      packageController.description.text =
-          widget.packageData.description.toString();
-      packageController.extraInfoController.text =
-          widget.packageData.extraInfo ?? "";
+      packageController.dangerRating = int.parse(widget.packageData.dangerRating.toString());
+      packageController.initialAge = int.parse(widget.packageData.ageSuitability.toString());
+      packageController.termsAndConditions.text = widget.packageData.termsAndConditions.toString();
+      packageController.description.text = widget.packageData.description.toString();
+      packageController.extraInfoController.text = widget.packageData.extraInfo ?? "";
       packageController.newPosition = LocationResult(
         latLng: LatLng(
           widget.packageData.location!.latitude!,
@@ -112,8 +96,7 @@ class _EditPackageState extends State<EditPackage> {
       );
       packageController.coverImageUrl = widget.packageData.thumbnailUrl;
       packageController.otherImageUrl = widget.packageData.otherImage;
-      packageController.noOfPackages.text =
-          widget.packageData.availablePackages.toString();
+      packageController.noOfPackages.text = widget.packageData.availablePackages.toString();
       if (widget.packageData.inclusions != null) {
         packageController.icons = List.generate(
           widget.packageData.inclusions!.length,
@@ -126,8 +109,7 @@ class _EditPackageState extends State<EditPackage> {
         );
         packageController.count = List.generate(
           widget.packageData.inclusions!.length,
-          (index) => packageController.count[index] =
-              widget.packageData.inclusions![index].inclusionCount!,
+          (index) => packageController.count[index] = widget.packageData.inclusions![index].inclusionCount!,
         );
       }
     }
@@ -202,8 +184,7 @@ class _EditPackageState extends State<EditPackage> {
                                       },
                                       icon: const Icon(
                                         Icons.camera_alt,
-                                        color:
-                                            Color.fromARGB(255, 255, 255, 255),
+                                        color: Color.fromARGB(255, 255, 255, 255),
                                       ),
                                     ),
                                   ),
@@ -243,8 +224,7 @@ class _EditPackageState extends State<EditPackage> {
                               ],
                             ),
                       AppPadding.heightSpace10,
-                      _.allOtherImages.isEmpty &&
-                              widget.packageData.otherImage!.isEmpty
+                      _.allOtherImages.isEmpty && widget.packageData.otherImage!.isEmpty
                           ? const SizedBox()
                           : SizedBox(
                               height: 100,
@@ -254,16 +234,13 @@ class _EditPackageState extends State<EditPackage> {
                                   alignment: WrapAlignment.center,
                                   spacing: 20,
                                   children: List.generate(
-                                    _.allOtherImages.isEmpty
-                                        ? widget.packageData.otherImage!.length
-                                        : _.allOtherImages.length,
+                                    _.allOtherImages.isEmpty ? widget.packageData.otherImage!.length : _.allOtherImages.length,
                                     (index) {
                                       if (_.allOtherImages.isEmpty) {
                                         return AppCachedImage(
                                           height: 100,
                                           width: 100,
-                                          picUrl: widget
-                                              .packageData.otherImage![index],
+                                          picUrl: widget.packageData.otherImage![index],
                                         );
                                       } else {
                                         return Container(
@@ -297,6 +274,20 @@ class _EditPackageState extends State<EditPackage> {
                         controller: _.packageName,
                         hintText: "Package Name",
                       ),
+                      AppText(
+                        text: "Package Category",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        textcolor: AppColors.headTextColor,
+                      ),
+                      AppPadding.heightSpace10,
+                      DropdownContainer(
+                        hintText: _.packageCat.text,
+                        items: _service.allCats,
+                        onValueChange: (value) {
+                          _.packageCat.text = value.toString();
+                        },
+                      ),
                       AppPadding.heightSpace30,
                       AppText(
                         text: "Location",
@@ -326,6 +317,7 @@ class _EditPackageState extends State<EditPackage> {
                           child: SvgPicture.string(
                             SvgIcons.mapMarkerFilled,
                             width: 30,
+                            // ignore: deprecated_member_use
                             color: Colors.grey,
                           ),
                         ),
@@ -351,8 +343,7 @@ class _EditPackageState extends State<EditPackage> {
                                     : () {
                                         _.selectStartDate(context);
                                       },
-                                width:
-                                    MediaQuery.of(context).size.width * 0.415,
+                                width: MediaQuery.of(context).size.width * 0.415,
                                 enabled: false,
                                 hintText: "Start Date",
                                 contentPadding: const EdgeInsets.only(
@@ -367,6 +358,7 @@ class _EditPackageState extends State<EditPackage> {
                                   child: SvgPicture.string(
                                     SvgIcons.calendarFilled,
                                     width: 30,
+                                    // ignore: deprecated_member_use
                                     color: Colors.grey,
                                   ),
                                 ),
@@ -390,8 +382,7 @@ class _EditPackageState extends State<EditPackage> {
                                     : () {
                                         _.selectEndDate(context);
                                       },
-                                width:
-                                    MediaQuery.of(context).size.width * 0.415,
+                                width: MediaQuery.of(context).size.width * 0.415,
                                 enabled: false,
                                 hintText: "End Date",
                                 contentPadding: const EdgeInsets.only(
@@ -406,6 +397,7 @@ class _EditPackageState extends State<EditPackage> {
                                   child: SvgPicture.string(
                                     SvgIcons.calendarFilled,
                                     width: 30,
+                                    // ignore: deprecated_member_use
                                     color: Colors.grey,
                                   ),
                                 ),
@@ -435,8 +427,7 @@ class _EditPackageState extends State<EditPackage> {
                                     : () {
                                         _.selectStartTime(context);
                                       },
-                                width:
-                                    MediaQuery.of(context).size.width * 0.415,
+                                width: MediaQuery.of(context).size.width * 0.415,
                                 enabled: false,
                                 hintText: "Start Time",
                                 contentPadding: const EdgeInsets.only(
@@ -451,6 +442,7 @@ class _EditPackageState extends State<EditPackage> {
                                   child: SvgPicture.string(
                                     SvgIcons.clock,
                                     width: 30,
+                                    // ignore: deprecated_member_use
                                     color: Colors.grey,
                                   ),
                                 ),
@@ -474,8 +466,7 @@ class _EditPackageState extends State<EditPackage> {
                                     : () {
                                         _.selectEndTime(context);
                                       },
-                                width:
-                                    MediaQuery.of(context).size.width * 0.415,
+                                width: MediaQuery.of(context).size.width * 0.415,
                                 enabled: false,
                                 hintText: "End Time",
                                 contentPadding: const EdgeInsets.only(
@@ -490,6 +481,7 @@ class _EditPackageState extends State<EditPackage> {
                                   child: SvgPicture.string(
                                     SvgIcons.clock,
                                     width: 30,
+                                    // ignore: deprecated_member_use
                                     color: Colors.grey,
                                   ),
                                 ),
@@ -507,8 +499,7 @@ class _EditPackageState extends State<EditPackage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     AppText(
                                       text: "Start Price",
@@ -557,8 +548,7 @@ class _EditPackageState extends State<EditPackage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     AppText(
                                       text: "Final Price",
@@ -594,8 +584,7 @@ class _EditPackageState extends State<EditPackage> {
                                   enabled: !widget.isLive,
                                   controller: _.endPrice,
                                   keyboardtype: TextInputType.number,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.415,
+                                  width: MediaQuery.of(context).size.width * 0.415,
                                   hintText: "Final Price",
                                 ),
                               ],
@@ -645,9 +634,7 @@ class _EditPackageState extends State<EditPackage> {
                             : () {
                                 _.selectTime(context);
                               },
-                        hintText: _.cuttoffTime.text.isEmpty
-                            ? "Cutoff Time"
-                            : _.cuttoffTime.text,
+                        hintText: _.cuttoffTime.text.isEmpty ? "Cutoff Time" : _.cuttoffTime.text,
                         contentPadding: const EdgeInsets.only(
                           top: 20,
                           left: 15,
@@ -660,6 +647,7 @@ class _EditPackageState extends State<EditPackage> {
                           child: SvgPicture.string(
                             SvgIcons.clock,
                             width: 30,
+                            // ignore: deprecated_member_use
                             color: Colors.grey,
                           ),
                         ),
@@ -796,10 +784,7 @@ class _EditPackageState extends State<EditPackage> {
                           Expanded(
                             flex: 4,
                             child: AppInputField(
-                              enabled: _.selectedCat == "Family/Group" ||
-                                      !widget.isLive
-                                  ? true
-                                  : false,
+                              enabled: _.selectedCat == "Family/Group" || !widget.isLive ? true : false,
                               controller: _.noOfBookigs,
                               hintText: "Total no of bookings allowed",
                               keyboardtype: TextInputType.number,
@@ -870,9 +855,7 @@ class _EditPackageState extends State<EditPackage> {
                             child: Column(
                               children: [
                                 SvgPicture.string(
-                                  _.dangerRating == 1
-                                      ? SvgIcons.starFilled
-                                      : SvgIcons.star,
+                                  _.dangerRating == 1 ? SvgIcons.starFilled : SvgIcons.star,
                                   width: 25,
                                 ),
                                 AppText(
@@ -915,9 +898,7 @@ class _EditPackageState extends State<EditPackage> {
                             child: Column(
                               children: [
                                 SvgPicture.string(
-                                  _.dangerRating == 2
-                                      ? SvgIcons.starFilled
-                                      : SvgIcons.star,
+                                  _.dangerRating == 2 ? SvgIcons.starFilled : SvgIcons.star,
                                   width: 25,
                                 ),
                                 AppText(
@@ -960,9 +941,7 @@ class _EditPackageState extends State<EditPackage> {
                             child: Column(
                               children: [
                                 SvgPicture.string(
-                                  _.dangerRating == 3
-                                      ? SvgIcons.starFilled
-                                      : SvgIcons.star,
+                                  _.dangerRating == 3 ? SvgIcons.starFilled : SvgIcons.star,
                                   width: 25,
                                 ),
                                 AppText(
@@ -1124,8 +1103,7 @@ class _EditPackageState extends State<EditPackage> {
                                               content: Container(
                                                 decoration: BoxDecoration(
                                                   color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
+                                                  borderRadius: BorderRadius.circular(15),
                                                 ),
                                                 height: Get.height * 0.7,
                                                 width: Get.width * 0.8,
@@ -1136,56 +1114,36 @@ class _EditPackageState extends State<EditPackage> {
                                                         AppText(
                                                           text: "Inclusions",
                                                           fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.w600,
+                                                          fontWeight: FontWeight.w600,
                                                         ),
-                                                        AppPadding
-                                                            .heightSpace20,
+                                                        AppPadding.heightSpace20,
                                                         GridView.builder(
-                                                          itemCount: _getIcons
-                                                              .iconsData.length,
+                                                          itemCount: _getIcons.iconsData.length,
                                                           shrinkWrap: true,
-                                                          gridDelegate:
-                                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                                             crossAxisCount: 3,
                                                             mainAxisSpacing: 20,
-                                                            crossAxisSpacing:
-                                                                20,
-                                                            childAspectRatio:
-                                                                0.7,
+                                                            crossAxisSpacing: 20,
+                                                            childAspectRatio: 0.7,
                                                           ),
-                                                          itemBuilder:
-                                                              (context, index) {
+                                                          itemBuilder: (context, index) {
                                                             return InkWell(
                                                               onTap: () {
                                                                 _.addIcon(
-                                                                  iconData: _getIcons
-                                                                          .iconsData[
-                                                                      index],
+                                                                  iconData: _getIcons.iconsData[index],
                                                                 );
                                                                 Get.back();
                                                               },
                                                               child: Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              10),
-                                                                  color: AppColors
-                                                                      .primarycolor
-                                                                      .withOpacity(
-                                                                          0.4),
+                                                                decoration: BoxDecoration(
+                                                                  borderRadius: BorderRadius.circular(10),
+                                                                  color: AppColors.primarycolor.withOpacity(0.4),
                                                                 ),
                                                                 child: Center(
-                                                                  child:
-                                                                      AppCachedImage(
+                                                                  child: AppCachedImage(
                                                                     height: 50,
                                                                     width: 50,
-                                                                    picUrl: _getIcons
-                                                                        .iconsData[
-                                                                            index]
-                                                                        .iconImage!,
+                                                                    picUrl: _getIcons.iconsData[index].iconImage!,
                                                                   ),
                                                                 ),
                                                               ),
@@ -1217,11 +1175,9 @@ class _EditPackageState extends State<EditPackage> {
                                   itemCount: _.icons.length,
                                   itemBuilder: (context, index) {
                                     return Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 8.0),
+                                      padding: const EdgeInsets.only(bottom: 8.0),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           SizedBox(
                                             height: 110,
@@ -1229,36 +1185,25 @@ class _EditPackageState extends State<EditPackage> {
                                             child: Stack(
                                               children: [
                                                 Align(
-                                                  alignment:
-                                                      Alignment.bottomRight,
+                                                  alignment: Alignment.bottomRight,
                                                   child: Container(
                                                     height: 100,
                                                     width: 80,
                                                     decoration: BoxDecoration(
-                                                      color: AppColors
-                                                          .primarycolor
-                                                          .withOpacity(0.3),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
+                                                      color: AppColors.primarycolor.withOpacity(0.3),
+                                                      borderRadius: BorderRadius.circular(10),
                                                       border: Border.all(
-                                                        color: AppColors
-                                                            .primarycolor,
+                                                        color: AppColors.primarycolor,
                                                       ),
                                                     ),
                                                     child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                       children: [
                                                         SizedBox(
                                                           height: 50,
                                                           width: 50,
                                                           child: AppCachedImage(
-                                                            picUrl: _
-                                                                .icons[index]
-                                                                .iconImage
-                                                                .toString(),
+                                                            picUrl: _.icons[index].iconImage.toString(),
                                                           ),
                                                         ),
                                                         // AppText(
@@ -1275,14 +1220,12 @@ class _EditPackageState extends State<EditPackage> {
                                                       ? null
                                                       : () {
                                                           _.removeIcon(
-                                                            iconData:
-                                                                _.icons[index],
+                                                            iconData: _.icons[index],
                                                           );
                                                         },
                                                   child: const CircleAvatar(
                                                     radius: 15,
-                                                    backgroundColor:
-                                                        AppColors.primarycolor,
+                                                    backgroundColor: AppColors.primarycolor,
                                                     child: Icon(
                                                       Icons.close,
                                                       color: Colors.white,
@@ -1296,16 +1239,13 @@ class _EditPackageState extends State<EditPackage> {
                                             width: 80,
                                             height: 50,
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 InkWell(
                                                   onTap: widget.isLive
                                                       ? null
                                                       : () {
-                                                          _.inclusionAddition(
-                                                              index);
+                                                          _.inclusionAddition(index);
                                                         },
                                                   child: const CircleAvatar(
                                                     radius: 15,
@@ -1319,8 +1259,7 @@ class _EditPackageState extends State<EditPackage> {
                                                   onTap: widget.isLive
                                                       ? null
                                                       : () {
-                                                          _.inclusionSubtraction(
-                                                              index);
+                                                          _.inclusionSubtraction(index);
                                                         },
                                                   child: const CircleAvatar(
                                                     radius: 15,
@@ -1375,9 +1314,8 @@ class _EditPackageState extends State<EditPackage> {
                           child: SvgPicture.string(
                             SvgIcons.docIcon,
                             width: 30,
-                            color: _.termsAndConditions.text.isEmpty
-                                ? Colors.grey
-                                : Colors.black,
+                            // ignore: deprecated_member_use
+                            color: _.termsAndConditions.text.isEmpty ? Colors.grey : Colors.black,
                           ),
                         ),
                       ),
@@ -1460,52 +1398,36 @@ class _EditPackageState extends State<EditPackage> {
                                           builder: (context) {
                                             return Dialog(
                                               child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(18.0),
+                                                padding: const EdgeInsets.all(18.0),
                                                 child: SizedBox(
                                                   height: Get.height * 0.3,
                                                   child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
                                                       AppText(
                                                         text: "Package Name",
                                                         fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        textcolor: AppColors
-                                                            .headTextColor,
+                                                        fontWeight: FontWeight.w600,
+                                                        textcolor: AppColors.headTextColor,
                                                       ),
                                                       AppPadding.heightSpace15,
                                                       AppInputField(
-                                                        controller:
-                                                            _.packageName,
-                                                        hintText:
-                                                            "Package Name",
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .done,
+                                                        controller: _.packageName,
+                                                        hintText: "Package Name",
+                                                        textInputAction: TextInputAction.done,
                                                       ),
                                                       AppPadding.heightSpace30,
-                                                      GetBuilder<
-                                                          EditPackageController>(
-                                                        init:
-                                                            EditPackageController(),
+                                                      GetBuilder<EditPackageController>(
+                                                        init: EditPackageController(),
                                                         builder: (_) {
                                                           return AppButton(
-                                                            isLoading:
-                                                                _.isLoading,
+                                                            isLoading: _.isLoading,
                                                             btnText: "Done",
                                                             ontap: () async {
-                                                              await _
-                                                                  .isValidInfo(
+                                                              await _.isValidInfo(
                                                                 context,
-                                                                widget
-                                                                    .packageData
-                                                                    .packageId,
-                                                                isDuplicating:
-                                                                    true,
+                                                                widget.packageData.packageId,
+                                                                isDuplicating: true,
                                                               );
                                                             },
                                                           );

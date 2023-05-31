@@ -6,6 +6,7 @@ import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/constants/svg_icons.dart';
 import 'package:tour_lister_app/controllers/package_controllers/create_package_controller.dart';
 import 'package:tour_lister_app/services/inclusions_services/get_icons.dart';
+import 'package:tour_lister_app/services/package_services/create_package_service.dart';
 
 import 'package:tour_lister_app/widgets/app_button.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
@@ -24,11 +25,13 @@ class CreatePackage extends StatefulWidget {
 class _CreatePackageState extends State<CreatePackage> {
   bool isloading = false;
   final GetIcons _getIcons = GetIcons();
+  final CreatePackageService _service = CreatePackageService();
   getData() async {
     setState(() {
       isloading = true;
     });
     await _getIcons.getIcons();
+    await _service.getAllCats();
     setState(() {
       isloading = false;
     });
@@ -42,6 +45,11 @@ class _CreatePackageState extends State<CreatePackage> {
 
   @override
   Widget build(BuildContext context) {
+    if (isloading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return GetBuilder<CreatePackageController>(
       init: CreatePackageController(),
       builder: (_) {
@@ -70,9 +78,12 @@ class _CreatePackageState extends State<CreatePackage> {
                   textcolor: AppColors.headTextColor,
                 ),
                 AppPadding.heightSpace10,
-                AppInputField(
-                  controller: _.packageCat,
-                  hintText: "Package Category",
+                DropdownContainer(
+                  hintText: "Select Category",
+                  items: _service.allCats,
+                  onValueChange: (value) {
+                    _.packageCat.text = value.toString();
+                  },
                 ),
                 AppPadding.heightSpace30,
                 AppText(
@@ -101,6 +112,7 @@ class _CreatePackageState extends State<CreatePackage> {
                     child: SvgPicture.string(
                       SvgIcons.mapMarkerFilled,
                       width: 30,
+                      // ignore: deprecated_member_use
                       color: Colors.grey,
                     ),
                   ),
@@ -139,6 +151,7 @@ class _CreatePackageState extends State<CreatePackage> {
                               child: SvgPicture.string(
                                 SvgIcons.calendarFilled,
                                 width: 30,
+                                // ignore: deprecated_member_use
                                 color: Colors.grey,
                               ),
                             ),
@@ -179,6 +192,7 @@ class _CreatePackageState extends State<CreatePackage> {
                               child: SvgPicture.string(
                                 SvgIcons.calendarFilled,
                                 width: 30,
+                                // ignore: deprecated_member_use
                                 color: Colors.grey,
                               ),
                             ),
@@ -222,6 +236,7 @@ class _CreatePackageState extends State<CreatePackage> {
                               child: SvgPicture.string(
                                 SvgIcons.clock,
                                 width: 30,
+                                // ignore: deprecated_member_use
                                 color: Colors.grey,
                               ),
                             ),
@@ -262,6 +277,7 @@ class _CreatePackageState extends State<CreatePackage> {
                               child: SvgPicture.string(
                                 SvgIcons.clock,
                                 width: 30,
+                                // ignore: deprecated_member_use
                                 color: Colors.grey,
                               ),
                             ),
@@ -410,9 +426,7 @@ class _CreatePackageState extends State<CreatePackage> {
                   onTap: () {
                     _.selectTime(context);
                   },
-                  hintText: _.cuttoffTime.text.isEmpty
-                      ? "Cutoff Time"
-                      : _.cuttoffTime.text,
+                  hintText: _.cuttoffTime.text.isEmpty ? "Cutoff Time" : _.cuttoffTime.text,
                   contentPadding: const EdgeInsets.only(
                     top: 20,
                     left: 15,
@@ -425,6 +439,7 @@ class _CreatePackageState extends State<CreatePackage> {
                     child: SvgPicture.string(
                       SvgIcons.clock,
                       width: 30,
+                      // ignore: deprecated_member_use
                       color: Colors.grey,
                     ),
                   ),
@@ -499,6 +514,7 @@ class _CreatePackageState extends State<CreatePackage> {
                     child: SvgPicture.string(
                       SvgIcons.cameraFilled,
                       width: 30,
+                      // ignore: deprecated_member_use
                       color: Colors.grey,
                     ),
                   ),
@@ -530,6 +546,7 @@ class _CreatePackageState extends State<CreatePackage> {
                     child: SvgPicture.string(
                       SvgIcons.cameraFilled,
                       width: 30,
+                      // ignore: deprecated_member_use
                       color: Colors.grey,
                     ),
                   ),
@@ -688,9 +705,7 @@ class _CreatePackageState extends State<CreatePackage> {
                       child: Column(
                         children: [
                           SvgPicture.string(
-                            _.dangerRating == 1
-                                ? SvgIcons.starFilled
-                                : SvgIcons.star,
+                            _.dangerRating == 1 ? SvgIcons.starFilled : SvgIcons.star,
                             width: 25,
                           ),
                           AppText(
@@ -731,9 +746,7 @@ class _CreatePackageState extends State<CreatePackage> {
                       child: Column(
                         children: [
                           SvgPicture.string(
-                            _.dangerRating == 2
-                                ? SvgIcons.starFilled
-                                : SvgIcons.star,
+                            _.dangerRating == 2 ? SvgIcons.starFilled : SvgIcons.star,
                             width: 25,
                           ),
                           AppText(
@@ -774,9 +787,7 @@ class _CreatePackageState extends State<CreatePackage> {
                       child: Column(
                         children: [
                           SvgPicture.string(
-                            _.dangerRating == 3
-                                ? SvgIcons.starFilled
-                                : SvgIcons.star,
+                            _.dangerRating == 3 ? SvgIcons.starFilled : SvgIcons.star,
                             width: 25,
                           ),
                           AppText(
@@ -949,11 +960,9 @@ class _CreatePackageState extends State<CreatePackage> {
                                             ),
                                             AppPadding.heightSpace20,
                                             GridView.builder(
-                                              itemCount:
-                                                  _getIcons.iconsData.length,
+                                              itemCount: _getIcons.iconsData.length,
                                               shrinkWrap: true,
-                                              gridDelegate:
-                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount: 3,
                                                 mainAxisSpacing: 20,
                                                 crossAxisSpacing: 20,
@@ -963,31 +972,22 @@ class _CreatePackageState extends State<CreatePackage> {
                                                 return InkWell(
                                                   onTap: () {
                                                     _.addIcon(
-                                                      iconData: _getIcons
-                                                          .iconsData[index],
+                                                      iconData: _getIcons.iconsData[index],
                                                     );
                                                     Get.back();
                                                   },
                                                   child: Container(
                                                     decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      color: AppColors
-                                                          .primarycolor
-                                                          .withOpacity(0.4),
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      color: AppColors.primarycolor.withOpacity(0.4),
                                                     ),
                                                     child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                       children: [
                                                         AppCachedImage(
                                                           height: 50,
                                                           width: 50,
-                                                          picUrl: _getIcons
-                                                              .iconsData[index]
-                                                              .iconImage!,
+                                                          picUrl: _getIcons.iconsData[index].iconImage!,
                                                         ),
                                                         // AppPadding
                                                         //     .heightSpace10,
@@ -1033,8 +1033,7 @@ class _CreatePackageState extends State<CreatePackage> {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 8.0),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     SizedBox(
                                       height: 110,
@@ -1047,26 +1046,20 @@ class _CreatePackageState extends State<CreatePackage> {
                                               height: 100,
                                               width: 80,
                                               decoration: BoxDecoration(
-                                                color: AppColors.primarycolor
-                                                    .withOpacity(0.3),
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
+                                                color: AppColors.primarycolor.withOpacity(0.3),
+                                                borderRadius: BorderRadius.circular(10),
                                                 border: Border.all(
                                                   color: AppColors.primarycolor,
                                                 ),
                                               ),
                                               child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                 children: [
                                                   SizedBox(
                                                     height: 50,
                                                     width: 50,
                                                     child: AppCachedImage(
-                                                      picUrl: _.icons[index]
-                                                          .iconImage
-                                                          .toString(),
+                                                      picUrl: _.icons[index].iconImage.toString(),
                                                     ),
                                                   ),
                                                   // AppText(
@@ -1086,8 +1079,7 @@ class _CreatePackageState extends State<CreatePackage> {
                                             },
                                             child: const CircleAvatar(
                                               radius: 15,
-                                              backgroundColor:
-                                                  AppColors.primarycolor,
+                                              backgroundColor: AppColors.primarycolor,
                                               child: Icon(
                                                 Icons.close,
                                                 color: Colors.white,
@@ -1101,8 +1093,7 @@ class _CreatePackageState extends State<CreatePackage> {
                                       width: 80,
                                       height: 50,
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           InkWell(
                                             onTap: () {
@@ -1171,9 +1162,8 @@ class _CreatePackageState extends State<CreatePackage> {
                     child: SvgPicture.string(
                       SvgIcons.docIcon,
                       width: 30,
-                      color: _.termsAndConditions.text.isEmpty
-                          ? Colors.grey
-                          : Colors.black,
+                      // ignore: deprecated_member_use
+                      color: _.termsAndConditions.text.isEmpty ? Colors.grey : Colors.black,
                     ),
                   ),
                 ),

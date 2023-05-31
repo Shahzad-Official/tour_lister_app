@@ -32,17 +32,14 @@ class AppBottomSheet extends StatelessWidget {
                 SvgPicture.string(
                   SvgIcons.mapMarker,
                   width: 30,
-                  color: currentIndex == 0
-                      ? AppColors.primarycolor
-                      : AppColors.headTextColor,
+                  // ignore: deprecated_member_use
+                  color: currentIndex == 0 ? AppColors.primarycolor : AppColors.headTextColor,
                 ),
                 AppText(
                   text: "Create Package",
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
-                  textcolor: currentIndex == 0
-                      ? AppColors.primarycolor
-                      : AppColors.headTextColor,
+                  textcolor: currentIndex == 0 ? AppColors.primarycolor : AppColors.headTextColor,
                 ),
               ],
             ),
@@ -58,17 +55,14 @@ class AppBottomSheet extends StatelessWidget {
                 SvgPicture.string(
                   SvgIcons.plane,
                   width: 27,
-                  color: currentIndex == 1
-                      ? AppColors.primarycolor
-                      : AppColors.headTextColor,
+                  // ignore: deprecated_member_use
+                  color: currentIndex == 1 ? AppColors.primarycolor : AppColors.headTextColor,
                 ),
                 AppText(
                   text: "Manage Packages",
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
-                  textcolor: currentIndex == 1
-                      ? AppColors.primarycolor
-                      : AppColors.headTextColor,
+                  textcolor: currentIndex == 1 ? AppColors.primarycolor : AppColors.headTextColor,
                 ),
               ],
             ),
@@ -84,17 +78,14 @@ class AppBottomSheet extends StatelessWidget {
                 SvgPicture.string(
                   SvgIcons.calender,
                   width: 25,
-                  color: currentIndex == 2
-                      ? AppColors.primarycolor
-                      : AppColors.headTextColor,
+                  // ignore: deprecated_member_use
+                  color: currentIndex == 2 ? AppColors.primarycolor : AppColors.headTextColor,
                 ),
                 AppText(
                   text: "Manage Bookings",
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
-                  textcolor: currentIndex == 2
-                      ? AppColors.primarycolor
-                      : AppColors.headTextColor,
+                  textcolor: currentIndex == 2 ? AppColors.primarycolor : AppColors.headTextColor,
                 ),
               ],
             ),
@@ -110,17 +101,14 @@ class AppBottomSheet extends StatelessWidget {
                 SvgPicture.string(
                   SvgIcons.profile,
                   width: 22,
-                  color: currentIndex == 3
-                      ? AppColors.primarycolor
-                      : AppColors.headTextColor,
+                  // ignore: deprecated_member_use
+                  color: currentIndex == 3 ? AppColors.primarycolor : AppColors.headTextColor,
                 ),
                 AppText(
                   text: "Profile",
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
-                  textcolor: currentIndex == 3
-                      ? AppColors.primarycolor
-                      : AppColors.headTextColor,
+                  textcolor: currentIndex == 3 ? AppColors.primarycolor : AppColors.headTextColor,
                 ),
               ],
             ),

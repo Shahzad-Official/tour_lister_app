@@ -94,12 +94,14 @@ class AppInputField extends StatelessWidget {
 class DropdownContainer extends StatelessWidget {
   Object? currentValue;
   List<String> items;
+  String? hintText;
   void Function(Object? value)? onValueChange;
   DropdownContainer({
     Key? key,
-    required this.currentValue,
+    this.currentValue,
     required this.items,
     required this.onValueChange,
+    this.hintText,
   }) : super(key: key);
 
   @override
@@ -126,7 +128,8 @@ class DropdownContainer extends StatelessWidget {
           isExpanded: false,
           menuMaxHeight: 150,
           borderRadius: BorderRadius.circular(10),
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            hintText: hintText,
             border: InputBorder.none,
           ),
           style: GoogleFonts.didactGothic(),

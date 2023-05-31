@@ -32,6 +32,7 @@ class EditPackageController extends GetxController {
   TextEditingController extraInfoController = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController noOfPackages = TextEditingController();
+  TextEditingController packageCat = TextEditingController();
 
   File? termsAndConditionFile;
   int toursStayDays = 0;
@@ -107,6 +108,13 @@ class EditPackageController extends GetxController {
         backgroundColor: AppColors.primarycolor,
       );
     } else if (location.text.isEmpty) {
+      Get.snackbar(
+        "Error",
+        "Provide Your Package's location",
+        colorText: Colors.white,
+        backgroundColor: AppColors.primarycolor,
+      );
+    } else if (packageCat.text.isEmpty) {
       Get.snackbar(
         "Error",
         "Provide Your Package's location",
@@ -203,6 +211,7 @@ class EditPackageController extends GetxController {
 
       if (isDuplicating) {
         await _createPackageService.duplicatePackage(
+          category: packageCat.text,
           availablePackages: noOfPackages.text,
           address: location.text,
           latitude: position!.latLng!.latitude,
@@ -240,6 +249,7 @@ class EditPackageController extends GetxController {
         );
       } else {
         await _createPackageService.updatePackage(
+          category: packageCat.text,
           availablePackages: noOfPackages.text,
           packageId,
           address: location.text,
@@ -281,10 +291,7 @@ class EditPackageController extends GetxController {
   }
 
   cacelPackage(String packageId) async {
-    await FirebaseFirestore.instance
-        .collection("packages")
-        .doc(packageId)
-        .update(
+    await FirebaseFirestore.instance.collection("packages").doc(packageId).update(
       {
         "isLive": false,
       },

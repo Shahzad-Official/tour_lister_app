@@ -74,6 +74,7 @@ class _LoginState extends State<Login> {
                         child: SvgPicture.string(
                           _.isObsecure ? SvgIcons.closeEye : SvgIcons.openEye,
                           width: 30,
+                          // ignore: deprecated_member_use
                           color: Colors.grey,
                         ),
                       ),

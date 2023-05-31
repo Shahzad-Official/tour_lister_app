@@ -16,8 +16,7 @@ class GetLocationService extends GetxController {
   String? address;
   translateAddress(double latitude, double longitude) async {
     var placemarks = await placemarkFromCoordinates(latitude, longitude);
-    address =
-        "${placemarks.first.locality} ${placemarks.first.administrativeArea} , ${placemarks.first.country} ";
+    address = "${placemarks.first.locality} ${placemarks.first.administrativeArea} , ${placemarks.first.country} ";
   }
 
   determinePosition(BuildContext context) async {
@@ -30,7 +29,7 @@ class GetLocationService extends GetxController {
         mapType: MapType.normal,
         requiredGPS: true,
         automaticallyAnimateToCurrentLocation: true,
-        initialCenter: const LatLng(11.6978351, 122.6217542),
+        initialCenter: const LatLng(-40.9006, 174.8860),
         desiredAccuracy: LocationAccuracy.best,
         title: "Pick your location",
         layersButtonEnabled: true,

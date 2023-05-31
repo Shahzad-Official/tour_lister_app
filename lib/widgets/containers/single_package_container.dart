@@ -130,6 +130,7 @@ class SinglePackageContainer extends StatelessWidget {
                       SvgPicture.string(
                         SvgIcons.mapMarker,
                         width: 15,
+                        // ignore: deprecated_member_use
                         color: AppColors.headTextColor,
                       ),
                       const SizedBox(
@@ -149,9 +150,7 @@ class SinglePackageContainer extends StatelessWidget {
                   AppPadding.heightSpace15,
                   bottomButton ??
                       Row(
-                        mainAxisAlignment: isLive
-                            ? MainAxisAlignment.spaceBetween
-                            : MainAxisAlignment.end,
+                        mainAxisAlignment: isLive ? MainAxisAlignment.spaceBetween : MainAxisAlignment.end,
                         children: [
                           RoundButton(
                             onTap: onEdit,

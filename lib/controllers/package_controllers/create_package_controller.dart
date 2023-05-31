@@ -105,6 +105,13 @@ class CreatePackageController extends GetxController {
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
+    } else if (packageCat.text.isEmpty) {
+      Get.snackbar(
+        "Error",
+        "Please select Package's Category!",
+        colorText: Colors.white,
+        backgroundColor: AppColors.primarycolor,
+      );
     } else if (location.text.isEmpty) {
       Get.snackbar(
         "Error",
@@ -182,16 +189,7 @@ class CreatePackageController extends GetxController {
         colorText: Colors.white,
         backgroundColor: AppColors.primarycolor,
       );
-    }
-    // else if (otherImageController.text.isEmpty) {
-    //   Get.snackbar(
-    //     "Error",
-    //     "Upload your Package other image",
-    //     colorText: Colors.white,
-    //     backgroundColor: AppColors.primarycolor,
-    //   );
-    // }
-    else if (noOfPackages.text.isEmpty) {
+    } else if (noOfPackages.text.isEmpty) {
       Get.snackbar(
         "Error",
         "Enter Available No of packages",
@@ -216,6 +214,7 @@ class CreatePackageController extends GetxController {
       isLoading = true;
       update();
       await _createPackageService.createPackage(
+        category: packageCat.text,
         availablePackages: noOfPackages.text,
         address: location.text,
         latitude: _locationService.position!.latLng!.latitude,
@@ -230,9 +229,7 @@ class CreatePackageController extends GetxController {
         cuttOffTime: cuttoffTime.text,
         otherImage: otherImage,
         coverImage: _coverImage!,
-        noOfPersonsInPackage: selectedCat == "Family/Group"
-            ? "3-${noOfBookigs.text}"
-            : noOfBookigs.text,
+        noOfPersonsInPackage: selectedCat == "Family/Group" ? "3-${noOfBookigs.text}" : noOfBookigs.text,
         dangerRating: dangerRating.toString(),
         ageSuitability: initialAge.toString(),
         typeOfTour: selectedCat,
@@ -276,16 +273,8 @@ class CreatePackageController extends GetxController {
     } else {
       var selectedDate = await showDatePicker(
         context: context,
-        initialDate: startDate!.add(
-          const Duration(
-            days: 1,
-          ),
-        ),
-        firstDate: startDate!.add(
-          const Duration(
-            days: 1,
-          ),
-        ),
+        initialDate: startDate!,
+        firstDate: startDate!,
         lastDate: DateTime(2025),
       );
       if (selectedDate != null) {

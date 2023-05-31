@@ -40,9 +40,9 @@ class CompletedBookings extends StatelessWidget {
                       _bookingsController.eventsData.eventList[index].location!,
                   picUrl: _bookingsController
                       .eventsData.eventList[index].coverImage!,
-                  bottomButton: Row(
+                  bottomButton: const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: const [
+                    children: [
                       RoundButton(
                         fontSize: 10,
                         text: "Duplicate",

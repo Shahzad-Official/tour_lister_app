@@ -121,6 +121,7 @@ class PackagesModel {
   String? packageId;
   String? description;
   String? endPrice;
+  String? category;
   String? termsAndConditions;
   bool? isLive;
   String? noOfPersonsInPackage;
@@ -164,12 +165,14 @@ class PackagesModel {
     this.extraInfo,
     this.thumbnailUrl,
     this.availablePackages,
+    this.category,
   });
 
   PackagesModel.fromJson(Map<String, dynamic> json) {
     startPrice = json['startPrice'];
     otherImage = json['otherImage'].cast<String>();
     endDate = json['endDate'];
+    category = json['category'];
     typeOfTour = json['typeOfTour'];
     cuttOffTime = json['cuttOffTime'];
     ageSuitability = json['ageSuitability'];
@@ -181,8 +184,7 @@ class PackagesModel {
     noOfPersonsInPackage = json['noOfPersonsInPackage'];
     createdOn = json['created_on'];
     startTime = json['startTime'];
-    location =
-        json['location'] != null ? Location.fromJson(json['location']) : null;
+    location = json['location'] != null ? Location.fromJson(json['location']) : null;
     listerId = json['listerId'];
     dangerRating = json['dangerRating'];
     packageName = json['packageName'];
@@ -205,6 +207,7 @@ class PackagesModel {
     data['startPrice'] = startPrice;
     data['otherImage'] = otherImage;
     data['endDate'] = endDate;
+    data['category'] = category;
     data['typeOfTour'] = typeOfTour;
     data['cuttOffTime'] = cuttOffTime;
     data['ageSuitability'] = ageSuitability;
