@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:map_address_picker/map_address_picker.dart';
-import 'package:map_address_picker/models/location_result.dart';
+
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:tour_lister_app/constants/app_colors.dart';
 import 'package:tour_lister_app/constants/app_paddings.dart';
 import 'package:tour_lister_app/controllers/package_controllers/edit_package_controller.dart';
@@ -47,6 +48,7 @@ class _EditPackageState extends State<EditPackage> {
   EditPackageController packageController = Get.put(EditPackageController());
   final GetAllBookings _getAllBookings = GetAllBookings();
   bool isLoading = false;
+
   initializeData() async {
     setState(() {
       isLoading = true;
@@ -88,11 +90,9 @@ class _EditPackageState extends State<EditPackage> {
       packageController.termsAndConditions.text = widget.packageData.termsAndConditions.toString();
       packageController.description.text = widget.packageData.description.toString();
       packageController.extraInfoController.text = widget.packageData.extraInfo ?? "";
-      packageController.newPosition = LocationResult(
-        latLng: LatLng(
-          widget.packageData.location!.latitude!,
-          widget.packageData.location!.longitude!,
-        ),
+      packageController.newPosition = LatLng(
+        widget.packageData.location!.latitude!,
+        widget.packageData.location!.longitude!,
       );
       packageController.coverImageUrl = widget.packageData.thumbnailUrl;
       packageController.otherImageUrl = widget.packageData.otherImage;

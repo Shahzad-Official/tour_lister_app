@@ -3,9 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import "package:google_maps_flutter/google_maps_flutter.dart";
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:map_address_picker/models/location_result.dart';
+
 import '../../constants/app_colors.dart';
 import '../../models/icons_model.dart';
 import '../../services/location_services/get_location_service.dart';
@@ -89,9 +90,9 @@ class EditPackageController extends GetxController {
     update();
   }
 
-  LocationResult? newPosition;
+  LatLng? newPosition;
 
-  LocationResult? get position => _locationService.position ?? newPosition;
+  LatLng? get position => _locationService.position ?? newPosition;
   List<String>? otherImageUrl;
   String? coverImageUrl;
   String? termsFileUrl;
@@ -214,8 +215,8 @@ class EditPackageController extends GetxController {
           category: packageCat.text,
           availablePackages: noOfPackages.text,
           address: location.text,
-          latitude: position!.latLng!.latitude,
-          longitude: position!.latLng!.longitude,
+          latitude: position!.latitude,
+          longitude: position!.longitude,
           packageName: packageName.text,
           startTime: startTimeController.text,
           endTime: endTimeController.text,
@@ -253,8 +254,8 @@ class EditPackageController extends GetxController {
           availablePackages: noOfPackages.text,
           packageId,
           address: location.text,
-          latitude: position!.latLng!.latitude,
-          longitude: position!.latLng!.longitude,
+          latitude: position!.latitude,
+          longitude: position!.longitude,
           packageName: packageName.text,
           startTime: startTimeController.text,
           endTime: endTimeController.text,

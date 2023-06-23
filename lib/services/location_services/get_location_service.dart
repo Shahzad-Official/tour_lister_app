@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:map_address_picker/map_address_picker.dart';
-import 'package:map_address_picker/models/location_result.dart';
+import 'package:google_maps_place_picker_mb/google_maps_place_picker.dart';
+// ignore: depend_on_referenced_packages
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:tour_lister_app/utils/app_snackbar.dart';
-
 class GetLocationService extends GetxController {
+  var initialPosition = const LatLng(-33.8567844, 151.213108);
   double? latitude, longitude;
-  LocationResult? position;
+  LatLng? position;
   Position? currentPosition;
   bool isLoading = false;
   String? address;
@@ -20,36 +20,38 @@ class GetLocationService extends GetxController {
   }
 
   determinePosition(BuildContext context) async {
-    try {
-      isLoading = true;
-      update();
+    isLoading = true;
+    update();
+    await Geolocator.requestPermission();
+    await Geolocator.getCurrentPosition();
+    // ignore: use_build_context_synchronously
+    position = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PlacePicker(
+          apiKey: "AIzaSyDq33g2UnBUqsMbCPvHT8imFd20IsLuel0",
+          hintText: "Find a place ...",
+          searchingText: "Please wait ...",
+          selectText: "Select place",
+          outsideOfPickAreaText: "Place not in area",
+          useCurrentLocation: true,
+          selectInitialPosition: true,
+          usePinPointingSearch: true,
+          usePlaceDetailSearch: true,
+          zoomGesturesEnabled: true,
+          zoomControlsEnabled: true,
+          initialPosition: initialPosition,
+          onPlacePicked: (value) {
+            address = value.formattedAddress;
+            position = LatLng(value.geometry!.location.lat, value.geometry!.location.lng);
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
 
-      position = await showLocationPicker(
-        context,
-        mapType: MapType.normal,
-        requiredGPS: true,
-        automaticallyAnimateToCurrentLocation: true,
-        initialCenter: const LatLng(-40.9006, 174.8860),
-        desiredAccuracy: LocationAccuracy.best,
-        title: "Pick your location",
-        layersButtonEnabled: true,
-        initialZoom: 16,
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      );
-
-      await translateAddress(
-        position!.latLng!.latitude,
-        position!.latLng!.longitude,
-      );
-      isLoading = false;
-      update();
-      return position!;
-    } catch (e) {
-      AppSnackbar.snackBar(
-        title: "error",
-        message: e.toString(),
-      );
-    }
+    isLoading = false;
+    update();
   }
 
   storeCurrentLocationCoordinates() async {
