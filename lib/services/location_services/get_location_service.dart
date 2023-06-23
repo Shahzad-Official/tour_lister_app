@@ -25,7 +25,7 @@ class GetLocationService extends GetxController {
     await Geolocator.requestPermission();
     await Geolocator.getCurrentPosition();
     // ignore: use_build_context_synchronously
-    position = await Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => PlacePicker(
@@ -44,6 +44,7 @@ class GetLocationService extends GetxController {
           onPlacePicked: (value) {
             address = value.formattedAddress;
             position = LatLng(value.geometry!.location.lat, value.geometry!.location.lng);
+
             Navigator.pop(context);
           },
         ),
