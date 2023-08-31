@@ -69,7 +69,7 @@ class CreatePackageController extends GetxController {
       ),
     );
 
-    otherImageController.text = "Uploaded Successfully";
+    otherImageController.text = "${result.files.length} Images Uploaded Successfully";
     update();
   }
 

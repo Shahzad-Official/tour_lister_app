@@ -210,7 +210,6 @@ class EditPackageController extends GetxController {
     } else {
       isLoading = true;
       update();
-      print(_locationService.position!.latitude);
 
       if (isDuplicating) {
         await _createPackageService.duplicatePackage(
