@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import '../../constants/app_colors.dart';
 import '../../constants/app_paddings.dart';
 
-class PackageRatingBar extends StatelessWidget {
-  const PackageRatingBar({
+class TourRatingBar extends StatelessWidget {
+  final double? initialRating;
+  const TourRatingBar({
+    this.initialRating,
     Key? key,
   }) : super(key: key);
 
@@ -16,57 +17,25 @@ class PackageRatingBar extends StatelessWidget {
         AppPadding.heightSpace15,
         RatingBar(
           ignoreGestures: true,
-          itemSize: 15,
-          initialRating: 2.1,
-          itemCount: 4,
+          itemSize: 20,
+          initialRating: initialRating ?? 2.1,
+          allowHalfRating: true,
+          itemCount: 5,
           ratingWidget: RatingWidget(
-            full: Container(
-              height: 10,
-              width: 10,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.primarycolor,
-              ),
+            full: const Icon(
+              Icons.star_rate_rounded,
+              color: Colors.amber,
             ),
-            half: Container(
-              height: 10,
-              width: 10,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppColors.primarycolor,
-                  width: 0.5,
-                ),
-              ),
-              child: Stack(
-                children: [
-                  Container(
-                    height: 10,
-                    width: 5,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        bottomLeft: Radius.circular(5),
-                      ),
-                      color: AppColors.primarycolor,
-                    ),
-                  ),
-                ],
-              ),
+            half: const Icon(
+              Icons.star_half_rounded,
+              color: Colors.amber,
             ),
-            empty: Container(
-              height: 10,
-              width: 10,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppColors.primarycolor,
-                  width: 0.5,
-                ),
-                shape: BoxShape.circle,
-              ),
+            empty: const Icon(
+              Icons.star_border_rounded,
+              color: Colors.amber,
             ),
           ),
-          onRatingUpdate: (value) {},
+          onRatingUpdate: (double value) {},
         ),
       ],
     );

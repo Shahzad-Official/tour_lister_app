@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:tour_lister_app/utils/app_snackbar.dart';
-
 import '../../constants/app_colors.dart';
 import '../../services/registration/signup_service.dart';
 
@@ -17,16 +15,14 @@ class SignupController extends GetxController {
   String countryCode = "+92";
 
   bool _isEmailValid(String email) {
-    String exp =
-        r'^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    String exp = r'^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
     RegExp regExp = RegExp(exp);
     return regExp.hasMatch(email);
   }
 
   bool _ispasswordvalid(String password) {
-    String exp =
-        r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$';
+    String exp = r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$';
 
     RegExp regExp = RegExp(exp);
     return regExp.hasMatch(password);
@@ -95,19 +91,13 @@ class SignupController extends GetxController {
         backgroundColor: AppColors.primarycolor,
       );
     } else {
-      try {
-        await SignupService().registerUser(
-          userName: name.text,
-          email: email.text,
-          phoneNo: "$countryCode" "${phone.text}",
-          password: password.text,
-          confirmPassword: confirmPassword.text,
-        );
-        AppSnackbar.snackBar(
-            title: "Message", message: "Successfully Registered");
-      } catch (e) {
-        AppSnackbar.snackBar(title: "Messag", message: e.toString());
-      }
+      await SignupService().registerUser(
+        userName: name.text,
+        email: email.text,
+        phoneNo: "$countryCode" "${phone.text}",
+        password: password.text,
+        confirmPassword: confirmPassword.text,
+      );
     }
   }
 }

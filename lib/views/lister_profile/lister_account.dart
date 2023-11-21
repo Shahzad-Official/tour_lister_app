@@ -279,12 +279,12 @@ class _ListerAccountState extends State<ListerAccount> {
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       onTap: () async {
-                        await FirebaseAuth.instance.signOut();
-                        await GoogleSignIn().signOut();
-                        await FacebookAuth.instance.logOut();
                         Get.offAll(
                           () => const GetStarted(),
                         );
+                        await FirebaseAuth.instance.signOut();
+                        await GoogleSignIn().signOut();
+                        await FacebookAuth.instance.logOut();
                       },
                       leading: const Icon(
                         Icons.power_settings_new_rounded,

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -23,10 +24,7 @@ class SignupService {
     required String photoURL,
     String? phoneNo,
   }) async {
-    await FirebaseFirestore.instance
-        .collection("users")
-        .get()
-        .then((value) async {
+    await FirebaseFirestore.instance.collection("users").get().then((value) async {
       if (value.docs.isEmpty) {
         FirebaseFirestore.instance.collection("users").doc(uid).set({
           "email": email,
@@ -42,8 +40,7 @@ class SignupService {
           "disabled": false,
           "commission": "5",
         });
-        AppSnackbar.snackBar(
-            title: "Message", message: "Successfully SignedUp");
+        AppSnackbar.snackBar(title: "Message", message: "Successfully SignedUp");
         Get.offAll(() => MainPage());
       } else {
         await _userData.getUserData(uid);
@@ -63,21 +60,14 @@ class SignupService {
             "disabled": false,
             "commission": "5",
           });
-          AppSnackbar.snackBar(
-              title: "Message", message: "Successfully SignedUp");
+          AppSnackbar.snackBar(title: "Message", message: "Successfully SignedUp");
           Get.offAll(() => MainPage());
-        } else if (_userData.userProfile.uid == uid &&
-            _userData.userProfile.role == "lister") {
-          AppSnackbar.snackBar(
-              title: "Error",
-              message: "Account is already registered\nSign in please!");
+        } else if (_userData.userProfile.uid == uid && _userData.userProfile.role == "lister") {
+          AppSnackbar.snackBar(title: "Error", message: "Account is already registered\nSign in please!");
           _googleSignIn.signOut();
           Get.offAll(() => const Login());
-        } else if (_userData.userProfile.uid == uid &&
-            _userData.userProfile.role == "user") {
-          AppSnackbar.snackBar(
-              title: "Error",
-              message: "This account is already registered on User App.");
+        } else if (_userData.userProfile.uid == uid && _userData.userProfile.role == "user") {
+          AppSnackbar.snackBar(title: "Error", message: "This account is already registered on User App.");
           _googleSignIn.signOut();
           Get.offAll(() => const Login());
         }
@@ -85,15 +75,9 @@ class SignupService {
     });
   }
 
-  registerUser(
-      {required String userName,
-      required String email,
-      required String phoneNo,
-      required String password,
-      required String confirmPassword}) async {
+  registerUser({required String userName, required String email, required String phoneNo, required String password, required String confirmPassword}) async {
     try {
-      UserCredential authCredentials = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential authCredentials = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       await verifyUser(
         uid: authCredentials.user!.uid,
         email: email,
@@ -101,8 +85,14 @@ class SignupService {
         photoURL: DummyData.profilePic,
         phoneNo: phoneNo,
       );
-      await LoginService.loginUser(email: email, password: password);
+
+      await LoginService.loginUser(
+        email: email,
+        password: password,
+        isSignedUp: true,
+      );
     } catch (e) {
+      debugPrint(e.toString());
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }
   }
@@ -110,8 +100,7 @@ class SignupService {
   googleSignUpService() async {
     try {
       var googleSignInAccount = await _googleSignIn.signIn();
-      var googleSignInAuthentication =
-          await googleSignInAccount!.authentication;
+      var googleSignInAuthentication = await googleSignInAccount!.authentication;
       AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
@@ -119,11 +108,7 @@ class SignupService {
 
       var user = await _firebaseAuth.signInWithCredential(credential);
       if (user.user != null) {
-        await verifyUser(
-            uid: user.user!.uid,
-            email: user.user!.email!,
-            displayName: user.user!.displayName!,
-            photoURL: user.user!.photoURL!);
+        await verifyUser(uid: user.user!.uid, email: user.user!.email!, displayName: user.user!.displayName!, photoURL: user.user!.photoURL!);
       } else {
         AppSnackbar.snackBar(title: "Message", message: "User Not available");
       }
@@ -136,10 +121,8 @@ class SignupService {
     try {
       final LoginResult loginResult = await FacebookAuth.instance.login();
 
-      final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(loginResult.accessToken!.token);
-      var user = await FirebaseAuth.instance
-          .signInWithCredential(facebookAuthCredential);
+      final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+      var user = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
       if (user.user != null) {
         await verifyUser(
           uid: user.user!.uid,

@@ -12,6 +12,7 @@ import 'package:tour_lister_app/widgets/app_button.dart';
 import 'package:tour_lister_app/widgets/app_cached_image.dart';
 import 'package:tour_lister_app/widgets/app_input_field.dart';
 import 'package:tour_lister_app/widgets/app_text.dart';
+import 'package:tour_lister_app/widgets/app_tool_tip.dart';
 
 import '../../../utils/tool_tip_shap.dart';
 
@@ -304,26 +305,8 @@ class _CreatePackageState extends State<CreatePackage> {
                                 fontWeight: FontWeight.w600,
                                 textcolor: AppColors.headTextColor,
                               ),
-                              Tooltip(
-                                decoration: const ShapeDecoration(
-                                  color: Colors.blue,
-                                  shape: TooltipShapeBorder(
-                                    radius: 5,
-                                    arrowWidth: 10,
-                                  ),
-                                ),
-                                triggerMode: TooltipTriggerMode.tap,
-                                onTriggered: () {},
-                                message: "testing",
-                                child: const CircleAvatar(
-                                  radius: 10,
-                                  backgroundColor: Colors.grey,
-                                  child: Icon(
-                                    Icons.question_mark_rounded,
-                                    size: 10,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                              AppToolTip(
+                                text: "text",
                               ),
                             ],
                           ),
@@ -352,26 +335,8 @@ class _CreatePackageState extends State<CreatePackage> {
                                 fontWeight: FontWeight.w600,
                                 textcolor: AppColors.headTextColor,
                               ),
-                              Tooltip(
-                                decoration: const ShapeDecoration(
-                                  color: Colors.blue,
-                                  shape: TooltipShapeBorder(
-                                    radius: 5,
-                                    arrowWidth: 10,
-                                  ),
-                                ),
-                                triggerMode: TooltipTriggerMode.tap,
-                                onTriggered: () {},
-                                message: "testing",
-                                child: const CircleAvatar(
-                                  radius: 10,
-                                  backgroundColor: Colors.grey,
-                                  child: Icon(
-                                    Icons.question_mark_rounded,
-                                    size: 10,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                              AppToolTip(
+                                text: "text",
                               ),
                             ],
                           ),
@@ -396,26 +361,8 @@ class _CreatePackageState extends State<CreatePackage> {
                       fontWeight: FontWeight.w600,
                       textcolor: AppColors.headTextColor,
                     ),
-                    Tooltip(
-                      decoration: const ShapeDecoration(
-                        color: Colors.blue,
-                        shape: TooltipShapeBorder(
-                          radius: 5,
-                          arrowWidth: 10,
-                        ),
-                      ),
-                      triggerMode: TooltipTriggerMode.tap,
-                      onTriggered: () {},
-                      message: "testing",
-                      child: const CircleAvatar(
-                        radius: 10,
-                        backgroundColor: Colors.grey,
-                        child: Icon(
-                          Icons.question_mark_rounded,
-                          size: 10,
-                          color: Colors.white,
-                        ),
-                      ),
+                    AppToolTip(
+                      text: "text",
                     ),
                   ],
                 ),
@@ -454,26 +401,8 @@ class _CreatePackageState extends State<CreatePackage> {
                       fontWeight: FontWeight.w600,
                       textcolor: AppColors.headTextColor,
                     ),
-                    Tooltip(
-                      decoration: const ShapeDecoration(
-                        color: Colors.blue,
-                        shape: TooltipShapeBorder(
-                          radius: 5,
-                          arrowWidth: 10,
-                        ),
-                      ),
-                      triggerMode: TooltipTriggerMode.tap,
-                      onTriggered: () {},
-                      message: "testing",
-                      child: const CircleAvatar(
-                        radius: 10,
-                        backgroundColor: Colors.grey,
-                        child: Icon(
-                          Icons.question_mark_rounded,
-                          size: 10,
-                          color: Colors.white,
-                        ),
-                      ),
+                    AppToolTip(
+                      text: "text",
                     ),
                   ],
                 ),
@@ -561,26 +490,8 @@ class _CreatePackageState extends State<CreatePackage> {
                       fontWeight: FontWeight.w600,
                       textcolor: AppColors.headTextColor,
                     ),
-                    Tooltip(
-                      decoration: const ShapeDecoration(
-                        color: Colors.blue,
-                        shape: TooltipShapeBorder(
-                          radius: 5,
-                          arrowWidth: 10,
-                        ),
-                      ),
-                      triggerMode: TooltipTriggerMode.tap,
-                      onTriggered: () {},
-                      message: "testing",
-                      child: const CircleAvatar(
-                        radius: 10,
-                        backgroundColor: Colors.grey,
-                        child: Icon(
-                          Icons.question_mark_rounded,
-                          size: 10,
-                          color: Colors.white,
-                        ),
-                      ),
+                    AppToolTip(
+                      text: "text",
                     ),
                   ],
                 ),
@@ -600,26 +511,8 @@ class _CreatePackageState extends State<CreatePackage> {
                       fontWeight: FontWeight.w600,
                       textcolor: AppColors.headTextColor,
                     ),
-                    Tooltip(
-                      decoration: const ShapeDecoration(
-                        color: Colors.blue,
-                        shape: TooltipShapeBorder(
-                          radius: 5,
-                          arrowWidth: 10,
-                        ),
-                      ),
-                      triggerMode: TooltipTriggerMode.tap,
-                      onTriggered: () {},
-                      message: "testing",
-                      child: const CircleAvatar(
-                        radius: 10,
-                        backgroundColor: Colors.grey,
-                        child: Icon(
-                          Icons.question_mark_rounded,
-                          size: 10,
-                          color: Colors.white,
-                        ),
-                      ),
+                    AppToolTip(
+                      text: "text",
                     ),
                   ],
                 ),
@@ -641,26 +534,8 @@ class _CreatePackageState extends State<CreatePackage> {
                       fontWeight: FontWeight.w600,
                       textcolor: AppColors.headTextColor,
                     ),
-                    Tooltip(
-                      decoration: const ShapeDecoration(
-                        color: Colors.blue,
-                        shape: TooltipShapeBorder(
-                          radius: 5,
-                          arrowWidth: 10,
-                        ),
-                      ),
-                      triggerMode: TooltipTriggerMode.tap,
-                      onTriggered: () {},
-                      message: "testing",
-                      child: const CircleAvatar(
-                        radius: 10,
-                        backgroundColor: Colors.grey,
-                        child: Icon(
-                          Icons.question_mark_rounded,
-                          size: 10,
-                          color: Colors.white,
-                        ),
-                      ),
+                    AppToolTip(
+                      text: "text",
                     ),
                   ],
                 ),
@@ -715,26 +590,8 @@ class _CreatePackageState extends State<CreatePackage> {
                             textcolor: AppColors.headTextColor,
                           ),
                           AppPadding.heightSpace10,
-                          Tooltip(
-                            decoration: const ShapeDecoration(
-                              color: Colors.blue,
-                              shape: TooltipShapeBorder(
-                                radius: 5,
-                                arrowWidth: 10,
-                              ),
-                            ),
-                            triggerMode: TooltipTriggerMode.tap,
-                            onTriggered: () {},
-                            message: "testing",
-                            child: const CircleAvatar(
-                              radius: 10,
-                              backgroundColor: Colors.grey,
-                              child: Icon(
-                                Icons.question_mark_rounded,
-                                size: 10,
-                                color: Colors.white,
-                              ),
-                            ),
+                          AppToolTip(
+                            text: "Testing",
                           ),
                         ],
                       ),
@@ -756,27 +613,7 @@ class _CreatePackageState extends State<CreatePackage> {
                             textcolor: AppColors.headTextColor,
                           ),
                           AppPadding.heightSpace10,
-                          Tooltip(
-                            decoration: const ShapeDecoration(
-                              color: Colors.blue,
-                              shape: TooltipShapeBorder(
-                                radius: 5,
-                                arrowWidth: 10,
-                              ),
-                            ),
-                            triggerMode: TooltipTriggerMode.tap,
-                            onTriggered: () {},
-                            message: "testing",
-                            child: const CircleAvatar(
-                              radius: 10,
-                              backgroundColor: Colors.grey,
-                              child: Icon(
-                                Icons.question_mark_rounded,
-                                size: 10,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
+                          AppToolTip(text: "text"),
                         ],
                       ),
                     ),
@@ -797,26 +634,8 @@ class _CreatePackageState extends State<CreatePackage> {
                             textcolor: AppColors.headTextColor,
                           ),
                           AppPadding.heightSpace10,
-                          Tooltip(
-                            decoration: const ShapeDecoration(
-                              color: Colors.blue,
-                              shape: TooltipShapeBorder(
-                                radius: 5,
-                                arrowWidth: 10,
-                              ),
-                            ),
-                            triggerMode: TooltipTriggerMode.tap,
-                            onTriggered: () {},
-                            message: "testing",
-                            child: const CircleAvatar(
-                              radius: 10,
-                              backgroundColor: Colors.grey,
-                              child: Icon(
-                                Icons.question_mark_rounded,
-                                size: 10,
-                                color: Colors.white,
-                              ),
-                            ),
+                          AppToolTip(
+                            text: "Tesst",
                           ),
                         ],
                       ),
@@ -833,26 +652,8 @@ class _CreatePackageState extends State<CreatePackage> {
                       fontWeight: FontWeight.w600,
                       textcolor: AppColors.headTextColor,
                     ),
-                    Tooltip(
-                      decoration: const ShapeDecoration(
-                        color: Colors.blue,
-                        shape: TooltipShapeBorder(
-                          radius: 5,
-                          arrowWidth: 10,
-                        ),
-                      ),
-                      triggerMode: TooltipTriggerMode.tap,
-                      onTriggered: () {},
-                      message: "testing",
-                      child: const CircleAvatar(
-                        radius: 10,
-                        backgroundColor: Colors.grey,
-                        child: Icon(
-                          Icons.question_mark_rounded,
-                          size: 10,
-                          color: Colors.white,
-                        ),
-                      ),
+                    AppToolTip(
+                      text: "text",
                     ),
                   ],
                 ),
@@ -893,26 +694,8 @@ class _CreatePackageState extends State<CreatePackage> {
                       fontWeight: FontWeight.w600,
                       textcolor: AppColors.headTextColor,
                     ),
-                    Tooltip(
-                      decoration: const ShapeDecoration(
-                        color: Colors.blue,
-                        shape: TooltipShapeBorder(
-                          radius: 5,
-                          arrowWidth: 10,
-                        ),
-                      ),
-                      triggerMode: TooltipTriggerMode.tap,
-                      onTriggered: () {},
-                      message: "testing",
-                      child: const CircleAvatar(
-                        radius: 10,
-                        backgroundColor: Colors.grey,
-                        child: Icon(
-                          Icons.question_mark_rounded,
-                          size: 10,
-                          color: Colors.white,
-                        ),
-                      ),
+                    AppToolTip(
+                      text: "text",
                     ),
                   ],
                 ),
@@ -1177,26 +960,8 @@ class _CreatePackageState extends State<CreatePackage> {
                       fontWeight: FontWeight.w600,
                       textcolor: AppColors.headTextColor,
                     ),
-                    Tooltip(
-                      decoration: const ShapeDecoration(
-                        color: Colors.blue,
-                        shape: TooltipShapeBorder(
-                          radius: 5,
-                          arrowWidth: 10,
-                        ),
-                      ),
-                      triggerMode: TooltipTriggerMode.tap,
-                      onTriggered: () {},
-                      message: "testing",
-                      child: const CircleAvatar(
-                        radius: 10,
-                        backgroundColor: Colors.grey,
-                        child: Icon(
-                          Icons.question_mark_rounded,
-                          size: 10,
-                          color: Colors.white,
-                        ),
-                      ),
+                    AppToolTip(
+                      text: "text",
                     ),
                   ],
                 ),

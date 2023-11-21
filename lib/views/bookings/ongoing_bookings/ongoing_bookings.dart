@@ -49,20 +49,26 @@ class OngoingBookings extends StatelessWidget {
                     children: [
                       AppPadding.heightSpace30,
                       FutureBuilder<PackagesModel>(
-                        future: getPackageData
-                            .getPackageData(allBookings[index].tourId),
+                        future: getPackageData.getPackageData(allBookings[index].tourId),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return SinglePackageContainer(
                               eventName: allBookings[index].eventName!,
                               location: snapshot.data!.location!.address!,
                               picUrl: snapshot.data!.thumbnailUrl,
-                              ratingBar: const PackageRatingBar(),
+                              ratingBar: FutureBuilder(
+                                  future: getPackageData.tourRating(
+                                    allBookings[index].tourId,
+                                  ),
+                                  builder: (context, snap) {
+                                    return TourRatingBar(
+                                      initialRating: snap.data == null ? 0.0 : double.parse(snap.data.toString()),
+                                    );
+                                  }),
                               bottomButton: Align(
                                 alignment: Alignment.bottomRight,
                                 child: RoundButton(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.2,
+                                  width: MediaQuery.of(context).size.width * 0.2,
                                   onTap: () {
                                     Navigator.push(
                                       context,

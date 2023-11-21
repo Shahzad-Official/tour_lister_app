@@ -37,11 +37,13 @@ class AppCircularCachedImage extends StatelessWidget {
 class AppCachedImage extends StatelessWidget {
   final String picUrl;
   final double borderRadius;
+  final Widget? child;
   final double? height, width;
   const AppCachedImage({
     Key? key,
     required this.picUrl,
     this.borderRadius = 15,
+    this.child,
     this.height,
     this.width,
   }) : super(key: key);
@@ -55,18 +57,20 @@ class AppCachedImage extends StatelessWidget {
           height: height,
           width: width,
           decoration: BoxDecoration(
-            color: AppColors.primarycolor.withOpacity(0.1),
+            color: AppColors.primarycolor,
             borderRadius: BorderRadius.circular(borderRadius),
             image: DecorationImage(
               fit: BoxFit.cover,
               image: imageProvider,
             ),
           ),
+          child: child,
         );
       },
       progressIndicatorBuilder: (context, url, progress) {
         return Center(
           child: CircularProgressIndicator(
+            color: Colors.white,
             value: progress.progress,
           ),
         );

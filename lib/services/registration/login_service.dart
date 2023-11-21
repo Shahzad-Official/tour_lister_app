@@ -16,35 +16,25 @@ class LoginService {
   final GetUserData _userData = GetUserData();
 
   doesContainId(uId) async {
-    await FirebaseFirestore.instance
-        .collection("users")
-        .get()
-        .then((value) async {
+    await FirebaseFirestore.instance.collection("users").get().then((value) async {
       if (value.docs.isEmpty) {
-        AppSnackbar.snackBar(
-            title: "Message", message: "User not available! SignUp first");
+        AppSnackbar.snackBar(title: "Message", message: "User not available! SignUp first");
         _googleSignIn.signOut();
         Get.offAll(() => const SignUp());
       } else {
         await _userData.getUserData(uId);
 
         if (_userData.userProfile.uid == null) {
-          AppSnackbar.snackBar(
-              title: "Message", message: "User not available! SignUp first");
+          AppSnackbar.snackBar(title: "Message", message: "User not available! SignUp first");
           _googleSignIn.signOut();
           Get.offAll(() => const SignUp());
-        } else if (_userData.userProfile.uid == uId &&
-            _userData.userProfile.role == "user") {
-          AppSnackbar.snackBar(
-              title: "Error",
-              message: "This account is already registered on User App!");
+        } else if (_userData.userProfile.uid == uId && _userData.userProfile.role == "user") {
+          AppSnackbar.snackBar(title: "Error", message: "This account is already registered on User App!");
           _googleSignIn.signOut();
           Get.offAll(() => const Login());
           return true;
-        } else if (_userData.userProfile.uid == uId &&
-            _userData.userProfile.role == "lister") {
-          AppSnackbar.snackBar(
-              title: "Message", message: "Successfully LogedIn");
+        } else if (_userData.userProfile.uid == uId && _userData.userProfile.role == "lister") {
+          AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
           Get.offAll(() => MainPage());
           return true;
         }
@@ -55,11 +45,14 @@ class LoginService {
   static loginUser({
     required String email,
     required String password,
+    bool isSignedUp = false,
   }) async {
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      if (isSignedUp) {
+      } else {
+        AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
+      }
       Get.offAll(() => MainPage());
     } catch (e) {
       debugPrint(e.toString());
@@ -70,8 +63,7 @@ class LoginService {
   googleSignInService() async {
     try {
       var googleSignInAccount = await _googleSignIn.signIn();
-      var googleSignInAuthentication =
-          await googleSignInAccount!.authentication;
+      var googleSignInAuthentication = await googleSignInAccount!.authentication;
       AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
@@ -90,15 +82,24 @@ class LoginService {
     try {
       final LoginResult loginResult = await FacebookAuth.instance.login();
 
-      final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(loginResult.accessToken!.token);
-      var user =
-          await _firebaseAuth.signInWithCredential(facebookAuthCredential);
+      final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+      var user = await _firebaseAuth.signInWithCredential(facebookAuthCredential);
       var userId = user.user!.uid;
       doesContainId(userId);
     } catch (e) {
       debugPrint(e.toString());
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }
+  }
+
+  forgetPassword({required String email}) async {
+    await FirebaseAuth.instance
+        .sendPasswordResetEmail(email: email)
+        .then(
+          (value) => AppSnackbar.snackBar(title: "Message", message: "The reset password link has been sent to your email!"),
+        )
+        .catchError((err) {
+      AppSnackbar.snackBar(title: "Error", message: err.toString());
+    });
   }
 }
